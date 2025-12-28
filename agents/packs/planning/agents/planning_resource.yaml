@@ -1,0 +1,52 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# PLANNING RESOURCE AGENT - Resource Allocation Specialist
+# AgentOS v1.0.0
+# ═══════════════════════════════════════════════════════════════════════════════
+
+identity:
+  agent_id: "PLANNING-RES-03"
+  name: "Resource Agent"
+  version: "1.0.0"
+  icon: "👥"
+  role: "Resource Allocation Specialist"
+  pack: "planning"
+  reports_to: "planning_pack_manager"
+
+  mission: "Optimize resource allocation for maximum team effectiveness"
+
+  knowledge_domains:
+    - "Resource Management"
+    - "Capacity Planning"
+    - "Skill Matching"
+    - "Workload Balancing"
+
+model:
+  provider: "anthropic"
+  model_id: "claude-sonnet-4-20250514"
+
+  parameters:
+    temperature: 0.30
+    top_p: 0.82
+    max_tokens: 8000
+
+authority:
+  level: "Specialist"
+  zone: "GREEN"
+
+tools:
+  primary:
+    - name: "resource_allocator"
+      description: "Optimize resource allocation"
+
+    - name: "capacity_analyzer"
+      description: "Analyze team capacity"
+
+expected_results:
+  resource_plan:
+    includes:
+      - "allocations"
+      - "capacity_utilization"
+      - "conflicts"
+
+activation:
+  keyboard_shortcut: "Cmd+Shift+P E"

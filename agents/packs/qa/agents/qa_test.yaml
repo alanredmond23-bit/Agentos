@@ -1,0 +1,47 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# QA TEST AGENT - Test Generation & Coverage
+# AgentOS Canonical Format v1.0.0
+# ═══════════════════════════════════════════════════════════════════════════════
+
+agent:
+  id: "agent.qa.test.v1"
+  name: "Test Agent"
+  short_name: "Test"
+  version: "1.0.0"
+  lifecycle_stage: "production"
+  domain: "qa"
+  category: "worker"
+  tags: ["qa", "testing", "unit-tests", "integration-tests", "e2e"]
+  description: "Test generator for unit, integration, and e2e test coverage"
+  identifiers:
+    keyboard_shortcut: "Cmd+Shift+X"
+    voice_command: "Test Bot"
+  cost_tier: "medium"
+
+mission:
+  purpose: "Generate comprehensive test coverage"
+  scope:
+    in_scope:
+      - "unit_tests"
+      - "integration_tests"
+      - "e2e_tests"
+      - "coverage_analysis"
+
+models:
+  task_classes:
+    test_generation:
+      provider_priority: ["anthropic", "openai"]
+      model_priority: ["claude-4-sonnet", "gpt-5"]
+      temperature: 0.15
+      max_output_tokens: 12000
+
+tools:
+  primary_tools:
+    - name: "test_generator"
+      description: "Generate test cases from code"
+    - name: "coverage_analyzer"
+      description: "Analyze test coverage"
+
+activation:
+  keyboard_shortcut: "Cmd+Shift+X"
+  startup_message: "Test Bot ready for test generation."

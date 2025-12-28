@@ -1,0 +1,148 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# GOLDEN TASK: Android Compose Screen
+# Tests: mobile_android_kotlin agent capability
+# ═══════════════════════════════════════════════════════════════════════════════
+
+metadata:
+  id: "mobile-golden-002"
+  name: "Android Compose Screen - Product List"
+  pack: "mobile"
+  agent: "mobile_android_kotlin"
+  version: "1.0.0"
+  difficulty: "medium"
+  estimated_time: "45min"
+
+task:
+  description: |
+    Implement a product listing screen using Jetpack Compose with pagination,
+    pull-to-refresh, error handling, and offline support.
+
+  input:
+    feature_name: "ProductList"
+    requirements:
+      - "Display products in a LazyColumn"
+      - "Implement pagination with Paging 3"
+      - "Support pull-to-refresh"
+      - "Show loading and error states"
+      - "Cache products locally with Room"
+      - "Support offline mode"
+      - "Follow Material Design 3"
+    min_sdk: 24
+    target_sdk: 34
+    architecture: "MVVM with Clean Architecture"
+    dependencies:
+      - "Jetpack Compose"
+      - "Paging 3"
+      - "Room"
+      - "Hilt"
+      - "Coil"
+
+  context:
+    api_endpoint: "GET /api/v1/products?page={page}&limit=20"
+    response_schema: |
+      {
+        "products": [
+          {
+            "id": "string",
+            "name": "string",
+            "price": "number",
+            "imageUrl": "string",
+            "description": "string"
+          }
+        ],
+        "hasMore": "boolean",
+        "totalCount": "number"
+      }
+
+expected_output:
+  files:
+    - path: "ProductListScreen.kt"
+      must_contain:
+        - "@Composable"
+        - "LazyColumn"
+        - "collectAsLazyPagingItems"
+        - "SwipeRefresh"
+        - "LoadState"
+
+    - path: "ProductListViewModel.kt"
+      must_contain:
+        - "@HiltViewModel"
+        - "ViewModel"
+        - "Pager"
+        - "StateFlow"
+
+    - path: "ProductRepository.kt"
+      must_contain:
+        - "Repository"
+        - "suspend"
+        - "Flow"
+
+    - path: "ProductEntity.kt"
+      must_contain:
+        - "@Entity"
+        - "@PrimaryKey"
+
+    - path: "ProductRemoteMediator.kt"
+      must_contain:
+        - "RemoteMediator"
+        - "MediatorResult"
+
+    - path: "ProductListScreenTest.kt"
+      must_contain:
+        - "@Test"
+        - "composeTestRule"
+
+  quality_checks:
+    - name: "detekt_passes"
+      threshold: 1.0
+
+    - name: "null_safety"
+      threshold: 1.0
+
+    - name: "coroutine_scope_management"
+      threshold: 1.0
+
+  behavior_checks:
+    - scenario: "Initial load with network"
+      expected: "Shows loading, then products"
+
+    - scenario: "Pull to refresh"
+      expected: "Refreshes data from API"
+
+    - scenario: "Offline mode"
+      expected: "Shows cached products"
+
+    - scenario: "Network error"
+      expected: "Shows error state with retry"
+
+evaluation:
+  scoring:
+    code_quality: 0.25
+    functionality: 0.30
+    architecture: 0.25
+    testing: 0.20
+
+  pass_threshold: 0.80
+
+  rubric:
+    excellent:
+      score: 0.95
+      criteria:
+        - "Clean Architecture followed"
+        - "Proper Paging 3 implementation"
+        - "Full offline support"
+        - "Comprehensive tests"
+
+    good:
+      score: 0.80
+      criteria:
+        - "Core functionality works"
+        - "Basic offline support"
+        - "Some tests present"
+
+tags:
+  - "android"
+  - "kotlin"
+  - "compose"
+  - "paging"
+  - "offline"

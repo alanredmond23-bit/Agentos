@@ -1,0 +1,120 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# GOLDEN TASK: Quarterly Cashflow Forecast
+# Finance Pack - Financial Forecasting Workflow
+# ═══════════════════════════════════════════════════════════════════════════════
+
+metadata:
+  task_id: "GT-FINANCE-001"
+  name: "Quarterly Cashflow Forecast"
+  pack: "finance"
+  version: "1.0.0"
+  difficulty: "advanced"
+  estimated_time: "60min"
+
+description: |
+  Generate a comprehensive quarterly cashflow forecast with scenario analysis,
+  risk assessment, and variance tracking against budget.
+
+objective: |
+  Produce an accurate cashflow forecast for Q1 2025 with confidence intervals,
+  identify potential cash shortfalls, and recommend mitigation strategies.
+
+agents_involved:
+  - "finance_pack_manager"
+  - "finance_cashflow_modeler"
+  - "finance_forecast"
+  - "finance_risk_detector"
+  - "finance_controls_auditor"
+
+input:
+  period: "Q1 2025"
+  opening_balance: 2500000
+
+  revenue_projections:
+    recurring_revenue: 1800000
+    new_sales_pipeline: 500000
+    win_rate: 0.35
+    payment_terms: "net_30"
+
+  expense_projections:
+    payroll: 950000
+    infrastructure: 180000
+    marketing: 120000
+    operations: 95000
+    debt_service: 75000
+
+  historical_data:
+    collection_rate: 0.92
+    payment_timing_variance: 7  # days
+    seasonal_patterns: true
+
+workflow:
+  steps:
+    - agent: "finance_cashflow_modeler"
+      action: "build_cashflow_model"
+      inputs:
+        - revenue_projections
+        - expense_projections
+        - historical_patterns
+
+    - agent: "finance_forecast"
+      action: "generate_scenarios"
+      scenarios:
+        - base_case
+        - optimistic
+        - pessimistic
+
+    - agent: "finance_risk_detector"
+      action: "identify_risks"
+      focus:
+        - collection_delays
+        - expense_overruns
+        - revenue_shortfalls
+
+    - agent: "finance_controls_auditor"
+      action: "validate_forecast"
+      checks:
+        - methodology
+        - assumptions
+        - calculations
+
+expected_output:
+  format: "cashflow_forecast"
+  deliverables:
+    monthly_projections:
+      - month
+      - inflows
+      - outflows
+      - net_cashflow
+      - ending_balance
+
+    scenario_analysis:
+      - base_case
+      - optimistic
+      - pessimistic
+      - probability_weighted
+
+    risk_assessment:
+      - identified_risks
+      - impact_quantification
+      - mitigation_recommendations
+
+    variance_analysis:
+      - budget_comparison
+      - variance_explanations
+
+success_criteria:
+  - forecast_complete: true
+  - scenarios_generated: 3
+  - risks_identified: ">= 3"
+  - controls_validated: true
+  - confidence_interval_provided: true
+
+evaluation:
+  accuracy_metrics:
+    - historical_forecast_accuracy
+    - assumption_reasonableness
+
+  completeness_check:
+    - all_categories_included
+    - timing_assumptions_documented

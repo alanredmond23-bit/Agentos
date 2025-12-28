@@ -1,0 +1,98 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# GOLDEN TASK: Sprint Planning Session
+# Planning Pack - Sprint Planning Workflow
+# ═══════════════════════════════════════════════════════════════════════════════
+
+metadata:
+  task_id: "GT-PLANNING-002"
+  name: "Sprint Planning Session"
+  pack: "planning"
+  version: "1.0.0"
+  difficulty: "intermediate"
+  estimated_time: "30min"
+
+description: |
+  Conduct a complete sprint planning session for a 2-week sprint, including
+  backlog grooming, capacity planning, and commitment setting.
+
+objective: |
+  Plan a 2-week sprint with properly estimated stories, balanced workload,
+  and realistic commitments based on team capacity.
+
+agents_involved:
+  - "planning_pack_manager"
+  - "planning_sprint"
+  - "planning_resource"
+  - "planning_dependency"
+
+input:
+  sprint_duration: "2 weeks"
+  team:
+    developers: 5
+    qa: 2
+    design: 1
+  capacity:
+    total_points: 50
+    holidays: ["Jan 20"]
+    pto: ["Dev3: Jan 22-23"]
+  backlog:
+    - id: "FEAT-101"
+      title: "User authentication revamp"
+      estimate: 13
+      priority: "high"
+    - id: "FEAT-102"
+      title: "Dashboard redesign"
+      estimate: 8
+      priority: "high"
+    - id: "FEAT-103"
+      title: "API rate limiting"
+      estimate: 5
+      priority: "medium"
+    - id: "BUG-201"
+      title: "Fix memory leak"
+      estimate: 3
+      priority: "critical"
+    - id: "TECH-301"
+      title: "Upgrade database"
+      estimate: 8
+      priority: "medium"
+
+workflow:
+  steps:
+    - agent: "planning_resource"
+      action: "calculate_capacity"
+      output: "available_points"
+
+    - agent: "planning_sprint"
+      action: "select_backlog_items"
+      criteria: "priority_and_capacity"
+
+    - agent: "planning_dependency"
+      action: "order_by_dependencies"
+      output: "sprint_order"
+
+expected_output:
+  format: "sprint_plan"
+  includes:
+    sprint_goal: "string"
+    committed_items:
+      - story_id
+      - assignee
+      - dependencies
+    capacity_utilization: "percentage"
+    risk_items: "list"
+
+success_criteria:
+  - capacity_not_exceeded: true
+  - critical_items_included: true
+  - dependencies_respected: true
+  - team_balanced: true
+
+evaluation:
+  capacity_check:
+    - utilization_between_80_95
+    - no_overallocation
+
+  priority_check:
+    - critical_items_first
+    - high_priority_coverage

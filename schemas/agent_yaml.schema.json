@@ -1,1 +1,1394 @@
-{}
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://agentos.dev/schemas/agent_yaml.schema.json",
+  "title": "AgentOS Agent Configuration",
+  "description": "Comprehensive schema for AgentOS agent YAML configuration files. Covers all 18 configuration clusters with 250+ fields.",
+  "type": "object",
+  "required": ["meta", "identity"],
+  "additionalProperties": false,
+  "properties": {
+    "meta": {
+      "$ref": "#/$defs/MetaCluster"
+    },
+    "identity": {
+      "$ref": "#/$defs/IdentityCluster"
+    },
+    "voice": {
+      "$ref": "#/$defs/VoiceCluster"
+    },
+    "authority": {
+      "$ref": "#/$defs/AuthorityCluster"
+    },
+    "business": {
+      "$ref": "#/$defs/BusinessCluster"
+    },
+    "technical": {
+      "$ref": "#/$defs/TechnicalCluster"
+    },
+    "mcp_servers": {
+      "$ref": "#/$defs/McpServersCluster"
+    },
+    "agents": {
+      "$ref": "#/$defs/AgentsCluster"
+    },
+    "memory": {
+      "$ref": "#/$defs/MemoryCluster"
+    },
+    "reasoning": {
+      "$ref": "#/$defs/ReasoningCluster"
+    },
+    "tools": {
+      "$ref": "#/$defs/ToolsCluster"
+    },
+    "safety": {
+      "$ref": "#/$defs/SafetyCluster"
+    },
+    "policies": {
+      "$ref": "#/$defs/PoliciesCluster"
+    },
+    "triggers": {
+      "$ref": "#/$defs/TriggersCluster"
+    },
+    "integrations": {
+      "$ref": "#/$defs/IntegrationsCluster"
+    },
+    "observability": {
+      "$ref": "#/$defs/ObservabilityCluster"
+    },
+    "context": {
+      "$ref": "#/$defs/ContextCluster"
+    },
+    "evals": {
+      "$ref": "#/$defs/EvalsCluster"
+    }
+  },
+  "$defs": {
+    "MetaCluster": {
+      "type": "object",
+      "description": "Cluster 1: Metadata and versioning information",
+      "required": ["version", "pack"],
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "Semantic version of this agent configuration",
+          "examples": ["1.0.0", "2.1.3"]
+        },
+        "pack": {
+          "type": "string",
+          "description": "Pack identifier this agent belongs to",
+          "pattern": "^[a-z][a-z0-9_-]*$",
+          "examples": ["engineering", "product", "marketing"]
+        },
+        "schema_version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+$",
+          "default": "1.0",
+          "description": "Schema version this config adheres to"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp of creation"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp of last update"
+        },
+        "created_by": {
+          "type": "string",
+          "description": "Creator identifier (username or system)"
+        },
+        "environment": {
+          "type": "string",
+          "enum": ["development", "staging", "production"],
+          "default": "development",
+          "description": "Target deployment environment"
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Freeform tags for categorization",
+          "examples": [["ai_assistant", "autonomous", "customer_facing"]]
+        },
+        "labels": {
+          "type": "object",
+          "additionalProperties": { "type": "string" },
+          "description": "Key-value labels for filtering"
+        },
+        "deprecated": {
+          "type": "boolean",
+          "default": false,
+          "description": "Mark agent as deprecated"
+        },
+        "deprecation_message": {
+          "type": "string",
+          "description": "Message explaining deprecation and alternatives"
+        },
+        "parent_config": {
+          "type": "string",
+          "description": "Path to parent config for inheritance"
+        },
+        "extends": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "List of base configs to extend"
+        }
+      }
+    },
+    "IdentityCluster": {
+      "type": "object",
+      "description": "Cluster 2: Agent identity and persona definition",
+      "required": ["name", "role"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "Human-readable agent name"
+        },
+        "slug": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*$",
+          "description": "URL-safe identifier"
+        },
+        "role": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Agent's primary role or job title"
+        },
+        "personality": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Personality description or archetype"
+        },
+        "avatar_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to agent avatar image"
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 2000,
+          "description": "Detailed agent description"
+        },
+        "mission": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Core mission statement"
+        },
+        "values": {
+          "type": "array",
+          "items": { "type": "string" },
+          "maxItems": 10,
+          "description": "Core values guiding agent behavior"
+        },
+        "communication_style": {
+          "type": "string",
+          "enum": ["formal", "casual", "technical", "friendly", "direct", "empathetic", "custom"],
+          "description": "Default communication style"
+        },
+        "communication_style_custom": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Custom style description when style is 'custom'"
+        },
+        "decision_framework": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "How the agent approaches decisions"
+        },
+        "authority_level": {
+          "type": "string",
+          "enum": ["observer", "assistant", "contributor", "operator", "principal", "admin"],
+          "default": "assistant",
+          "description": "Base authority level"
+        },
+        "knowledge_domains": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Areas of expertise"
+        },
+        "languages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["code"],
+            "properties": {
+              "code": { "type": "string", "pattern": "^[a-z]{2}(-[A-Z]{2})?$" },
+              "fluency": { "type": "string", "enum": ["native", "fluent", "intermediate", "basic"] }
+            }
+          },
+          "description": "Supported languages with fluency levels"
+        },
+        "timezone": {
+          "type": "string",
+          "description": "Default timezone (IANA format)",
+          "examples": ["America/New_York", "Europe/London", "Asia/Tokyo"]
+        },
+        "working_hours": {
+          "type": "object",
+          "properties": {
+            "start": { "type": "string", "pattern": "^\\d{2}:\\d{2}$" },
+            "end": { "type": "string", "pattern": "^\\d{2}:\\d{2}$" },
+            "days": { "type": "array", "items": { "type": "integer", "minimum": 0, "maximum": 6 } }
+          },
+          "description": "Agent availability schedule"
+        },
+        "pronouns": {
+          "type": "string",
+          "enum": ["he/him", "she/her", "they/them", "it", "custom"],
+          "description": "Preferred pronouns"
+        },
+        "contact_info": {
+          "type": "object",
+          "properties": {
+            "email": { "type": "string", "format": "email" },
+            "slack_channel": { "type": "string" },
+            "discord_id": { "type": "string" }
+          }
+        }
+      }
+    },
+    "VoiceCluster": {
+      "type": "object",
+      "description": "Cluster 3: Voice interface and audio settings",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable voice interface"
+        },
+        "model": {
+          "type": "string",
+          "description": "Voice AI model to use",
+          "examples": ["gpt-4o-realtime", "whisper-1", "eleven-labs-v2"]
+        },
+        "provider": {
+          "type": "string",
+          "enum": ["openai", "eleven_labs", "azure", "google", "amazon", "custom"],
+          "description": "Voice service provider"
+        },
+        "voice_id": {
+          "type": "string",
+          "description": "Specific voice identifier"
+        },
+        "voice_gender": {
+          "type": "string",
+          "enum": ["male", "female", "neutral", "custom"],
+          "description": "Voice gender preference"
+        },
+        "voice_tone": {
+          "type": "string",
+          "enum": ["friendly", "professional", "casual", "authoritative", "calm", "energetic"],
+          "description": "Tonal quality of voice"
+        },
+        "wake_words": {
+          "type": "array",
+          "items": { "type": "string" },
+          "maxItems": 10,
+          "description": "Phrases that activate voice mode"
+        },
+        "response_time_target": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 5000,
+          "default": 500,
+          "description": "Target response latency in milliseconds"
+        },
+        "personality_preset": {
+          "type": "string",
+          "description": "Named personality preset"
+        },
+        "emotion_range": {
+          "type": "string",
+          "enum": ["none", "limited", "moderate", "full"],
+          "default": "moderate",
+          "description": "Range of emotional expression"
+        },
+        "interruption_handling": {
+          "type": "boolean",
+          "default": true,
+          "description": "Allow user interruptions"
+        },
+        "multi_speaker_aware": {
+          "type": "boolean",
+          "default": false,
+          "description": "Distinguish between multiple speakers"
+        },
+        "transcription": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean", "default": true },
+            "language": { "type": "string" },
+            "model": { "type": "string" },
+            "diarization": { "type": "boolean", "default": false }
+          }
+        },
+        "audio_settings": {
+          "type": "object",
+          "properties": {
+            "sample_rate": { "type": "integer", "default": 16000 },
+            "channels": { "type": "integer", "enum": [1, 2], "default": 1 },
+            "format": { "type": "string", "enum": ["pcm", "mp3", "opus", "wav"] },
+            "noise_reduction": { "type": "boolean", "default": true }
+          }
+        },
+        "business_sounds": {
+          "type": "boolean",
+          "default": false,
+          "description": "Play sounds for business events"
+        }
+      }
+    },
+    "AuthorityCluster": {
+      "type": "object",
+      "description": "Cluster 4: Permissions, limits, and access control",
+      "additionalProperties": false,
+      "properties": {
+        "execution_model": {
+          "type": "string",
+          "enum": ["supervised", "semi_autonomous", "autonomous"],
+          "default": "supervised",
+          "description": "Level of autonomous execution"
+        },
+        "approval_required": {
+          "type": "boolean",
+          "default": true,
+          "description": "Require human approval for actions"
+        },
+        "approval_timeout_seconds": {
+          "type": "integer",
+          "minimum": 30,
+          "maximum": 86400,
+          "default": 300,
+          "description": "Time to wait for approval"
+        },
+        "financial_limits": {
+          "type": "object",
+          "properties": {
+            "auto_execute": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Max amount for auto-execution"
+            },
+            "require_confirmation": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Amount requiring explicit confirmation"
+            },
+            "absolute_maximum": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Hard ceiling on any single transaction"
+            },
+            "daily_limit": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Maximum daily spend"
+            },
+            "monthly_limit": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Maximum monthly spend"
+            },
+            "currency": {
+              "type": "string",
+              "pattern": "^[A-Z]{3}$",
+              "default": "USD"
+            }
+          }
+        },
+        "allowed_operations": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Whitelist of allowed operation types"
+        },
+        "forbidden_operations": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Blacklist of forbidden operation types"
+        },
+        "resource_quotas": {
+          "type": "object",
+          "properties": {
+            "api_calls_per_minute": { "type": "integer", "minimum": 1 },
+            "api_calls_per_day": { "type": "integer", "minimum": 1 },
+            "tokens_per_request": { "type": "integer", "minimum": 100 },
+            "tokens_per_day": { "type": "integer", "minimum": 1000 },
+            "storage_mb": { "type": "integer", "minimum": 1 },
+            "concurrent_tasks": { "type": "integer", "minimum": 1, "maximum": 100 }
+          }
+        },
+        "emergency_powers": {
+          "type": "object",
+          "properties": {
+            "shutdown_on_breach": { "type": "boolean", "default": true },
+            "rollback_on_error": { "type": "boolean", "default": true },
+            "alert_on_anomaly": { "type": "boolean", "default": true },
+            "escalation_contact": { "type": "string" }
+          }
+        },
+        "zone_access": {
+          "type": "object",
+          "properties": {
+            "red": { "type": "boolean", "default": false, "description": "Access to critical/legal zones" },
+            "yellow": { "type": "boolean", "default": false, "description": "Access to sensitive zones" },
+            "green": { "type": "boolean", "default": true, "description": "Access to standard zones" }
+          }
+        },
+        "data_classification_access": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["public", "internal", "confidential", "restricted", "top_secret"]
+          },
+          "description": "Data classification levels this agent can access"
+        },
+        "ip_allowlist": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Allowed IP addresses or CIDR ranges"
+        }
+      }
+    },
+    "BusinessCluster": {
+      "type": "object",
+      "description": "Cluster 5: Business metrics, KPIs, and decision frameworks",
+      "additionalProperties": false,
+      "properties": {
+        "metrics": {
+          "type": "object",
+          "properties": {
+            "primary_kpi": {
+              "type": "string",
+              "description": "Primary key performance indicator"
+            },
+            "secondary_kpis": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "ebitda_target": { "type": "number", "minimum": 0, "maximum": 1 },
+            "growth_rate_target": { "type": "number", "minimum": -1, "maximum": 10 },
+            "burn_rate_maximum": { "type": "number", "minimum": 0 },
+            "ltv_cac_minimum": { "type": "number", "minimum": 0 },
+            "payback_months": { "type": "integer", "minimum": 1 },
+            "nps_target": { "type": "integer", "minimum": -100, "maximum": 100 },
+            "churn_rate_maximum": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        },
+        "decision_matrix": {
+          "type": "object",
+          "properties": {
+            "revenue_weight": { "type": "number", "minimum": 0, "maximum": 1 },
+            "cost_weight": { "type": "number", "minimum": 0, "maximum": 1 },
+            "time_weight": { "type": "number", "minimum": 0, "maximum": 1 },
+            "risk_weight": { "type": "number", "minimum": 0, "maximum": 1 },
+            "customer_impact_weight": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        },
+        "time_blocks": {
+          "type": "object",
+          "properties": {
+            "1_minute": { "type": "string" },
+            "5_minute": { "type": "string" },
+            "10_minute": { "type": "string" },
+            "30_minute": { "type": "string" },
+            "1_hour": { "type": "string" },
+            "2_hour_warning": { "type": "string" }
+          },
+          "description": "Task categorization by time estimate"
+        },
+        "cost_center": {
+          "type": "string",
+          "description": "Cost center for billing/accounting"
+        },
+        "department": {
+          "type": "string",
+          "description": "Organizational department"
+        },
+        "team": {
+          "type": "string",
+          "description": "Team assignment"
+        },
+        "budget_code": {
+          "type": "string",
+          "description": "Budget tracking code"
+        },
+        "roi_threshold": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Minimum ROI for autonomous decisions"
+        }
+      }
+    },
+    "TechnicalCluster": {
+      "type": "object",
+      "description": "Cluster 6: Infrastructure and technology stack",
+      "additionalProperties": false,
+      "properties": {
+        "infrastructure": {
+          "type": "object",
+          "properties": {
+            "compute_cluster": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string" },
+                "nodes": { "type": "integer", "minimum": 1 },
+                "type": { "type": "string" },
+                "memory_per_node": { "type": "integer" },
+                "orchestrator": { "type": "string" }
+              }
+            },
+            "cloud_platforms": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "monitoring": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "ci_cd": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        },
+        "stack": {
+          "type": "object",
+          "properties": {
+            "frontend": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "backend": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "databases": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "ai_models": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "message_queues": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "caching": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        },
+        "runtime": {
+          "type": "object",
+          "properties": {
+            "node_version": { "type": "string" },
+            "python_version": { "type": "string" },
+            "container_runtime": { "type": "string" },
+            "package_manager": { "type": "string" }
+          }
+        },
+        "deployment": {
+          "type": "object",
+          "properties": {
+            "strategy": { "type": "string", "enum": ["rolling", "blue_green", "canary", "recreate"] },
+            "min_replicas": { "type": "integer", "minimum": 1 },
+            "max_replicas": { "type": "integer", "minimum": 1 },
+            "auto_scale": { "type": "boolean" }
+          }
+        }
+      }
+    },
+    "McpServersCluster": {
+      "type": "object",
+      "description": "Cluster 7: Model Context Protocol server definitions",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["transport"],
+        "properties": {
+          "transport": {
+            "type": "string",
+            "enum": ["stdio", "http", "sse", "websocket"],
+            "description": "Transport protocol"
+          },
+          "priority": {
+            "type": "string",
+            "enum": ["critical", "high", "medium", "low"],
+            "default": "medium"
+          },
+          "command": {
+            "type": "string",
+            "description": "Command to start stdio server"
+          },
+          "args": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL for HTTP/SSE/WebSocket servers"
+          },
+          "timeout_ms": {
+            "type": "integer",
+            "minimum": 100,
+            "default": 30000
+          },
+          "retry_count": {
+            "type": "integer",
+            "minimum": 0,
+            "default": 3
+          },
+          "env": {
+            "type": "object",
+            "additionalProperties": { "type": "string" },
+            "description": "Environment variables (use ${VAR} for secrets)"
+          },
+          "token_env": { "type": "string" },
+          "key_env": { "type": "string" },
+          "auth_env": { "type": "string" },
+          "credentials_env": { "type": "string" },
+          "connection_env": { "type": "string" },
+          "headless": { "type": "boolean" },
+          "custom": { "type": "boolean" },
+          "capabilities": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "health_check": {
+            "type": "object",
+            "properties": {
+              "enabled": { "type": "boolean", "default": true },
+              "interval_seconds": { "type": "integer", "default": 60 },
+              "timeout_seconds": { "type": "integer", "default": 10 }
+            }
+          }
+        }
+      }
+    },
+    "AgentsCluster": {
+      "type": "object",
+      "description": "Cluster 8: Multi-agent orchestration settings",
+      "additionalProperties": false,
+      "properties": {
+        "orchestration": {
+          "type": "object",
+          "properties": {
+            "mode": {
+              "type": "string",
+              "enum": ["sequential", "parallel", "hierarchical", "autonomous", "swarm"],
+              "default": "sequential"
+            },
+            "max_parallel": { "type": "integer", "minimum": 1, "maximum": 100, "default": 5 },
+            "retry_count": { "type": "integer", "minimum": 0, "default": 3 },
+            "timeout_seconds": { "type": "integer", "minimum": 10, "default": 300 },
+            "failure_strategy": {
+              "type": "string",
+              "enum": ["fail_fast", "continue", "rollback"],
+              "default": "fail_fast"
+            }
+          }
+        },
+        "delegation": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "role": { "type": "string" },
+              "allocation": { "type": "number", "minimum": 0, "maximum": 1 },
+              "priority": { "type": "integer", "minimum": 1, "maximum": 10 },
+              "capabilities": { "type": "array", "items": { "type": "string" } },
+              "fallback_to": { "type": "string" }
+            }
+          }
+        },
+        "communication": {
+          "type": "object",
+          "properties": {
+            "protocol": { "type": "string", "enum": ["direct", "message_bus", "shared_memory"] },
+            "message_format": { "type": "string", "enum": ["json", "protobuf", "msgpack"] },
+            "encryption": { "type": "boolean", "default": true }
+          }
+        },
+        "consensus": {
+          "type": "object",
+          "properties": {
+            "algorithm": { "type": "string", "enum": ["majority", "unanimous", "weighted", "none"] },
+            "quorum": { "type": "number", "minimum": 0, "maximum": 1 },
+            "timeout_seconds": { "type": "integer", "minimum": 1 }
+          }
+        }
+      }
+    },
+    "MemoryCluster": {
+      "type": "object",
+      "description": "Cluster 9: Memory and context management",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["ephemeral", "session", "persistent", "distributed"],
+          "default": "session"
+        },
+        "retention": {
+          "type": "string",
+          "enum": ["session", "1_day", "7_days", "30_days", "90_days", "1_year", "forever"],
+          "default": "session"
+        },
+        "storage": {
+          "type": "string",
+          "description": "Storage backend identifier"
+        },
+        "vector_dimensions": {
+          "type": "integer",
+          "minimum": 64,
+          "maximum": 4096,
+          "default": 1536
+        },
+        "max_tokens": {
+          "type": "integer",
+          "minimum": 1000,
+          "maximum": 1000000,
+          "default": 8000
+        },
+        "indexing": {
+          "type": "string",
+          "enum": ["flat", "hierarchical", "hnsw", "ivf"],
+          "default": "flat"
+        },
+        "retrieval_strategy": {
+          "type": "string",
+          "enum": ["similarity", "bm25", "hybrid", "graphrag", "mmr"],
+          "default": "similarity"
+        },
+        "chunking": {
+          "type": "object",
+          "properties": {
+            "strategy": { "type": "string", "enum": ["fixed", "semantic", "recursive", "sentence"] },
+            "size": { "type": "integer", "minimum": 100 },
+            "overlap": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "compression": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean", "default": false },
+            "algorithm": { "type": "string", "enum": ["gzip", "lz4", "zstd"] }
+          }
+        },
+        "encryption": {
+          "type": "object",
+          "properties": {
+            "at_rest": { "type": "boolean", "default": true },
+            "in_transit": { "type": "boolean", "default": true },
+            "algorithm": { "type": "string", "enum": ["aes-256-gcm", "chacha20-poly1305"] }
+          }
+        },
+        "garbage_collection": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean", "default": true },
+            "interval_hours": { "type": "integer", "minimum": 1 },
+            "strategy": { "type": "string", "enum": ["lru", "lfu", "ttl", "importance"] }
+          }
+        }
+      }
+    },
+    "ReasoningCluster": {
+      "type": "object",
+      "description": "Cluster 10: Reasoning and inference settings",
+      "additionalProperties": false,
+      "properties": {
+        "model": {
+          "type": "string",
+          "description": "Reasoning model or strategy"
+        },
+        "depth": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20,
+          "default": 3
+        },
+        "multi_hop": {
+          "type": "boolean",
+          "default": true
+        },
+        "confidence_threshold": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 0.7
+        },
+        "fallback_to_traditional": {
+          "type": "boolean",
+          "default": true
+        },
+        "knowledge_graph": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean", "default": false },
+            "nodes": { "type": "string", "enum": ["limited", "unlimited"] },
+            "edges": { "type": "string", "enum": ["unweighted", "weighted", "labeled"] },
+            "update_frequency": { "type": "string", "enum": ["batch", "realtime"] }
+          }
+        },
+        "llm_settings": {
+          "type": "object",
+          "properties": {
+            "temperature": { "type": "number", "minimum": 0, "maximum": 2, "default": 0.7 },
+            "max_tokens": { "type": "integer", "minimum": 100, "maximum": 100000 },
+            "top_p": { "type": "number", "minimum": 0, "maximum": 1, "default": 1 },
+            "top_k": { "type": "integer", "minimum": 1 },
+            "frequency_penalty": { "type": "number", "minimum": -2, "maximum": 2, "default": 0 },
+            "presence_penalty": { "type": "number", "minimum": -2, "maximum": 2, "default": 0 },
+            "stop_sequences": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "chain_of_thought": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean", "default": false },
+            "format": { "type": "string", "enum": ["xml", "markdown", "json"] },
+            "visible_to_user": { "type": "boolean", "default": false }
+          }
+        },
+        "planning": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean", "default": true },
+            "max_steps": { "type": "integer", "minimum": 1, "maximum": 100 },
+            "revision_allowed": { "type": "boolean", "default": true }
+          }
+        }
+      }
+    },
+    "ToolsCluster": {
+      "type": "object",
+      "description": "Cluster 11: Tool capabilities and access",
+      "additionalProperties": false,
+      "properties": {
+        "browser": {
+          "type": "object",
+          "properties": {
+            "type": { "type": "string", "enum": ["puppeteer", "playwright", "selenium", "none"] },
+            "headless": { "type": "boolean", "default": true },
+            "automation": { "type": "string", "enum": ["none", "limited", "full"] },
+            "timeout_seconds": { "type": "integer", "minimum": 1 },
+            "viewport": {
+              "type": "object",
+              "properties": {
+                "width": { "type": "integer" },
+                "height": { "type": "integer" }
+              }
+            }
+          }
+        },
+        "terminal": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean", "default": false },
+            "shell": { "type": "string", "enum": ["bash", "zsh", "sh", "powershell", "cmd"] },
+            "sudo": { "type": "boolean", "default": false },
+            "ssh_enabled": { "type": "boolean", "default": false },
+            "allowed_commands": { "type": "array", "items": { "type": "string" } },
+            "blocked_commands": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "filesystem": {
+          "type": "object",
+          "properties": {
+            "read": { "type": "string", "enum": ["none", "limited", "unlimited"] },
+            "write": { "type": "string", "enum": ["none", "limited", "unlimited"] },
+            "execute": { "type": "boolean", "default": false },
+            "allowed_paths": { "type": "array", "items": { "type": "string" } },
+            "blocked_paths": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "apis": {
+          "type": "object",
+          "properties": {
+            "rest": { "type": "boolean", "default": true },
+            "graphql": { "type": "boolean", "default": false },
+            "websocket": { "type": "boolean", "default": false },
+            "grpc": { "type": "boolean", "default": false }
+          }
+        },
+        "databases": {
+          "type": "object",
+          "additionalProperties": { "type": "boolean" }
+        },
+        "communication": {
+          "type": "object",
+          "properties": {
+            "email": { "type": "array", "items": { "type": "string" } },
+            "messaging": { "type": "array", "items": { "type": "string" } },
+            "calendar": { "type": "array", "items": { "type": "string" } },
+            "video": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "payments": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "code_execution": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean", "default": false },
+            "languages": { "type": "array", "items": { "type": "string" } },
+            "sandbox": { "type": "boolean", "default": true },
+            "timeout_seconds": { "type": "integer", "minimum": 1 }
+          }
+        }
+      }
+    },
+    "SafetyCluster": {
+      "type": "object",
+      "description": "Cluster 12: Safety guardrails and controls",
+      "additionalProperties": false,
+      "properties": {
+        "guardrails": {
+          "type": "object",
+          "properties": {
+            "financial_limit_enforcement": { "type": "boolean", "default": true },
+            "pii_protection": { "type": "boolean", "default": true },
+            "legal_compliance": { "type": "boolean", "default": true },
+            "rate_limiting": { "type": "boolean", "default": true },
+            "content_moderation": { "type": "boolean", "default": true },
+            "bias_detection": { "type": "boolean", "default": false },
+            "toxicity_filter": { "type": "boolean", "default": true }
+          }
+        },
+        "emergency_controls": {
+          "type": "object",
+          "properties": {
+            "abort_command": { "type": "string" },
+            "rollback_command": { "type": "string" },
+            "pause_command": { "type": "string" },
+            "kill_switch_enabled": { "type": "boolean", "default": true }
+          }
+        },
+        "monitoring": {
+          "type": "object",
+          "properties": {
+            "alert_threshold": { "type": "string", "enum": ["low", "medium", "high", "critical"] },
+            "audit_level": { "type": "string", "enum": ["none", "errors", "important", "everything"] },
+            "retention_days": { "type": ["integer", "string"] }
+          }
+        },
+        "circuit_breaker": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean", "default": true },
+            "failure_threshold": { "type": "integer", "minimum": 1 },
+            "reset_timeout_seconds": { "type": "integer", "minimum": 1 }
+          }
+        },
+        "input_validation": {
+          "type": "object",
+          "properties": {
+            "max_input_length": { "type": "integer", "minimum": 1 },
+            "sanitize_html": { "type": "boolean", "default": true },
+            "block_injections": { "type": "boolean", "default": true }
+          }
+        },
+        "output_validation": {
+          "type": "object",
+          "properties": {
+            "max_output_length": { "type": "integer", "minimum": 1 },
+            "pii_redaction": { "type": "boolean", "default": true },
+            "hallucination_check": { "type": "boolean", "default": false }
+          }
+        }
+      }
+    },
+    "PoliciesCluster": {
+      "type": "object",
+      "description": "Cluster 13: Policy definitions and enforcement",
+      "additionalProperties": false,
+      "properties": {
+        "default_policy": {
+          "type": "string",
+          "description": "Default policy name to apply"
+        },
+        "policies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "rules"],
+            "properties": {
+              "name": { "type": "string" },
+              "description": { "type": "string" },
+              "priority": { "type": "integer", "minimum": 1 },
+              "enabled": { "type": "boolean", "default": true },
+              "rules": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["condition", "action"],
+                  "properties": {
+                    "condition": { "type": "string" },
+                    "action": { "type": "string", "enum": ["allow", "deny", "warn", "require_approval", "log"] },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "enforcement_mode": {
+          "type": "string",
+          "enum": ["off", "warn", "enforce"],
+          "default": "enforce"
+        },
+        "violation_handling": {
+          "type": "object",
+          "properties": {
+            "log": { "type": "boolean", "default": true },
+            "notify": { "type": "array", "items": { "type": "string" } },
+            "block": { "type": "boolean", "default": true },
+            "escalate_after": { "type": "integer", "minimum": 1 }
+          }
+        }
+      }
+    },
+    "TriggersCluster": {
+      "type": "object",
+      "description": "Cluster 14: Event triggers and schedules",
+      "additionalProperties": false,
+      "properties": {
+        "scheduled": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "schedule", "action"],
+            "properties": {
+              "name": { "type": "string" },
+              "schedule": { "type": "string", "description": "Cron expression" },
+              "action": { "type": "string" },
+              "enabled": { "type": "boolean", "default": true },
+              "timezone": { "type": "string" },
+              "timeout_seconds": { "type": "integer", "minimum": 1 }
+            }
+          }
+        },
+        "webhooks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "path", "action"],
+            "properties": {
+              "name": { "type": "string" },
+              "path": { "type": "string" },
+              "method": { "type": "string", "enum": ["GET", "POST", "PUT", "PATCH", "DELETE"] },
+              "action": { "type": "string" },
+              "authentication": { "type": "string", "enum": ["none", "api_key", "hmac", "jwt"] },
+              "rate_limit": { "type": "integer", "minimum": 1 }
+            }
+          }
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "source", "action"],
+            "properties": {
+              "name": { "type": "string" },
+              "source": { "type": "string" },
+              "event_type": { "type": "string" },
+              "filter": { "type": "string" },
+              "action": { "type": "string" },
+              "debounce_seconds": { "type": "integer", "minimum": 0 }
+            }
+          }
+        },
+        "file_watchers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["path", "action"],
+            "properties": {
+              "path": { "type": "string" },
+              "pattern": { "type": "string" },
+              "events": { "type": "array", "items": { "type": "string", "enum": ["create", "modify", "delete"] } },
+              "action": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "IntegrationsCluster": {
+      "type": "object",
+      "description": "Cluster 15: Third-party integration configurations",
+      "additionalProperties": false,
+      "properties": {
+        "oauth": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "client_id_env": { "type": "string" },
+              "client_secret_env": { "type": "string" },
+              "scopes": { "type": "array", "items": { "type": "string" } },
+              "redirect_uri": { "type": "string", "format": "uri" }
+            }
+          }
+        },
+        "api_keys": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "env_var": { "type": "string" },
+              "header_name": { "type": "string" },
+              "prefix": { "type": "string" }
+            }
+          }
+        },
+        "sso": {
+          "type": "object",
+          "properties": {
+            "provider": { "type": "string", "enum": ["okta", "auth0", "azure_ad", "google", "saml"] },
+            "domain": { "type": "string" },
+            "client_id_env": { "type": "string" }
+          }
+        },
+        "notifications": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "object",
+              "properties": {
+                "provider": { "type": "string" },
+                "from_address": { "type": "string", "format": "email" },
+                "templates_dir": { "type": "string" }
+              }
+            },
+            "slack": {
+              "type": "object",
+              "properties": {
+                "webhook_url_env": { "type": "string" },
+                "default_channel": { "type": "string" }
+              }
+            },
+            "pagerduty": {
+              "type": "object",
+              "properties": {
+                "api_key_env": { "type": "string" },
+                "service_id": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "ObservabilityCluster": {
+      "type": "object",
+      "description": "Cluster 16: Logging, metrics, and tracing",
+      "additionalProperties": false,
+      "properties": {
+        "logging": {
+          "type": "object",
+          "properties": {
+            "level": { "type": "string", "enum": ["trace", "debug", "info", "warn", "error", "fatal"] },
+            "format": { "type": "string", "enum": ["json", "text", "pretty"] },
+            "destination": { "type": "string", "enum": ["stdout", "file", "cloud"] },
+            "file_path": { "type": "string" },
+            "max_file_size_mb": { "type": "integer", "minimum": 1 },
+            "max_files": { "type": "integer", "minimum": 1 },
+            "redact_pii": { "type": "boolean", "default": true }
+          }
+        },
+        "metrics": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean", "default": true },
+            "provider": { "type": "string", "enum": ["prometheus", "datadog", "cloudwatch", "custom"] },
+            "endpoint": { "type": "string" },
+            "push_interval_seconds": { "type": "integer", "minimum": 1 },
+            "custom_metrics": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["name", "type"],
+                "properties": {
+                  "name": { "type": "string" },
+                  "type": { "type": "string", "enum": ["counter", "gauge", "histogram", "summary"] },
+                  "description": { "type": "string" },
+                  "labels": { "type": "array", "items": { "type": "string" } }
+                }
+              }
+            }
+          }
+        },
+        "tracing": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean", "default": false },
+            "provider": { "type": "string", "enum": ["jaeger", "zipkin", "otel", "xray"] },
+            "sample_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+            "propagation": { "type": "string", "enum": ["w3c", "b3", "jaeger"] }
+          }
+        },
+        "alerting": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean", "default": true },
+            "channels": { "type": "array", "items": { "type": "string" } },
+            "rules": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["name", "condition"],
+                "properties": {
+                  "name": { "type": "string" },
+                  "condition": { "type": "string" },
+                  "severity": { "type": "string", "enum": ["low", "medium", "high", "critical"] },
+                  "channels": { "type": "array", "items": { "type": "string" } }
+                }
+              }
+            }
+          }
+        },
+        "profiling": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean", "default": false },
+            "sample_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+            "types": { "type": "array", "items": { "type": "string", "enum": ["cpu", "memory", "io", "locks"] } }
+          }
+        }
+      }
+    },
+    "ContextCluster": {
+      "type": "object",
+      "description": "Cluster 17: Prompt context and system instructions",
+      "additionalProperties": false,
+      "properties": {
+        "system_prompt": {
+          "type": "string",
+          "maxLength": 50000,
+          "description": "Main system prompt"
+        },
+        "system_prompt_file": {
+          "type": "string",
+          "description": "Path to external system prompt file"
+        },
+        "instructions": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Additional instruction snippets"
+        },
+        "examples": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["user", "assistant"],
+            "properties": {
+              "user": { "type": "string" },
+              "assistant": { "type": "string" },
+              "description": { "type": "string" }
+            }
+          }
+        },
+        "personas": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "description": { "type": "string" },
+              "prompt_additions": { "type": "string" },
+              "active": { "type": "boolean" }
+            }
+          }
+        },
+        "context_window": {
+          "type": "object",
+          "properties": {
+            "max_tokens": { "type": "integer", "minimum": 1000 },
+            "reserved_for_output": { "type": "integer", "minimum": 100 },
+            "prioritization": { "type": "string", "enum": ["recency", "relevance", "importance"] }
+          }
+        },
+        "retrieval_augmentation": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean", "default": false },
+            "sources": { "type": "array", "items": { "type": "string" } },
+            "max_chunks": { "type": "integer", "minimum": 1 },
+            "relevance_threshold": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        }
+      }
+    },
+    "EvalsCluster": {
+      "type": "object",
+      "description": "Cluster 18: Evaluation and testing configuration",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": true
+        },
+        "suites": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Eval suite names to run"
+        },
+        "golden_tasks_path": {
+          "type": "string",
+          "description": "Path to golden task definitions"
+        },
+        "adversarial_path": {
+          "type": "string",
+          "description": "Path to adversarial test cases"
+        },
+        "metrics": {
+          "type": "object",
+          "properties": {
+            "accuracy_threshold": { "type": "number", "minimum": 0, "maximum": 1 },
+            "latency_p99_ms": { "type": "integer", "minimum": 1 },
+            "cost_per_task_max": { "type": "number", "minimum": 0 },
+            "safety_score_min": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        },
+        "comparison": {
+          "type": "object",
+          "properties": {
+            "baseline_agent": { "type": "string" },
+            "metrics_to_compare": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "regression": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean", "default": true },
+            "max_regression_percent": { "type": "number", "minimum": 0, "maximum": 100 }
+          }
+        },
+        "schedule": {
+          "type": "string",
+          "description": "Cron expression for scheduled evals"
+        },
+        "notifications": {
+          "type": "object",
+          "properties": {
+            "on_failure": { "type": "array", "items": { "type": "string" } },
+            "on_regression": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      }
+    }
+  }
+}

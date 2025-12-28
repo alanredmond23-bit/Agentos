@@ -1,0 +1,100 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# GOLDEN TASK: Anomaly Detection Pipeline
+# Error Predictor Pack - Real-time Anomaly Detection
+# ═══════════════════════════════════════════════════════════════════════════════
+
+metadata:
+  task_id: "GT-ERRORPRED-002"
+  name: "Anomaly Detection Pipeline"
+  pack: "error_predictor"
+  version: "1.0.0"
+  difficulty: "intermediate"
+  estimated_time: "30min"
+
+description: |
+  Set up and execute an anomaly detection pipeline to identify unusual
+  patterns in system metrics and predict potential failures.
+
+objective: |
+  Detect anomalies in real-time metrics stream, classify severity,
+  and generate appropriate alerts with context.
+
+agents_involved:
+  - "error_predictor_pack_manager"
+  - "error_predictor_pattern_detector"
+  - "error_predictor_risk_scorer"
+  - "error_predictor_alert_generator"
+
+input:
+  metrics_stream:
+    source: "prometheus"
+    metrics:
+      - name: "http_request_duration_seconds"
+        current: 0.45
+        baseline: 0.25
+        stddev: 0.05
+      - name: "error_rate"
+        current: 0.025
+        baseline: 0.005
+        stddev: 0.002
+      - name: "active_connections"
+        current: 850
+        baseline: 500
+        stddev: 100
+      - name: "memory_usage_percent"
+        current: 78
+        baseline: 65
+        stddev: 5
+
+  detection_config:
+    sensitivity: "medium"
+    lookback_window: "1h"
+    alert_threshold: 2.5  # standard deviations
+
+workflow:
+  steps:
+    - agent: "error_predictor_pattern_detector"
+      action: "detect_anomalies"
+      method: "statistical_analysis"
+
+    - agent: "error_predictor_risk_scorer"
+      action: "score_anomalies"
+      output: "severity_scores"
+
+    - agent: "error_predictor_alert_generator"
+      action: "generate_alerts"
+      include: "context_and_recommendations"
+
+expected_output:
+  format: "anomaly_report"
+  includes:
+    detected_anomalies:
+      - metric_name
+      - deviation_score
+      - severity
+      - trend
+
+    correlation_analysis:
+      - correlated_metrics
+      - likely_root_cause
+
+    alerts_generated:
+      - alert_id
+      - severity
+      - message
+      - recommended_action
+
+success_criteria:
+  - anomalies_detected: ">= 2"
+  - false_positive_rate: "< 0.10"
+  - alerts_actionable: true
+  - correlations_identified: true
+
+evaluation:
+  detection_quality:
+    - true_positive_rate
+    - time_to_detect
+
+  alert_quality:
+    - clarity
+    - actionability

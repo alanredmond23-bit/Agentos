@@ -1,1 +1,430 @@
-# Pack Registry
+# ===============================================================================
+# AGENTOS PACK REGISTRY - Master Registry of All Agent Packs
+# Version: 1.0.0
+# ===============================================================================
+
+registry:
+  id: "registry.packs.v1"
+  name: "AgentOS Pack Registry"
+  version: "1.0.0"
+  created_at: "2025-12-28"
+  updated_at: "2025-12-28"
+  maintainer: "platform@agentos"
+  description: "Central registry of all agent packs in the AgentOS ecosystem"
+
+# ===============================================================================
+# PACK DEFINITIONS - 14 Domain Packs
+# ===============================================================================
+
+packs:
+  # ---------------------------------------------------------------------------
+  # PRODUCTION READY PACKS (5)
+  # ---------------------------------------------------------------------------
+
+  - id: "pack.core.product.v1"
+    name: "Product Pack"
+    domain: "product"
+    lifecycle_stage: "production"
+    version: "1.0.0"
+    path: "agents/packs/product"
+    description: "Product management, PRDs, user stories, roadmaps"
+    icon: "package"
+    color: "#6366F1"
+    agents_count: 6
+    manager: "agent.product.pack_manager.v1"
+    agents:
+      - "agent.product.pack_manager.v1"
+      - "agent.product.prd_writer.v1"
+      - "agent.product.user_story.v1"
+      - "agent.product.roadmap.v1"
+      - "agent.product.analytics.v1"
+      - "agent.product.stakeholder.v1"
+    dependencies: []
+    integrations:
+      - "jira"
+      - "linear"
+      - "notion"
+      - "productboard"
+
+  - id: "pack.core.marketing.v1"
+    name: "Marketing Pack"
+    domain: "marketing"
+    lifecycle_stage: "production"
+    version: "1.0.0"
+    path: "agents/packs/marketing"
+    description: "Marketing campaigns, content, SEO, social media"
+    icon: "megaphone"
+    color: "#EC4899"
+    agents_count: 7
+    manager: "agent.marketing.pack_manager.v1"
+    agents:
+      - "agent.marketing.pack_manager.v1"
+      - "agent.marketing.content_writer.v1"
+      - "agent.marketing.seo.v1"
+      - "agent.marketing.social_media.v1"
+      - "agent.marketing.email.v1"
+      - "agent.marketing.analytics.v1"
+      - "agent.marketing.campaign.v1"
+    dependencies: []
+    integrations:
+      - "hubspot"
+      - "mailchimp"
+      - "semrush"
+      - "hootsuite"
+
+  - id: "pack.core.supabase.v1"
+    name: "Supabase Pack"
+    domain: "supabase"
+    lifecycle_stage: "production"
+    version: "1.0.0"
+    path: "agents/packs/supabase"
+    description: "Supabase database, auth, storage, edge functions"
+    icon: "database"
+    color: "#3ECF8E"
+    agents_count: 6
+    manager: "agent.supabase.pack_manager.v1"
+    agents:
+      - "agent.supabase.pack_manager.v1"
+      - "agent.supabase.database.v1"
+      - "agent.supabase.auth.v1"
+      - "agent.supabase.storage.v1"
+      - "agent.supabase.edge_functions.v1"
+      - "agent.supabase.realtime.v1"
+    dependencies: []
+    integrations:
+      - "supabase_mcp"
+      - "postgres"
+      - "deno"
+
+  - id: "pack.core.engineering.v1"
+    name: "Engineering Pack"
+    domain: "engineering"
+    lifecycle_stage: "production"
+    version: "1.0.0"
+    path: "agents/packs/engineering"
+    description: "Software development, architecture, code analysis"
+    icon: "code"
+    color: "#3B82F6"
+    agents_count: 8
+    manager: "agent.engineering.pack_manager.v1"
+    agents:
+      - "agent.engineering.pack_manager.v1"
+      - "agent.engineering.product_developer.v1"
+      - "agent.engineering.architecture.v1"
+      - "agent.engineering.code_analysis.v1"
+      - "agent.engineering.performance.v1"
+      - "agent.engineering.plumber.v1"
+      - "agent.engineering.refactor.v1"
+      - "agent.engineering.debugger.v1"
+    dependencies:
+      - "pack.core.design.v1"
+    integrations:
+      - "github"
+      - "vscode"
+      - "sentry"
+
+  - id: "pack.core.design.v1"
+    name: "Design Pack"
+    domain: "design"
+    lifecycle_stage: "production"
+    version: "1.0.0"
+    path: "agents/packs/design"
+    description: "UI/UX design, design systems, accessibility"
+    icon: "palette"
+    color: "#F59E0B"
+    agents_count: 5
+    manager: "agent.design.pack_manager.v1"
+    agents:
+      - "agent.design.pack_manager.v1"
+      - "agent.design.uiux.v1"
+      - "agent.design.system.v1"
+      - "agent.design.accessibility.v1"
+      - "agent.design.prototyping.v1"
+    dependencies: []
+    integrations:
+      - "figma"
+      - "storybook"
+
+  # ---------------------------------------------------------------------------
+  # BETA PACKS (4)
+  # ---------------------------------------------------------------------------
+
+  - id: "pack.core.devops.v1"
+    name: "DevOps Pack"
+    domain: "devops"
+    lifecycle_stage: "beta"
+    version: "0.9.0"
+    path: "agents/packs/devops"
+    description: "Infrastructure, CI/CD, monitoring, incident response"
+    icon: "server"
+    color: "#10B981"
+    agents_count: 9
+    manager: "agent.devops.pack_manager.v1"
+    agents:
+      - "agent.devops.pack_manager.v1"
+      - "agent.devops.lead.v1"
+      - "agent.devops.terraform.v1"
+      - "agent.devops.kubernetes.v1"
+      - "agent.devops.cicd.v1"
+      - "agent.devops.monitoring.v1"
+      - "agent.devops.alerting.v1"
+      - "agent.devops.incident_response.v1"
+      - "agent.devops.security.v1"
+    dependencies:
+      - "pack.core.engineering.v1"
+    integrations:
+      - "aws"
+      - "vercel"
+      - "datadog"
+      - "pagerduty"
+
+  - id: "pack.core.qa.v1"
+    name: "QA Pack"
+    domain: "qa"
+    lifecycle_stage: "beta"
+    version: "0.9.0"
+    path: "agents/packs/qa"
+    description: "Testing, quality assurance, test automation"
+    icon: "check-circle"
+    color: "#8B5CF6"
+    agents_count: 5
+    manager: "agent.qa.pack_manager.v1"
+    agents:
+      - "agent.qa.pack_manager.v1"
+      - "agent.qa.test.v1"
+      - "agent.qa.automation.v1"
+      - "agent.qa.regression.v1"
+      - "agent.qa.performance.v1"
+    dependencies:
+      - "pack.core.engineering.v1"
+    integrations:
+      - "playwright"
+      - "jest"
+      - "cypress"
+
+  - id: "pack.core.legal.v1"
+    name: "Legal Pack"
+    domain: "legal"
+    lifecycle_stage: "beta"
+    version: "0.9.0"
+    path: "agents/packs/legal"
+    description: "Legal research, motion drafting, discovery, evidence"
+    icon: "scale"
+    color: "#1F2937"
+    agents_count: 7
+    manager: "agent.legal.pack_manager.v1"
+    agents:
+      - "agent.legal.pack_manager.v1"
+      - "agent.legal.attorney.v1"
+      - "agent.legal.research.v1"
+      - "agent.legal.discovery.v1"
+      - "agent.legal.privilege.v1"
+      - "agent.legal.evidence.v1"
+      - "agent.legal.timeline.v1"
+    dependencies: []
+    integrations:
+      - "westlaw"
+      - "lexisnexis"
+      - "casetext"
+
+  - id: "pack.core.mobile.v1"
+    name: "Mobile Pack"
+    domain: "mobile"
+    lifecycle_stage: "beta"
+    version: "0.9.0"
+    path: "agents/packs/mobile"
+    description: "iOS, Android, React Native development"
+    icon: "smartphone"
+    color: "#EF4444"
+    agents_count: 9
+    manager: "agent.mobile.pack_manager.v1"
+    agents:
+      - "agent.mobile.pack_manager.v1"
+      - "agent.mobile.ios_swift.v1"
+      - "agent.mobile.android_kotlin.v1"
+      - "agent.mobile.api_integration.v1"
+      - "agent.mobile.build_pipeline.v1"
+      - "agent.mobile.qa_testing.v1"
+      - "agent.mobile.security.v1"
+      - "agent.mobile.appstore.v1"
+      - "agent.mobile.playstore.v1"
+    dependencies:
+      - "pack.core.engineering.v1"
+    integrations:
+      - "xcode"
+      - "android_studio"
+      - "fastlane"
+
+  # ---------------------------------------------------------------------------
+  # ALPHA PACKS (5)
+  # ---------------------------------------------------------------------------
+
+  - id: "pack.core.research.v1"
+    name: "Research Pack"
+    domain: "research"
+    lifecycle_stage: "alpha"
+    version: "0.5.0"
+    path: "agents/packs/research"
+    description: "Deep research, verification, synthesis"
+    icon: "search"
+    color: "#6B7280"
+    agents_count: 4
+    manager: "agent.research.pack_manager.v1"
+    agents:
+      - "agent.research.pack_manager.v1"
+      - "agent.research.searcher.v1"
+      - "agent.research.verifier.v1"
+      - "agent.research.synthesizer.v1"
+    dependencies: []
+    integrations:
+      - "perplexity"
+      - "tavily"
+
+  - id: "pack.core.planning.v1"
+    name: "Planning Pack"
+    domain: "planning"
+    lifecycle_stage: "alpha"
+    version: "0.5.0"
+    path: "agents/packs/planning"
+    description: "Project planning, roadmaps, resource allocation"
+    icon: "calendar"
+    color: "#14B8A6"
+    agents_count: 6
+    manager: "agent.planning.pack_manager.v1"
+    agents:
+      - "agent.planning.pack_manager.v1"
+      - "agent.planning.roadmap.v1"
+      - "agent.planning.sprint.v1"
+      - "agent.planning.resource.v1"
+      - "agent.planning.dependency.v1"
+      - "agent.planning.risk.v1"
+    dependencies:
+      - "pack.core.product.v1"
+    integrations:
+      - "jira"
+      - "asana"
+
+  - id: "pack.core.analytics.v1"
+    name: "Analytics Pack"
+    domain: "analytics"
+    lifecycle_stage: "alpha"
+    version: "0.5.0"
+    path: "agents/packs/analytics"
+    description: "Data analytics, reporting, dashboards"
+    icon: "bar-chart"
+    color: "#0EA5E9"
+    agents_count: 4
+    manager: "agent.analytics.pack_manager.v1"
+    agents:
+      - "agent.analytics.pack_manager.v1"
+      - "agent.analytics.data_analyst.v1"
+      - "agent.analytics.dashboard.v1"
+      - "agent.analytics.reporting.v1"
+    dependencies: []
+    integrations:
+      - "mixpanel"
+      - "amplitude"
+      - "looker"
+
+  - id: "pack.core.orchestration.v1"
+    name: "Orchestration Pack"
+    domain: "orchestration"
+    lifecycle_stage: "alpha"
+    version: "0.5.0"
+    path: "agents/packs/orchestration"
+    description: "Task coordination, agent routing, workflow management"
+    icon: "hub"
+    color: "#7C3AED"
+    agents_count: 3
+    manager: "agent.orchestration.pack_manager.v1"
+    agents:
+      - "agent.orchestration.pack_manager.v1"
+      - "agent.orchestration.task_coordinator.v1"
+      - "agent.orchestration.workflow_engine.v1"
+    dependencies: []
+    integrations:
+      - "temporal"
+      - "inngest"
+
+  - id: "pack.core.error_predictor.v1"
+    name: "Error Predictor Pack"
+    domain: "error_predictor"
+    lifecycle_stage: "alpha"
+    version: "0.5.0"
+    path: "agents/packs/error_predictor"
+    description: "Error prediction, pattern detection, risk mitigation"
+    icon: "alert-triangle"
+    color: "#F97316"
+    agents_count: 5
+    manager: "agent.error_predictor.pack_manager.v1"
+    agents:
+      - "agent.error_predictor.pack_manager.v1"
+      - "agent.error_predictor.pattern_detector.v1"
+      - "agent.error_predictor.risk_scorer.v1"
+      - "agent.error_predictor.mitigation_planner.v1"
+      - "agent.error_predictor.alert_generator.v1"
+    dependencies:
+      - "pack.core.engineering.v1"
+    integrations:
+      - "sentry"
+      - "datadog"
+
+# ===============================================================================
+# REGISTRY METADATA
+# ===============================================================================
+
+metadata:
+  total_packs: 14
+  lifecycle_distribution:
+    production: 5
+    beta: 4
+    alpha: 5
+  domain_categories:
+    core:
+      - "product"
+      - "engineering"
+      - "design"
+      - "qa"
+      - "devops"
+    platform:
+      - "supabase"
+      - "mobile"
+      - "orchestration"
+    business:
+      - "marketing"
+      - "legal"
+      - "analytics"
+    specialized:
+      - "research"
+      - "planning"
+      - "error_predictor"
+  total_agents: 84
+  integration_count: 32
+
+# ===============================================================================
+# PACK LOADING CONFIGURATION
+# ===============================================================================
+
+loading:
+  strategy: "lazy"
+  preload_packs:
+    - "pack.core.orchestration.v1"
+    - "pack.core.engineering.v1"
+  cache_duration: "1h"
+  refresh_on_startup: true
+
+# ===============================================================================
+# VALIDATION RULES
+# ===============================================================================
+
+validation:
+  required_files:
+    - "AGENT_PACK.md"
+    - "agents/*.yaml"
+  naming_convention: "{domain}_{agent_name}.yaml"
+  version_format: "semver"
+  lifecycle_stages:
+    - "alpha"
+    - "beta"
+    - "production"
+    - "deprecated"

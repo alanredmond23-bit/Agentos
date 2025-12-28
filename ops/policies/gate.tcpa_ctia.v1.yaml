@@ -1,1 +1,264 @@
-# gate.tcpa_ctia.v1.yaml
+# TCPA/CTIA Compliance Gate Policy v1
+# Telephone Consumer Protection Act and CTIA messaging guidelines compliance
+
+apiVersion: agentos.io/v1
+kind: Policy
+metadata:
+  name: gate.tcpa_ctia
+  version: "1.0.0"
+  description: TCPA and CTIA compliance for telecommunications and messaging
+  labels:
+    category: compliance
+    gate_type: pre-execution
+    regulations: [TCPA, CTIA, CAN-SPAM]
+
+spec:
+  # When this gate applies
+  triggers:
+    - event: message.send
+    - event: call.initiate
+    - event: sms.send
+    - event: email.send
+    - event: campaign.start
+
+  # Applicable packs
+  applies_to:
+    packs:
+      - lead_faucet
+      - marketing
+    artifact_types:
+      - sms
+      - call
+      - email
+      - campaign
+
+  # Gate evaluation mode
+  evaluation:
+    mode: all_must_pass
+    fail_action: block
+    timeout_seconds: 30
+
+  # TCPA Compliance Checks
+  checks:
+    # Consent verification
+    - name: consent_verification
+      description: Verify recipient has provided proper consent
+      enabled: true
+      severity: error
+      config:
+        consent_types:
+          sms:
+            required: express_written_consent
+            must_include: [message_frequency, opt_out_instructions]
+          call:
+            required: prior_express_consent
+            exceptions: [established_business_relationship]
+          email:
+            required: opt_in
+            exceptions: [transactional]
+        consent_database: "config/consent_registry"
+        verify_timestamp: true
+        max_consent_age_days: 365
+      applies_to:
+        message_types: [sms, call, email]
+
+    # Do Not Call Registry
+    - name: dnc_check
+      description: Check against Do Not Call registries
+      enabled: true
+      severity: error
+      config:
+        registries:
+          - national_dnc
+          - state_dnc
+          - internal_dnc
+        check_frequency: per_message
+        cache_ttl_hours: 24
+        block_on_match: true
+      applies_to:
+        message_types: [call, sms]
+
+    # Time restrictions
+    - name: calling_hours
+      description: Enforce TCPA calling hour restrictions
+      enabled: true
+      severity: error
+      config:
+        allowed_hours:
+          start: "08:00"
+          end: "21:00"
+        timezone_source: recipient  # Use recipient's timezone
+        holidays_blocked: true
+        holiday_calendar: "config/us_holidays.yaml"
+      applies_to:
+        message_types: [call, sms]
+
+    # Caller ID requirements
+    - name: caller_id_compliance
+      description: Ensure proper caller ID transmission
+      enabled: true
+      severity: error
+      config:
+        require_valid_caller_id: true
+        require_callback_number: true
+        prohibit_spoofing: true
+        registered_numbers_path: "config/registered_numbers.yaml"
+      applies_to:
+        message_types: [call]
+
+    # Message content requirements
+    - name: message_content_compliance
+      description: Verify message content meets TCPA/CTIA requirements
+      enabled: true
+      severity: error
+      config:
+        required_elements:
+          sms:
+            - sender_identification
+            - opt_out_instructions
+          call:
+            - caller_identification
+            - purpose_disclosure
+          email:
+            - sender_address
+            - unsubscribe_link
+            - physical_address
+        max_message_length:
+          sms: 160
+          mms: 1600
+        prohibited_content:
+          - deceptive_claims
+          - false_urgency
+          - misleading_sender
+      applies_to:
+        message_types: [sms, call, email]
+
+    # Opt-out handling
+    - name: opt_out_compliance
+      description: Ensure proper opt-out mechanisms
+      enabled: true
+      severity: error
+      config:
+        required_keywords:
+          sms: [STOP, UNSUBSCRIBE, CANCEL, END, QUIT]
+        process_immediately: true
+        max_processing_time_seconds: 30
+        confirmation_required: true
+        honor_permanently: true
+      applies_to:
+        message_types: [sms, email]
+
+    # Rate limiting
+    - name: message_frequency
+      description: Enforce message frequency limits
+      enabled: true
+      severity: error
+      config:
+        limits:
+          sms:
+            per_recipient_per_day: 3
+            per_recipient_per_week: 10
+            per_recipient_per_month: 30
+          call:
+            per_recipient_per_day: 1
+            per_recipient_per_week: 3
+          email:
+            per_recipient_per_day: 2
+            per_recipient_per_week: 7
+        burst_protection: true
+        cooldown_after_contact_hours: 24
+      applies_to:
+        message_types: [sms, call, email]
+
+    # Campaign registration (10DLC)
+    - name: campaign_registration
+      description: Verify SMS campaign registration compliance
+      enabled: true
+      severity: error
+      config:
+        require_10dlc_registration: true
+        require_brand_registration: true
+        campaign_registry_path: "config/campaign_registry.yaml"
+        verify_use_case_match: true
+      applies_to:
+        message_types: [sms]
+
+  # Pre-send validation
+  pre_send_validation:
+    enabled: true
+    checks:
+      - validate_phone_format
+      - validate_email_format
+      - check_carrier_restrictions
+      - verify_sender_reputation
+
+  # Violation handling
+  violation_handling:
+    on_violation:
+      - action: block_message
+      - action: log_violation
+        details: [recipient, message_type, violation_type, timestamp]
+      - action: increment_violation_counter
+      - action: notify_compliance_team
+        threshold: 10  # Notify after 10 violations
+
+    repeated_violations:
+      threshold: 50
+      window_hours: 24
+      actions:
+        - action: pause_campaign
+        - action: require_compliance_review
+        - action: escalate_to_legal
+
+  # Audit and reporting
+  audit:
+    log_all_messages: true
+    log_consent_checks: true
+    log_dnc_checks: true
+    log_violations: true
+    retention_days: 2555  # 7 years for TCPA compliance
+
+    # Required audit fields
+    required_fields:
+      - timestamp
+      - recipient_hash  # Hashed for privacy
+      - message_type
+      - consent_verified
+      - dnc_checked
+      - result
+      - violation_type  # If applicable
+
+  # Compliance reporting
+  compliance_reports:
+    - type: tcpa_monthly
+      frequency: monthly
+      include:
+        - total_messages_sent
+        - consent_verification_rate
+        - dnc_check_rate
+        - violation_count
+        - opt_out_rate
+    - type: carrier_report
+      frequency: weekly
+      include:
+        - delivery_rate
+        - spam_reports
+        - carrier_blocks
+
+  # Metrics
+  metrics:
+    - name: tcpa_consent_checks_total
+      type: counter
+      labels: [message_type, result]
+    - name: tcpa_dnc_checks_total
+      type: counter
+      labels: [registry, result]
+    - name: tcpa_violations_total
+      type: counter
+      labels: [message_type, violation_type]
+    - name: tcpa_opt_outs_total
+      type: counter
+      labels: [message_type, method]
+    - name: message_delivery_rate
+      type: gauge
+      labels: [message_type, carrier]

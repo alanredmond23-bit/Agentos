@@ -1,1 +1,255 @@
-# gate.security.v1.yaml
+# Security Gate Policy v1
+# Defines security requirements for agent operations
+
+apiVersion: agentos.io/v1
+kind: Policy
+metadata:
+  name: gate.security
+  version: "1.0.0"
+  description: Security gates for agent operation validation
+  labels:
+    category: security
+    gate_type: pre-execution
+    compliance: [SOC2, GDPR, CCPA]
+
+spec:
+  # When this gate applies
+  triggers:
+    - event: task.started
+    - event: artifact.created
+    - event: external_api.called
+    - event: data.accessed
+
+  # Gate evaluation mode
+  evaluation:
+    mode: all_must_pass
+    fail_action: block
+    timeout_seconds: 60
+
+  # Security checks
+  checks:
+    # PII Protection
+    - name: pii_detection
+      description: Detect and redact personally identifiable information
+      enabled: true
+      severity: error
+      config:
+        scan_inputs: true
+        scan_outputs: true
+        redaction_required: true
+        pii_types:
+          - email
+          - phone
+          - ssn
+          - credit_card
+          - bank_account
+          - address
+          - full_name
+          - date_of_birth
+          - ip_address
+        allow_list_path: "config/pii_allowlist.yaml"
+      applies_to:
+        all_packs: true
+
+    - name: pii_logging_check
+      description: Ensure PII is not written to logs
+      enabled: true
+      severity: error
+      config:
+        scan_log_output: true
+        block_on_detection: true
+      applies_to:
+        all_packs: true
+
+    # Credential Protection
+    - name: secret_detection
+      description: Detect exposed secrets and credentials
+      enabled: true
+      severity: error
+      config:
+        patterns:
+          - api_keys
+          - passwords
+          - tokens
+          - private_keys
+          - connection_strings
+        block_on_detection: true
+        notify_security_team: true
+      applies_to:
+        all_packs: true
+
+    # Input Validation
+    - name: input_sanitization
+      description: Validate and sanitize all inputs
+      enabled: true
+      severity: error
+      config:
+        check_injection: true
+        check_xss: true
+        check_path_traversal: true
+        check_command_injection: true
+        max_input_size_bytes: 10485760  # 10MB
+      applies_to:
+        all_packs: true
+
+    # Output Validation
+    - name: output_validation
+      description: Validate outputs before external transmission
+      enabled: true
+      severity: error
+      config:
+        check_content_type: true
+        check_encoding: true
+        max_output_size_bytes: 52428800  # 50MB
+        blocked_content_types:
+          - application/x-executable
+          - application/x-msdownload
+      applies_to:
+        all_packs: true
+
+    # Access Control
+    - name: authorization_check
+      description: Verify authorization for requested operations
+      enabled: true
+      severity: error
+      config:
+        require_valid_token: true
+        check_permissions: true
+        check_resource_access: true
+        token_expiry_buffer_seconds: 300
+      applies_to:
+        all_packs: true
+
+    - name: rate_limiting
+      description: Enforce rate limits on operations
+      enabled: true
+      severity: warning
+      config:
+        default_rate_limit: 100  # per minute
+        burst_limit: 20
+        per_pack_limits:
+          lead_faucet: 50  # Lower limit for outreach
+          marketing: 75
+      applies_to:
+        all_packs: true
+
+    # External API Security
+    - name: external_api_validation
+      description: Validate external API calls
+      enabled: true
+      severity: error
+      config:
+        require_https: true
+        allowed_domains_path: "config/allowed_domains.yaml"
+        block_internal_ips: true
+        validate_certificates: true
+        timeout_seconds: 30
+      applies_to:
+        all_packs: true
+
+    # Data Classification
+    - name: data_classification
+      description: Enforce data classification rules
+      enabled: true
+      severity: error
+      config:
+        classifications:
+          public: []
+          internal: [require_auth]
+          confidential: [require_auth, encrypt_at_rest, audit_access]
+          restricted: [require_auth, encrypt_at_rest, encrypt_in_transit, audit_access, require_approval]
+        default_classification: internal
+      applies_to:
+        all_packs: true
+
+  # Pack-specific overrides
+  pack_overrides:
+    finance:
+      checks:
+        data_classification:
+          config:
+            default_classification: confidential
+        rate_limiting:
+          config:
+            default_rate_limit: 50  # Lower for financial operations
+
+    legal:
+      checks:
+        data_classification:
+          config:
+            default_classification: confidential
+        pii_detection:
+          config:
+            redaction_required: false  # Legal may need to handle PII
+            log_only: true
+            require_approval: true
+
+    lead_faucet:
+      checks:
+        rate_limiting:
+          severity: error  # Stricter enforcement
+          config:
+            default_rate_limit: 30
+            burst_limit: 10
+
+  # Incident response
+  incident_response:
+    on_critical_failure:
+      - action: block_operation
+      - action: notify_security_team
+        channel: pagerduty
+        target: security-oncall
+      - action: create_incident
+        severity: high
+      - action: enable_enhanced_logging
+        duration_minutes: 60
+
+    on_repeated_failures:
+      threshold: 5
+      window_minutes: 10
+      actions:
+        - action: temporary_block
+          duration_minutes: 30
+        - action: notify_security_team
+
+  # Exemptions (require security team approval)
+  exemptions:
+    - pack: research
+      check: external_api_validation
+      config:
+        allowed_domains_path: "config/research_domains.yaml"
+      reason: "Research requires access to additional domains"
+      approved_by: security-team
+      expires: "2025-06-30"
+
+  # Audit and compliance
+  audit:
+    log_all_checks: true
+    log_failures: true
+    log_exemptions: true
+    log_access_patterns: true
+    retention_days: 365  # 1 year for compliance
+
+    # Compliance reporting
+    compliance_reports:
+      - type: SOC2
+        frequency: quarterly
+        include_checks: all
+      - type: GDPR
+        frequency: monthly
+        include_checks: [pii_detection, pii_logging_check, data_classification]
+
+  # Metrics
+  metrics:
+    - name: security_gate_pass_rate
+      type: gauge
+      labels: [pack, check_name]
+    - name: security_gate_blocks_total
+      type: counter
+      labels: [pack, check_name, reason]
+    - name: pii_detections_total
+      type: counter
+      labels: [pack, pii_type]
+    - name: rate_limit_hits_total
+      type: counter
+      labels: [pack]

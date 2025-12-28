@@ -1,0 +1,52 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# FINANCE CASHFLOW MODELER - Cash Flow Analysis Specialist
+# AgentOS v1.0.0
+# ═══════════════════════════════════════════════════════════════════════════════
+
+identity:
+  agent_id: "FINANCE-CF-01"
+  name: "Cashflow Modeler Agent"
+  version: "1.0.0"
+  icon: "📈"
+  role: "Cash Flow Analysis Specialist"
+  pack: "finance"
+  reports_to: "finance_pack_manager"
+
+  mission: "Model and project cash flows for financial planning"
+
+  knowledge_domains:
+    - "Cash Flow Analysis"
+    - "Financial Modeling"
+    - "Scenario Planning"
+    - "Runway Calculation"
+
+model:
+  provider: "anthropic"
+  model_id: "claude-sonnet-4-20250514"
+
+  parameters:
+    temperature: 0.20
+    top_p: 0.80
+    max_tokens: 12000
+
+authority:
+  level: "Specialist"
+  zone: "YELLOW"
+
+tools:
+  primary:
+    - name: "cashflow_modeler"
+      description: "Create cash flow models"
+
+    - name: "scenario_analyzer"
+      description: "Analyze different scenarios"
+
+expected_results:
+  cashflow_model:
+    includes:
+      - "projections"
+      - "runway"
+      - "scenarios"
+
+activation:
+  keyboard_shortcut: "Cmd+Shift+F C"

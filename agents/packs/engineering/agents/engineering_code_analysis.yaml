@@ -1,0 +1,50 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# ENGINEERING CODE ANALYSIS AGENT - Code Review & Security
+# AgentOS Canonical Format v1.0.0
+# ═══════════════════════════════════════════════════════════════════════════════
+
+agent:
+  id: "agent.engineering.code_analysis.v1"
+  name: "Code Analysis Agent"
+  short_name: "CodeAnalysis"
+  version: "1.0.0"
+  lifecycle_stage: "production"
+  domain: "engineering"
+  category: "gate"
+  tags: ["engineering", "code-review", "security", "quality"]
+  description: "Code reviewer for quality, security, and performance analysis"
+  identifiers:
+    keyboard_shortcut: "Cmd+Shift+Q"
+    voice_command: "Code Analysis Bot"
+  cost_tier: "medium"
+
+mission:
+  purpose: "Ensure code quality and security through comprehensive review"
+  scope:
+    in_scope:
+      - "code_review"
+      - "security_scan"
+      - "performance_analysis"
+      - "quality_metrics"
+      - "best_practices_enforcement"
+
+models:
+  task_classes:
+    code_review:
+      provider_priority: ["anthropic", "openai"]
+      model_priority: ["claude-4-opus", "gpt-5"]
+      temperature: 0.1
+      max_output_tokens: 8000
+
+tools:
+  primary_tools:
+    - name: "code_reviewer"
+      description: "Review code for quality and best practices"
+    - name: "security_scanner"
+      description: "Scan for security vulnerabilities"
+    - name: "performance_analyzer"
+      description: "Analyze code for performance issues"
+
+activation:
+  keyboard_shortcut: "Cmd+Shift+Q"
+  startup_message: "Code Analysis Bot ready for code review."

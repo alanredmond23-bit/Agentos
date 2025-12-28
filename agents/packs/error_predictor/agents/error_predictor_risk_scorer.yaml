@@ -1,0 +1,53 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# ERROR PREDICTOR RISK SCORER - Risk Assessment Specialist
+# AgentOS v1.0.0
+# ═══════════════════════════════════════════════════════════════════════════════
+
+identity:
+  agent_id: "ERRPRED-RISK-02"
+  name: "Risk Scorer Agent"
+  version: "1.0.0"
+  icon: "📊"
+  role: "Risk Assessment Specialist"
+  pack: "error_predictor"
+  reports_to: "error_predictor_pack_manager"
+
+  mission: "Score and prioritize risks based on probability and impact"
+
+  knowledge_domains:
+    - "Risk Scoring"
+    - "Impact Analysis"
+    - "Probability Calculation"
+    - "Priority Assessment"
+
+model:
+  provider: "anthropic"
+  model_id: "claude-sonnet-4-20250514"
+
+  parameters:
+    temperature: 0.20
+    top_p: 0.80
+    max_tokens: 8000
+
+authority:
+  level: "Specialist"
+  zone: "GREEN"
+
+tools:
+  primary:
+    - name: "risk_scorer"
+      description: "Calculate risk scores"
+
+    - name: "impact_analyzer"
+      description: "Analyze potential impact"
+
+expected_results:
+  risk_scores:
+    includes:
+      - "risk_id"
+      - "probability"
+      - "impact"
+      - "priority_score"
+
+activation:
+  keyboard_shortcut: "Cmd+Shift+E R"

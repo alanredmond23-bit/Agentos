@@ -1,1 +1,146 @@
-# killswitch.policy.v1.yaml
+# Kill Switch Policy v1
+# Defines emergency control policies for agent execution
+
+apiVersion: agentos.io/v1
+kind: Policy
+metadata:
+  name: killswitch
+  version: "1.0.0"
+  description: Emergency controls for halting agent execution
+  labels:
+    category: safety
+    criticality: high
+
+spec:
+  # Global kill switch configuration
+  global:
+    # Default state on system startup
+    default_enabled: true
+
+    # Who can toggle the global kill switch
+    authorized_roles:
+      - incident_commander
+      - security_lead
+      - cto
+      - platform_admin
+
+    # Require confirmation for activation
+    require_confirmation: true
+
+    # Automatic re-enable after duration (0 = manual only)
+    auto_reenable_after_seconds: 0
+
+    # Notification channels on state change
+    notifications:
+      - channel: slack
+        target: "#agentos-alerts"
+        on_events: [disabled, enabled]
+      - channel: pagerduty
+        target: agentos-critical
+        on_events: [disabled]
+      - channel: email
+        target: platform-team@company.com
+        on_events: [disabled, enabled]
+
+  # Pack-level kill switch configuration
+  pack_level:
+    # Default state for new packs
+    default_enabled: true
+
+    # Who can toggle pack-level switches
+    authorized_roles:
+      - team_lead
+      - on_call_engineer
+      - incident_commander
+      - platform_admin
+
+    # Require confirmation for critical packs
+    critical_packs:
+      - finance
+      - legal
+      - billing
+    critical_pack_confirmation: true
+
+    # Cascading behavior
+    cascade_on_global_disable: true  # Disable all packs when global disabled
+
+  # Behavior when kill switch is activated
+  on_activation:
+    # How to handle running tasks
+    running_tasks:
+      action: terminate_gracefully  # Options: terminate_gracefully, terminate_immediately, wait_completion
+      grace_period_seconds: 30
+      force_after_seconds: 60
+
+    # Queue behavior
+    pending_tasks:
+      action: pause  # Options: pause, reject, retain
+      max_queue_size: 1000
+
+    # Approval handling
+    pending_approvals:
+      action: retain  # Keep pending approvals
+
+  # Recovery configuration
+  on_deactivation:
+    # Gradual restoration
+    gradual_restore:
+      enabled: true
+      packs_per_batch: 2
+      batch_interval_seconds: 60
+
+    # Health check before restoration
+    require_health_check: true
+    health_check_timeout_seconds: 30
+
+  # Audit requirements
+  audit:
+    log_all_state_changes: true
+    log_authorized_attempts: true
+    log_unauthorized_attempts: true
+    retention_days: 365
+
+    # Required fields in audit log
+    required_fields:
+      - timestamp
+      - user_id
+      - action
+      - target
+      - reason
+      - ip_address
+      - result
+
+  # Testing configuration
+  testing:
+    # Allow test activations in non-production
+    allow_test_mode: true
+    test_environments:
+      - development
+      - staging
+
+    # Scheduled test requirements
+    required_test_frequency_days: 30
+    test_notification_channel: "#agentos-ops"
+
+  # Metrics and monitoring
+  monitoring:
+    # Export metrics
+    metrics:
+      - name: killswitch_state
+        type: gauge
+        labels: [level, target]
+      - name: killswitch_activations_total
+        type: counter
+        labels: [level, target, reason]
+      - name: killswitch_duration_seconds
+        type: histogram
+        labels: [level, target]
+
+    # Alerting thresholds
+    alerts:
+      - name: prolonged_global_disable
+        condition: global_disabled_duration > 1h
+        severity: warning
+      - name: frequent_activations
+        condition: activations_last_24h > 5
+        severity: warning

@@ -1,0 +1,111 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# GOLDEN TASK: Account Reconciliation Batch
+# Finance Pack - Reconciliation Workflow
+# ═══════════════════════════════════════════════════════════════════════════════
+
+metadata:
+  task_id: "GT-FINANCE-002"
+  name: "Account Reconciliation Batch"
+  pack: "finance"
+  version: "1.0.0"
+  difficulty: "intermediate"
+  estimated_time: "30min"
+
+description: |
+  Perform end-of-month reconciliation for multiple accounts, identifying
+  discrepancies, investigating exceptions, and generating audit trail.
+
+objective: |
+  Reconcile bank accounts against general ledger with zero unresolved
+  discrepancies and complete audit documentation.
+
+agents_involved:
+  - "finance_pack_manager"
+  - "finance_reconciliation"
+  - "finance_risk_detector"
+  - "finance_controls_auditor"
+
+input:
+  reconciliation_period: "December 2024"
+  accounts:
+    - account_id: "BANK-001"
+      name: "Operating Account"
+      bank_balance: 1234567.89
+      gl_balance: 1234567.89
+      transactions: 450
+    - account_id: "BANK-002"
+      name: "Payroll Account"
+      bank_balance: 456789.12
+      gl_balance: 456889.12
+      transactions: 125
+    - account_id: "BANK-003"
+      name: "Reserve Account"
+      bank_balance: 789012.34
+      gl_balance: 788012.34
+      transactions: 12
+
+  tolerance_thresholds:
+    amount: 0.01
+    timing: 3  # days
+
+workflow:
+  steps:
+    - agent: "finance_reconciliation"
+      action: "match_transactions"
+      method: "automated_matching"
+
+    - agent: "finance_reconciliation"
+      action: "identify_discrepancies"
+      output: "exception_list"
+
+    - agent: "finance_risk_detector"
+      action: "analyze_exceptions"
+      flag: "potential_issues"
+
+    - agent: "finance_controls_auditor"
+      action: "validate_reconciliation"
+      output: "audit_report"
+
+expected_output:
+  format: "reconciliation_report"
+  includes:
+    summary:
+      - accounts_reconciled
+      - total_transactions
+      - match_rate
+      - exceptions_count
+
+    account_details:
+      - account_id
+      - status
+      - matched_items
+      - unmatched_items
+      - adjustments_required
+
+    exception_analysis:
+      - exception_id
+      - type
+      - amount
+      - root_cause
+      - resolution
+
+    audit_trail:
+      - reconciliation_timestamp
+      - performed_by
+      - approved_by
+      - supporting_documents
+
+success_criteria:
+  - all_accounts_reconciled: true
+  - match_rate: ">= 0.99"
+  - exceptions_resolved: true
+  - audit_trail_complete: true
+
+evaluation:
+  accuracy_check:
+    - zero_unreconciled_items
+    - all_discrepancies_explained
+
+  compliance_check:
+    - sox_requirements_met
+    - documentation_complete

@@ -1,1 +1,184 @@
-# gate.quality.v1.yaml
+# Quality Gate Policy v1
+# Defines quality requirements for agent outputs before release
+
+apiVersion: agentos.io/v1
+kind: Policy
+metadata:
+  name: gate.quality
+  version: "1.0.0"
+  description: Quality gates for agent artifact validation
+  labels:
+    category: quality
+    gate_type: pre-release
+
+spec:
+  # When this gate applies
+  triggers:
+    - event: artifact.created
+    - event: task.completed
+    - event: approval.requested
+
+  # Gate evaluation mode
+  evaluation:
+    mode: all_must_pass  # Options: all_must_pass, any_must_pass, weighted_score
+    fail_action: block  # Options: block, warn, log_only
+    timeout_seconds: 300
+
+  # Quality checks
+  checks:
+    # Content quality checks
+    - name: content_length
+      description: Ensure content meets minimum length requirements
+      enabled: true
+      severity: error
+      config:
+        min_length: 100
+        max_length: 100000
+      applies_to:
+        artifact_types: [text, report, document]
+
+    - name: grammar_check
+      description: Check for grammar and spelling errors
+      enabled: true
+      severity: warning
+      config:
+        max_errors: 5
+        max_error_rate: 0.01  # 1% of words
+        language: en-US
+      applies_to:
+        artifact_types: [text, report, document, email]
+
+    - name: readability_score
+      description: Ensure content is readable by target audience
+      enabled: true
+      severity: warning
+      config:
+        min_flesch_kincaid: 60  # Higher = easier to read
+        target_grade_level: 8
+      applies_to:
+        artifact_types: [text, document]
+
+    # Structural checks
+    - name: json_validation
+      description: Validate JSON structure and schema
+      enabled: true
+      severity: error
+      config:
+        validate_schema: true
+        schema_registry: "schemas/"
+      applies_to:
+        artifact_types: [json, api_response, data]
+
+    - name: required_sections
+      description: Ensure required sections are present
+      enabled: true
+      severity: error
+      config:
+        sections:
+          report: [summary, details, recommendations]
+          proposal: [overview, scope, timeline, cost]
+          analysis: [methodology, findings, conclusions]
+      applies_to:
+        artifact_types: [report, proposal, analysis]
+
+    # Consistency checks
+    - name: brand_compliance
+      description: Check for brand guideline compliance
+      enabled: true
+      severity: warning
+      config:
+        check_terminology: true
+        check_tone: true
+        brand_guide_path: "docs/brand_guidelines.yaml"
+      applies_to:
+        packs: [marketing]
+        artifact_types: [text, document, email]
+
+    - name: formatting_standards
+      description: Verify formatting standards
+      enabled: true
+      severity: warning
+      config:
+        check_headings: true
+        check_lists: true
+        check_links: true
+        max_paragraph_length: 500
+      applies_to:
+        artifact_types: [document, report]
+
+    # Accuracy checks
+    - name: fact_consistency
+      description: Check for internal consistency
+      enabled: true
+      severity: error
+      config:
+        check_numbers: true
+        check_dates: true
+        check_names: true
+      applies_to:
+        artifact_types: [report, analysis, document]
+
+    - name: calculation_verification
+      description: Verify mathematical calculations
+      enabled: true
+      severity: error
+      config:
+        tolerance: 0.01  # 1% tolerance
+        verify_totals: true
+        verify_percentages: true
+      applies_to:
+        packs: [finance]
+        artifact_types: [report, invoice, statement]
+
+  # Pack-specific overrides
+  pack_overrides:
+    marketing:
+      checks:
+        grammar_check:
+          severity: error  # Stricter for marketing
+        readability_score:
+          config:
+            min_flesch_kincaid: 70  # Must be very readable
+
+    legal:
+      checks:
+        content_length:
+          config:
+            max_length: 500000  # Legal docs can be long
+        readability_score:
+          enabled: false  # Legal language has different standards
+
+    engineering:
+      checks:
+        grammar_check:
+          severity: warning  # More lenient for technical docs
+        required_sections:
+          config:
+            sections:
+              report: [summary, technical_details, testing, deployment]
+
+  # Exemptions
+  exemptions:
+    - pack: research
+      check: readability_score
+      reason: "Research content may require technical language"
+      expires: "2025-12-31"
+
+  # Audit and reporting
+  audit:
+    log_all_checks: true
+    log_failures: true
+    log_exemptions: true
+    retention_days: 90
+
+  # Metrics
+  metrics:
+    - name: quality_gate_pass_rate
+      type: gauge
+      labels: [pack, check_name]
+    - name: quality_gate_failures_total
+      type: counter
+      labels: [pack, check_name, severity]
+    - name: quality_gate_duration_seconds
+      type: histogram
+      labels: [pack]

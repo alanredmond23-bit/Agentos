@@ -1,1 +1,344 @@
-{}
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://agentos.dev/schemas/policy.schema.json",
+  "title": "AgentOS Policy Definition",
+  "description": "Schema for AgentOS policy definitions that govern agent behavior and access control",
+  "type": "object",
+  "required": ["id", "name", "rules"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_-]*$",
+      "description": "Unique policy identifier"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "description": "Human-readable policy name"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 2000,
+      "description": "Detailed description of what this policy governs"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "default": "1.0.0",
+      "description": "Policy version"
+    },
+    "enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether this policy is active"
+    },
+    "priority": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1000,
+      "default": 100,
+      "description": "Policy priority (higher = evaluated first)"
+    },
+    "scope": {
+      "type": "object",
+      "properties": {
+        "agents": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Agent IDs this policy applies to (empty = all)"
+        },
+        "packs": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Pack IDs this policy applies to"
+        },
+        "environments": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["development", "staging", "production"] },
+          "description": "Environments where policy is active"
+        },
+        "zones": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["red", "yellow", "green"] },
+          "description": "Security zones this policy applies to"
+        },
+        "users": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "User IDs this policy applies to"
+        },
+        "groups": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "User group IDs this policy applies to"
+        }
+      },
+      "description": "Defines what this policy applies to"
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Rule"
+      },
+      "minItems": 1,
+      "description": "Policy rules"
+    },
+    "enforcement": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["off", "monitor", "warn", "enforce"],
+          "default": "enforce",
+          "description": "Enforcement mode"
+        },
+        "fail_open": {
+          "type": "boolean",
+          "default": false,
+          "description": "Allow action if policy evaluation fails"
+        },
+        "grace_period_seconds": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Time before enforcement begins"
+        }
+      }
+    },
+    "notifications": {
+      "type": "object",
+      "properties": {
+        "on_violation": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Channels to notify on violation"
+        },
+        "on_block": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Channels to notify when action is blocked"
+        },
+        "escalation": {
+          "type": "object",
+          "properties": {
+            "after_violations": { "type": "integer", "minimum": 1 },
+            "channel": { "type": "string" },
+            "contacts": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      }
+    },
+    "audit": {
+      "type": "object",
+      "properties": {
+        "log_all_evaluations": {
+          "type": "boolean",
+          "default": false,
+          "description": "Log all policy evaluations, not just violations"
+        },
+        "include_context": {
+          "type": "boolean",
+          "default": true,
+          "description": "Include request context in audit logs"
+        },
+        "retention_days": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 90,
+          "description": "How long to retain audit logs"
+        }
+      }
+    },
+    "exceptions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "reason"],
+        "properties": {
+          "id": { "type": "string" },
+          "reason": { "type": "string" },
+          "approved_by": { "type": "string" },
+          "expires_at": { "type": "string", "format": "date-time" },
+          "conditions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      },
+      "description": "Approved exceptions to this policy"
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "author": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" },
+        "updated_at": { "type": "string", "format": "date-time" },
+        "approved_by": { "type": "string" },
+        "review_date": { "type": "string", "format": "date" },
+        "compliance_frameworks": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Compliance frameworks this policy addresses"
+        },
+        "references": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Links to related documentation"
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "Rule": {
+      "type": "object",
+      "required": ["id", "condition", "action"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*$",
+          "description": "Rule identifier"
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable rule name"
+        },
+        "description": {
+          "type": "string",
+          "description": "What this rule checks"
+        },
+        "enabled": {
+          "type": "boolean",
+          "default": true
+        },
+        "condition": {
+          "$ref": "#/$defs/Condition"
+        },
+        "action": {
+          "type": "string",
+          "enum": ["allow", "deny", "warn", "require_approval", "log", "rate_limit", "transform"],
+          "description": "Action to take when condition matches"
+        },
+        "message": {
+          "type": "string",
+          "description": "Message to display/log when rule triggers"
+        },
+        "severity": {
+          "type": "string",
+          "enum": ["info", "low", "medium", "high", "critical"],
+          "default": "medium"
+        },
+        "rate_limit": {
+          "type": "object",
+          "properties": {
+            "requests": { "type": "integer", "minimum": 1 },
+            "period_seconds": { "type": "integer", "minimum": 1 },
+            "burst": { "type": "integer", "minimum": 1 }
+          },
+          "description": "Rate limiting configuration"
+        },
+        "transform": {
+          "type": "object",
+          "properties": {
+            "type": { "type": "string", "enum": ["redact", "mask", "replace", "remove"] },
+            "target": { "type": "string" },
+            "value": { "type": "string" }
+          },
+          "description": "Transformation to apply"
+        },
+        "approval": {
+          "type": "object",
+          "properties": {
+            "required_from": { "type": "array", "items": { "type": "string" } },
+            "timeout_seconds": { "type": "integer", "minimum": 60 },
+            "default_on_timeout": { "type": "string", "enum": ["allow", "deny"] }
+          },
+          "description": "Approval workflow configuration"
+        }
+      }
+    },
+    "Condition": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["field", "operator", "value"],
+          "properties": {
+            "field": {
+              "type": "string",
+              "description": "Field path to evaluate (dot notation)"
+            },
+            "operator": {
+              "type": "string",
+              "enum": [
+                "equals", "not_equals",
+                "contains", "not_contains",
+                "starts_with", "ends_with",
+                "matches_regex",
+                "greater_than", "less_than",
+                "greater_than_or_equal", "less_than_or_equal",
+                "in", "not_in",
+                "exists", "not_exists",
+                "is_type", "is_empty", "is_not_empty"
+              ]
+            },
+            "value": {
+              "description": "Value to compare against"
+            },
+            "case_sensitive": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["and"],
+          "properties": {
+            "and": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/Condition" },
+              "minItems": 2,
+              "description": "All conditions must match"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["or"],
+          "properties": {
+            "or": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/Condition" },
+              "minItems": 2,
+              "description": "Any condition must match"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["not"],
+          "properties": {
+            "not": {
+              "$ref": "#/$defs/Condition",
+              "description": "Negate the condition"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["expression"],
+          "properties": {
+            "expression": {
+              "type": "string",
+              "description": "CEL or custom expression"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

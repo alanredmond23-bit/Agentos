@@ -1,0 +1,84 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# GOLDEN TASK: Terraform Infrastructure
+# Tests: devops_terraform agent capability
+# ═══════════════════════════════════════════════════════════════════════════════
+
+metadata:
+  id: "devops-golden-002"
+  name: "Terraform Infrastructure - AWS VPC with EKS"
+  pack: "devops"
+  agent: "devops_terraform"
+  version: "1.0.0"
+  difficulty: "hard"
+  estimated_time: "60min"
+
+task:
+  description: |
+    Create Terraform configuration for an AWS VPC with an EKS cluster,
+    following best practices for security and modularity.
+
+  input:
+    provider: "aws"
+    region: "us-east-1"
+    requirements:
+      - "VPC with public and private subnets"
+      - "NAT Gateway for private subnet egress"
+      - "EKS cluster with managed node groups"
+      - "Security groups with least privilege"
+      - "IAM roles for EKS"
+      - "Use modules where appropriate"
+    environments:
+      - "staging"
+      - "production"
+
+expected_output:
+  files:
+    - path: "main.tf"
+      must_contain:
+        - "terraform {"
+        - "required_providers"
+        - "aws"
+
+    - path: "vpc.tf"
+      must_contain:
+        - "aws_vpc"
+        - "aws_subnet"
+        - "cidr_block"
+
+    - path: "eks.tf"
+      must_contain:
+        - "aws_eks_cluster"
+        - "aws_eks_node_group"
+
+    - path: "variables.tf"
+      must_contain:
+        - "variable"
+
+    - path: "outputs.tf"
+      must_contain:
+        - "output"
+
+  quality_checks:
+    - name: "terraform_validate"
+      threshold: 1.0
+
+    - name: "tfsec_scan"
+      threshold: 0.90
+
+    - name: "module_usage"
+      threshold: 0.80
+
+evaluation:
+  scoring:
+    correctness: 0.30
+    security: 0.30
+    modularity: 0.20
+    documentation: 0.20
+
+  pass_threshold: 0.80
+
+tags:
+  - "terraform"
+  - "aws"
+  - "eks"
+  - "infrastructure"

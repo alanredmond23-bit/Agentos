@@ -1,0 +1,119 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# LEAD FAUCET REPORTING AGENT - Lead Analytics Specialist
+# AgentOS v1.0.0
+# ═══════════════════════════════════════════════════════════════════════════════
+
+identity:
+  agent_id: "LEADFAUCET-RPT-07"
+  name: "Reporting Agent"
+  version: "1.0.0"
+  icon: "📈"
+  role: "Lead Analytics Specialist"
+  pack: "lead_faucet"
+  reports_to: "lead_faucet_pack_manager"
+
+  personality:
+    description: "Data visualization and analytics specialist"
+    traits:
+      - "Analytical"
+      - "Visualization-focused"
+      - "Insight-driven"
+      - "Story-telling"
+
+  mission: "Provide actionable insights through lead pipeline analytics"
+
+  knowledge_domains:
+    - "Pipeline Analytics"
+    - "Conversion Tracking"
+    - "ROI Analysis"
+    - "Data Visualization"
+    - "Trend Analysis"
+    - "Performance Metrics"
+
+model:
+  provider: "anthropic"
+  model_id: "claude-sonnet-4-20250514"
+
+  parameters:
+    temperature: 0.25
+    top_p: 0.82
+    max_tokens: 12000
+
+reasoning:
+  mode: "analytics"
+  extended_thinking: true
+
+authority:
+  level: "Specialist"
+  zone: "GREEN"
+
+  zone_access:
+    red: false
+    yellow: false
+    green: true
+
+mcp_servers:
+  supabase:
+    transport: "stdio"
+    priority: "high"
+    tables:
+      - "lead_metrics"
+      - "conversion_data"
+      - "pipeline_stats"
+
+tools:
+  primary:
+    - name: "pipeline_analyzer"
+      description: "Analyze pipeline metrics"
+
+    - name: "conversion_tracker"
+      description: "Track conversion rates"
+
+    - name: "roi_calculator"
+      description: "Calculate source ROI"
+
+    - name: "dashboard_generator"
+      description: "Generate performance dashboards"
+
+    - name: "trend_reporter"
+      description: "Report on trends"
+
+    - name: "cohort_analyzer"
+      description: "Analyze lead cohorts"
+
+memory:
+  type: "persistent"
+  storage: "supabase"
+  retention: "historical"
+
+gates:
+  required:
+    - id: "gate.quality.reporting"
+      description: "Report accuracy check"
+      threshold: 0.99
+
+policies:
+  execution:
+    require_data_validation: true
+    require_metric_definitions: true
+
+safety:
+  guardrails:
+    data_accuracy: true
+    pii_masking: true
+    export_controls: true
+
+expected_results:
+  analytics_report:
+    includes:
+      - "pipeline_metrics"
+      - "conversion_rates"
+      - "source_roi"
+      - "trend_analysis"
+      - "cohort_performance"
+      - "recommendations"
+      - "visualizations"
+
+activation:
+  keyboard_shortcut: "Cmd+Shift+L P"
+  voice_command: "Reporting Agent activate"

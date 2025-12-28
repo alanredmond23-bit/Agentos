@@ -1,0 +1,94 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# GOLDEN TASK: Market Research Synthesis
+# Research Pack - Comprehensive Research Workflow
+# ═══════════════════════════════════════════════════════════════════════════════
+
+metadata:
+  task_id: "GT-RESEARCH-001"
+  name: "Market Research Synthesis"
+  pack: "research"
+  version: "1.0.0"
+  difficulty: "advanced"
+  estimated_time: "45min"
+
+description: |
+  Conduct comprehensive market research on the emerging AI agent framework
+  market, synthesizing findings from multiple sources with proper verification.
+
+objective: |
+  Research, verify, and synthesize a comprehensive market analysis report on
+  AI agent frameworks, including market size, key players, trends, and forecasts.
+
+agents_involved:
+  - "research_pack_manager"
+  - "research_searcher"
+  - "research_verifier"
+  - "research_synthesizer"
+
+input:
+  topic: "AI Agent Framework Market Analysis 2024-2028"
+  scope:
+    - market_size
+    - key_players
+    - technology_trends
+    - adoption_drivers
+    - competitive_landscape
+  requirements:
+    sources_minimum: 10
+    recency: "last_12_months"
+    verification_required: true
+
+workflow:
+  steps:
+    - agent: "research_searcher"
+      action: "search_sources"
+      criteria:
+        - academic_papers
+        - industry_reports
+        - news_articles
+        - company_filings
+
+    - agent: "research_verifier"
+      action: "verify_sources"
+      criteria:
+        - source_credibility
+        - data_accuracy
+        - cross_reference
+        - recency_check
+
+    - agent: "research_synthesizer"
+      action: "synthesize_findings"
+      output: "comprehensive_report"
+
+expected_output:
+  format: "research_report"
+  sections:
+    - executive_summary
+    - methodology
+    - market_overview
+    - competitive_analysis
+    - trends_and_forecasts
+    - sources_bibliography
+
+  quality_criteria:
+    - all_sources_verified
+    - cross_referenced_data
+    - clear_citations
+    - actionable_insights
+
+success_criteria:
+  - minimum_sources: 10
+  - verification_rate: 1.0
+  - synthesis_completeness: 0.95
+  - citation_accuracy: 1.0
+
+evaluation:
+  automated_checks:
+    - source_count
+    - citation_format
+    - section_completeness
+
+  human_review:
+    - insight_quality
+    - synthesis_coherence
+    - actionability

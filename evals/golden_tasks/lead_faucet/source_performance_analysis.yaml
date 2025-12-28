@@ -1,0 +1,133 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# GOLDEN TASK: Source Performance Analysis
+# Lead Faucet Pack - Source ROI Analysis Workflow
+# ═══════════════════════════════════════════════════════════════════════════════
+
+metadata:
+  task_id: "GT-LEADFAUCET-002"
+  name: "Source Performance Analysis"
+  pack: "lead_faucet"
+  version: "1.0.0"
+  difficulty: "intermediate"
+  estimated_time: "30min"
+
+description: |
+  Analyze lead source performance across all channels, calculate ROI,
+  and generate optimization recommendations.
+
+objective: |
+  Produce comprehensive source performance report with ROI calculations,
+  quality metrics, and actionable optimization recommendations.
+
+agents_involved:
+  - "lead_faucet_pack_manager"
+  - "lead_faucet_source_manager"
+  - "lead_faucet_reporting"
+
+input:
+  analysis_period: "Q4 2024"
+
+  sources:
+    - name: "Google Ads"
+      spend: 50000
+      leads: 1200
+      mqls: 360
+      opportunities: 72
+      closed_won: 18
+
+    - name: "LinkedIn Ads"
+      spend: 35000
+      leads: 450
+      mqls: 180
+      opportunities: 54
+      closed_won: 15
+
+    - name: "Content Syndication"
+      spend: 25000
+      leads: 800
+      mqls: 160
+      opportunities: 32
+      closed_won: 6
+
+    - name: "Organic Search"
+      spend: 0
+      leads: 600
+      mqls: 240
+      opportunities: 60
+      closed_won: 20
+
+    - name: "Referrals"
+      spend: 5000
+      leads: 150
+      mqls: 90
+      opportunities: 36
+      closed_won: 12
+
+  average_deal_size: 25000
+
+workflow:
+  steps:
+    - agent: "lead_faucet_source_manager"
+      action: "aggregate_source_data"
+      metrics:
+        - lead_volume
+        - cost_per_lead
+        - conversion_rates
+
+    - agent: "lead_faucet_reporting"
+      action: "calculate_roi"
+      include:
+        - cost_per_mql
+        - cost_per_opportunity
+        - cost_per_acquisition
+        - roi_percentage
+
+    - agent: "lead_faucet_reporting"
+      action: "generate_recommendations"
+      optimize_for:
+        - roi_maximization
+        - budget_allocation
+
+expected_output:
+  format: "source_analysis_report"
+  includes:
+    source_metrics:
+      - source_name
+      - lead_volume
+      - mql_rate
+      - opportunity_rate
+      - win_rate
+      - cost_per_lead
+      - cost_per_mql
+      - cost_per_acquisition
+      - roi
+
+    rankings:
+      - by_volume
+      - by_quality
+      - by_roi
+
+    recommendations:
+      - budget_reallocation
+      - source_optimization
+      - new_source_suggestions
+
+    visualizations:
+      - funnel_by_source
+      - roi_comparison
+      - trend_analysis
+
+success_criteria:
+  - all_sources_analyzed: true
+  - roi_calculated: true
+  - recommendations_actionable: true
+  - data_validated: true
+
+evaluation:
+  accuracy_check:
+    - calculation_correctness
+    - metric_consistency
+
+  insight_quality:
+    - recommendation_feasibility
+    - optimization_potential

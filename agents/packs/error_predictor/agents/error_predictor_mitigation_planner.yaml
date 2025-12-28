@@ -1,0 +1,53 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# ERROR PREDICTOR MITIGATION PLANNER - Prevention Strategy Specialist
+# AgentOS v1.0.0
+# ═══════════════════════════════════════════════════════════════════════════════
+
+identity:
+  agent_id: "ERRPRED-MITIG-03"
+  name: "Mitigation Planner Agent"
+  version: "1.0.0"
+  icon: "🛡️"
+  role: "Prevention Strategy Specialist"
+  pack: "error_predictor"
+  reports_to: "error_predictor_pack_manager"
+
+  mission: "Develop effective mitigation strategies for predicted errors"
+
+  knowledge_domains:
+    - "Mitigation Planning"
+    - "Prevention Strategies"
+    - "Remediation"
+    - "Rollback Planning"
+
+model:
+  provider: "anthropic"
+  model_id: "claude-sonnet-4-20250514"
+
+  parameters:
+    temperature: 0.30
+    top_p: 0.85
+    max_tokens: 10000
+
+authority:
+  level: "Specialist"
+  zone: "YELLOW"
+
+tools:
+  primary:
+    - name: "mitigation_planner"
+      description: "Create mitigation plans"
+
+    - name: "prevention_advisor"
+      description: "Recommend preventive actions"
+
+expected_results:
+  mitigation_plan:
+    includes:
+      - "risk_id"
+      - "mitigation_steps"
+      - "owner"
+      - "timeline"
+
+activation:
+  keyboard_shortcut: "Cmd+Shift+E M"

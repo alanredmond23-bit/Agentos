@@ -1,1 +1,222 @@
-{}
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://agentos.dev/schemas/pack_registry.schema.json",
+  "title": "AgentOS Pack Registry",
+  "description": "Schema for the PACK_REGISTRY.yaml file that defines all available agent packs",
+  "type": "object",
+  "required": ["version", "packs"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Registry schema version"
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "default": "AgentOS Pack Registry" },
+        "description": { "type": "string" },
+        "maintainer": { "type": "string" },
+        "repository": { "type": "string", "format": "uri" },
+        "documentation": { "type": "string", "format": "uri" },
+        "updated_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "defaults": {
+      "type": "object",
+      "properties": {
+        "base_path": {
+          "type": "string",
+          "default": "agents/packs",
+          "description": "Default base path for pack directories"
+        },
+        "agents_subdir": {
+          "type": "string",
+          "default": "agents",
+          "description": "Subdirectory name for agent configs"
+        },
+        "docs_path": {
+          "type": "string",
+          "default": "docs/packs",
+          "description": "Base path for pack documentation"
+        },
+        "evals_path": {
+          "type": "string",
+          "default": "evals",
+          "description": "Base path for eval suites"
+        }
+      }
+    },
+    "packs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Pack"
+      },
+      "minItems": 1,
+      "description": "List of registered agent packs"
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z][a-z0-9_-]*$" },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "icon": { "type": "string" }
+        }
+      },
+      "description": "Category definitions for organizing packs"
+    }
+  },
+  "$defs": {
+    "Pack": {
+      "type": "object",
+      "required": ["id", "name", "path"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*$",
+          "description": "Unique pack identifier (used in paths)"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "Human-readable pack name"
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Brief pack description"
+        },
+        "path": {
+          "type": "string",
+          "description": "Relative path to pack directory from repo root"
+        },
+        "docs_path": {
+          "type": "string",
+          "description": "Path to pack documentation (overrides default)"
+        },
+        "category": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*$",
+          "description": "Category this pack belongs to"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "Pack version"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["stable", "beta", "alpha", "deprecated", "experimental"],
+          "default": "stable",
+          "description": "Pack maturity status"
+        },
+        "enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether pack is enabled"
+        },
+        "agents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AgentRef"
+          },
+          "description": "Agents included in this pack"
+        },
+        "dependencies": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "IDs of packs this pack depends on"
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Tags for filtering"
+        },
+        "maintainers": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Pack maintainer identifiers"
+        },
+        "icon": {
+          "type": "string",
+          "description": "Icon identifier or emoji"
+        },
+        "color": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$",
+          "description": "Brand color for the pack"
+        },
+        "evals": {
+          "type": "object",
+          "properties": {
+            "golden_tasks_path": { "type": "string" },
+            "adversarial_path": { "type": "string" },
+            "suite": { "type": "string" }
+          },
+          "description": "Eval configuration for this pack"
+        },
+        "config": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "Pack-specific configuration"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {
+            "created_at": { "type": "string", "format": "date-time" },
+            "updated_at": { "type": "string", "format": "date-time" },
+            "homepage": { "type": "string", "format": "uri" },
+            "repository": { "type": "string", "format": "uri" },
+            "license": { "type": "string" }
+          }
+        }
+      }
+    },
+    "AgentRef": {
+      "type": "object",
+      "required": ["id", "file"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*$",
+          "description": "Agent identifier"
+        },
+        "file": {
+          "type": "string",
+          "pattern": "\\.ya?ml$",
+          "description": "YAML config filename"
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable agent name"
+        },
+        "description": {
+          "type": "string",
+          "description": "Brief agent description"
+        },
+        "primary": {
+          "type": "boolean",
+          "default": false,
+          "description": "Is this the primary agent for the pack?"
+        },
+        "enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Is this agent enabled?"
+        },
+        "roles": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Roles this agent can fulfill"
+        }
+      }
+    }
+  }
+}

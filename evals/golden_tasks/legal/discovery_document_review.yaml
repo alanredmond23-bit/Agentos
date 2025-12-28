@@ -1,0 +1,120 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# GOLDEN TASK: Discovery Document Review
+# Legal Pack - eDiscovery Workflow
+# ═══════════════════════════════════════════════════════════════════════════════
+
+metadata:
+  task_id: "GT-LEGAL-001"
+  name: "Discovery Document Review"
+  pack: "legal"
+  version: "1.0.0"
+  difficulty: "advanced"
+  estimated_time: "60min"
+
+description: |
+  Conduct document review for litigation discovery, identifying privileged
+  materials, relevant evidence, and generating privilege log.
+
+objective: |
+  Review document production for privilege, relevance, and responsiveness
+  while maintaining complete audit trail and privilege protection.
+
+agents_involved:
+  - "legal_pack_manager"
+  - "legal_discovery"
+  - "legal_privilege"
+  - "legal_evidence"
+  - "legal_timeline"
+
+input:
+  case:
+    case_id: "2024-CV-12345"
+    matter_name: "Acme Corp v. TechStart Inc"
+    case_type: "breach_of_contract"
+
+  document_set:
+    total_documents: 500
+    date_range: "2022-01-01 to 2024-06-30"
+    custodians:
+      - "John Smith - CEO"
+      - "Jane Doe - General Counsel"
+      - "Bob Johnson - CTO"
+
+  review_criteria:
+    relevance_keywords:
+      - "agreement"
+      - "breach"
+      - "termination"
+      - "payment"
+    privilege_markers:
+      - "attorney-client"
+      - "work_product"
+      - "joint_defense"
+
+workflow:
+  steps:
+    - agent: "legal_discovery"
+      action: "initial_review"
+      criteria:
+        - relevance
+        - responsiveness
+        - date_filtering
+
+    - agent: "legal_privilege"
+      action: "privilege_review"
+      protect:
+        - attorney_client
+        - work_product
+      output: "privilege_log"
+
+    - agent: "legal_evidence"
+      action: "categorize_evidence"
+      categories:
+        - hot_documents
+        - key_evidence
+        - supporting_documents
+
+    - agent: "legal_timeline"
+      action: "build_timeline"
+      from: "key_documents"
+
+expected_output:
+  format: "discovery_package"
+  deliverables:
+    review_summary:
+      - total_reviewed
+      - relevant_count
+      - privileged_count
+      - redaction_count
+
+    privilege_log:
+      - bates_number
+      - date
+      - author
+      - recipient
+      - privilege_type
+      - description
+
+    evidence_categorization:
+      - hot_documents
+      - key_evidence
+      - timeline_documents
+
+    case_timeline:
+      - chronological_events
+      - supporting_documents
+
+success_criteria:
+  - all_documents_reviewed: true
+  - privilege_protected: 1.0
+  - privilege_log_complete: true
+  - no_inadvertent_disclosure: true
+
+evaluation:
+  privilege_check:
+    - no_privileged_production
+    - privilege_log_accuracy
+
+  quality_check:
+    - relevance_accuracy
+    - categorization_consistency

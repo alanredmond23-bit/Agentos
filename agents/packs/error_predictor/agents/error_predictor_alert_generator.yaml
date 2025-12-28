@@ -1,0 +1,53 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# ERROR PREDICTOR ALERT GENERATOR - Predictive Alert Specialist
+# AgentOS v1.0.0
+# ═══════════════════════════════════════════════════════════════════════════════
+
+identity:
+  agent_id: "ERRPRED-ALERT-04"
+  name: "Alert Generator Agent"
+  version: "1.0.0"
+  icon: "🚨"
+  role: "Predictive Alert Specialist"
+  pack: "error_predictor"
+  reports_to: "error_predictor_pack_manager"
+
+  mission: "Generate actionable predictive alerts without causing fatigue"
+
+  knowledge_domains:
+    - "Alert Design"
+    - "Notification Systems"
+    - "Escalation"
+    - "Alert Fatigue Prevention"
+
+model:
+  provider: "anthropic"
+  model_id: "claude-sonnet-4-20250514"
+
+  parameters:
+    temperature: 0.20
+    top_p: 0.80
+    max_tokens: 6000
+
+authority:
+  level: "Specialist"
+  zone: "GREEN"
+
+tools:
+  primary:
+    - name: "alert_generator"
+      description: "Generate predictive alerts"
+
+    - name: "notification_router"
+      description: "Route alerts to appropriate channels"
+
+expected_results:
+  alerts:
+    includes:
+      - "alert_type"
+      - "severity"
+      - "predicted_error"
+      - "recommended_action"
+
+activation:
+  keyboard_shortcut: "Cmd+Shift+E A"

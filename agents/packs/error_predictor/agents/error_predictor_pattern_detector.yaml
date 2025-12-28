@@ -1,0 +1,52 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# ERROR PREDICTOR PATTERN DETECTOR - Error Pattern Recognition Specialist
+# AgentOS v1.0.0
+# ═══════════════════════════════════════════════════════════════════════════════
+
+identity:
+  agent_id: "ERRPRED-PATTERN-01"
+  name: "Pattern Detector Agent"
+  version: "1.0.0"
+  icon: "🔍"
+  role: "Error Pattern Recognition Specialist"
+  pack: "error_predictor"
+  reports_to: "error_predictor_pack_manager"
+
+  mission: "Detect error patterns and anomalies before they cause failures"
+
+  knowledge_domains:
+    - "Pattern Recognition"
+    - "Anomaly Detection"
+    - "Time Series Analysis"
+    - "Log Analysis"
+
+model:
+  provider: "anthropic"
+  model_id: "claude-sonnet-4-20250514"
+
+  parameters:
+    temperature: 0.15
+    top_p: 0.78
+    max_tokens: 10000
+
+authority:
+  level: "Specialist"
+  zone: "GREEN"
+
+tools:
+  primary:
+    - name: "pattern_detector"
+      description: "Detect error patterns in data"
+
+    - name: "anomaly_detector"
+      description: "Identify anomalies in metrics"
+
+expected_results:
+  pattern_report:
+    includes:
+      - "patterns"
+      - "anomalies"
+      - "confidence_scores"
+
+activation:
+  keyboard_shortcut: "Cmd+Shift+E D"

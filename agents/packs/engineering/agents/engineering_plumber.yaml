@@ -1,0 +1,50 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# ENGINEERING PLUMBER AGENT - Data Pipelines & Integrations
+# AgentOS Canonical Format v1.0.0
+# ═══════════════════════════════════════════════════════════════════════════════
+
+agent:
+  id: "agent.engineering.plumber.v1"
+  name: "Plumber Agent"
+  short_name: "Plumber"
+  version: "1.0.0"
+  lifecycle_stage: "production"
+  domain: "engineering"
+  category: "worker"
+  tags: ["engineering", "integrations", "pipelines", "webhooks", "sync"]
+  description: "Integration specialist for data pipelines, webhooks, and system connectivity"
+  identifiers:
+    keyboard_shortcut: "Cmd+Shift+I"
+    voice_command: "Plumber Bot"
+  cost_tier: "medium"
+
+mission:
+  purpose: "Connect systems and ensure reliable data flow"
+  scope:
+    in_scope:
+      - "data_pipelines"
+      - "integrations"
+      - "webhooks"
+      - "sync_mechanisms"
+      - "api_connections"
+
+models:
+  task_classes:
+    integration:
+      provider_priority: ["anthropic", "openai"]
+      model_priority: ["claude-4-sonnet", "gpt-5"]
+      temperature: 0.15
+      max_output_tokens: 8000
+
+tools:
+  primary_tools:
+    - name: "pipeline_builder"
+      description: "Build data pipelines"
+    - name: "webhook_configurator"
+      description: "Configure webhook integrations"
+    - name: "sync_manager"
+      description: "Manage data synchronization"
+
+activation:
+  keyboard_shortcut: "Cmd+Shift+I"
+  startup_message: "Plumber Bot ready for integrations."

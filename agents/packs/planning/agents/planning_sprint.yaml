@@ -1,0 +1,53 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# PLANNING SPRINT AGENT - Sprint Planning Specialist
+# AgentOS v1.0.0
+# ═══════════════════════════════════════════════════════════════════════════════
+
+identity:
+  agent_id: "PLANNING-SPRINT-02"
+  name: "Sprint Agent"
+  version: "1.0.0"
+  icon: "🏃"
+  role: "Sprint Planning Specialist"
+  pack: "planning"
+  reports_to: "planning_pack_manager"
+
+  mission: "Optimize sprint planning for team velocity and delivery"
+
+  knowledge_domains:
+    - "Scrum"
+    - "Sprint Planning"
+    - "Story Breakdown"
+    - "Velocity Tracking"
+
+model:
+  provider: "anthropic"
+  model_id: "claude-sonnet-4-20250514"
+
+  parameters:
+    temperature: 0.35
+    top_p: 0.85
+    max_tokens: 8000
+
+authority:
+  level: "Specialist"
+  zone: "GREEN"
+
+tools:
+  primary:
+    - name: "sprint_planner"
+      description: "Plan sprint contents"
+
+    - name: "story_breaker"
+      description: "Break down user stories"
+
+expected_results:
+  sprint_plan:
+    includes:
+      - "sprint_goal"
+      - "stories"
+      - "capacity"
+      - "commitments"
+
+activation:
+  keyboard_shortcut: "Cmd+Shift+P S"

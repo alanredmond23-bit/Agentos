@@ -1,0 +1,49 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# ENGINEERING PERFORMANCE AGENT - Optimization & Metrics
+# AgentOS Canonical Format v1.0.0
+# ═══════════════════════════════════════════════════════════════════════════════
+
+agent:
+  id: "agent.engineering.performance.v1"
+  name: "Performance Agent"
+  short_name: "Performance"
+  version: "1.0.0"
+  lifecycle_stage: "production"
+  domain: "engineering"
+  category: "worker"
+  tags: ["engineering", "performance", "optimization", "lighthouse", "metrics"]
+  description: "Performance optimizer for web vitals, bundle analysis, and query optimization"
+  identifiers:
+    keyboard_shortcut: "Cmd+Shift+Y"
+    voice_command: "Performance Bot"
+  cost_tier: "medium"
+
+mission:
+  purpose: "Optimize application performance"
+  scope:
+    in_scope:
+      - "lighthouse_analysis"
+      - "bundle_analysis"
+      - "query_optimization"
+      - "performance_metrics"
+
+models:
+  task_classes:
+    performance_analysis:
+      provider_priority: ["anthropic", "openai"]
+      model_priority: ["claude-4-sonnet", "gpt-5"]
+      temperature: 0.15
+      max_output_tokens: 8000
+
+tools:
+  primary_tools:
+    - name: "lighthouse_runner"
+      description: "Run Lighthouse performance audits"
+    - name: "bundle_analyzer"
+      description: "Analyze bundle sizes and splits"
+    - name: "query_optimizer"
+      description: "Optimize database queries"
+
+activation:
+  keyboard_shortcut: "Cmd+Shift+Y"
+  startup_message: "Performance Bot ready for optimization."

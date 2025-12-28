@@ -1,1 +1,339 @@
-# gate.finance_correctness.v1.yaml
+# Finance Correctness Gate Policy v1
+# Defines accuracy and compliance requirements for financial operations
+
+apiVersion: agentos.io/v1
+kind: Policy
+metadata:
+  name: gate.finance_correctness
+  version: "1.0.0"
+  description: Financial accuracy and compliance validation gates
+  labels:
+    category: finance
+    gate_type: pre-approval
+    compliance: [SOX, GAAP, PCI-DSS]
+
+spec:
+  # When this gate applies
+  triggers:
+    - event: invoice.created
+    - event: payment.initiated
+    - event: expense.submitted
+    - event: report.generated
+    - event: reconciliation.completed
+    - event: budget.updated
+
+  # Applicable packs
+  applies_to:
+    packs:
+      - finance
+    artifact_types:
+      - invoice
+      - payment
+      - expense_report
+      - financial_report
+      - budget
+      - forecast
+
+  # Gate evaluation mode
+  evaluation:
+    mode: all_must_pass
+    fail_action: block
+    timeout_seconds: 120
+
+  # Financial Accuracy Checks
+  checks:
+    # Mathematical verification
+    - name: calculation_accuracy
+      description: Verify all calculations are mathematically correct
+      enabled: true
+      severity: error
+      config:
+        tolerance: 0.001  # 0.1% tolerance for rounding
+        verify_totals: true
+        verify_subtotals: true
+        verify_tax_calculations: true
+        verify_percentages: true
+        currency_precision: 2
+      applies_to:
+        artifact_types: [invoice, expense_report, financial_report]
+
+    - name: balance_verification
+      description: Ensure debits equal credits (double-entry)
+      enabled: true
+      severity: error
+      config:
+        require_balanced: true
+        tolerance: 0.01
+        check_trial_balance: true
+      applies_to:
+        artifact_types: [journal_entry, reconciliation]
+
+    # Data validation
+    - name: required_fields
+      description: Verify all required financial fields are present
+      enabled: true
+      severity: error
+      config:
+        required_by_type:
+          invoice:
+            - invoice_number
+            - date
+            - due_date
+            - vendor_id
+            - line_items
+            - subtotal
+            - tax
+            - total
+            - currency
+          payment:
+            - payment_id
+            - date
+            - amount
+            - currency
+            - recipient
+            - payment_method
+            - authorization
+          expense_report:
+            - report_id
+            - submitter
+            - date_range
+            - line_items
+            - total
+            - category_breakdown
+            - approver
+      applies_to:
+        artifact_types: [invoice, payment, expense_report]
+
+    - name: format_validation
+      description: Verify data formats are correct
+      enabled: true
+      severity: error
+      config:
+        formats:
+          currency: "ISO 4217"  # USD, EUR, etc.
+          date: "ISO 8601"
+          account_number: "alphanumeric"
+          tax_id: "country_specific"
+        validate_checksums:
+          - routing_number
+          - iban
+          - credit_card  # Luhn algorithm
+      applies_to:
+        artifact_types: all
+
+    # Threshold checks
+    - name: amount_thresholds
+      description: Verify amounts are within acceptable thresholds
+      enabled: true
+      severity: warning
+      config:
+        thresholds:
+          single_payment:
+            warn: 10000
+            block: 50000
+          daily_total:
+            warn: 100000
+            block: 500000
+          single_expense:
+            warn: 5000
+            block: 25000
+        require_approval_above:
+          payment: 10000
+          expense: 5000
+        currency: USD
+      applies_to:
+        artifact_types: [payment, expense_report, invoice]
+
+    # Duplicate detection
+    - name: duplicate_detection
+      description: Detect potential duplicate transactions
+      enabled: true
+      severity: warning
+      config:
+        check_fields:
+          invoice: [vendor_id, amount, date]
+          payment: [recipient, amount, date]
+          expense: [merchant, amount, date]
+        similarity_threshold: 0.95
+        time_window_days: 30
+        block_exact_duplicates: true
+      applies_to:
+        artifact_types: [invoice, payment, expense_report]
+
+    # Vendor validation
+    - name: vendor_validation
+      description: Verify vendor/recipient is valid and approved
+      enabled: true
+      severity: error
+      config:
+        require_approved_vendor: true
+        vendor_registry_path: "config/approved_vendors.yaml"
+        check_ofac_list: true
+        check_sanctions_list: true
+        verify_tax_id: true
+      applies_to:
+        artifact_types: [invoice, payment]
+
+    # Budget compliance
+    - name: budget_compliance
+      description: Verify expenditure is within budget
+      enabled: true
+      severity: warning
+      config:
+        check_department_budget: true
+        check_project_budget: true
+        check_category_budget: true
+        warn_at_percent: 80
+        block_at_percent: 100
+        allow_override_with_approval: true
+      applies_to:
+        artifact_types: [payment, expense_report]
+
+    # Audit trail
+    - name: audit_trail_completeness
+      description: Ensure complete audit trail exists
+      enabled: true
+      severity: error
+      config:
+        required_trail_elements:
+          - creator
+          - creation_timestamp
+          - modification_history
+          - approvals
+          - supporting_documents
+        require_immutable_log: true
+      applies_to:
+        artifact_types: all
+
+    # Period validation
+    - name: period_validation
+      description: Verify transactions are in correct accounting period
+      enabled: true
+      severity: error
+      config:
+        allow_backdating_days: 5
+        allow_future_dating_days: 0
+        check_period_closed: true
+        require_period_override_approval: true
+      applies_to:
+        artifact_types: [invoice, payment, journal_entry]
+
+  # Approval workflows
+  approval_requirements:
+    - type: payment
+      thresholds:
+        - amount: 0
+          approvers: 1
+          roles: [finance_associate]
+        - amount: 5000
+          approvers: 1
+          roles: [finance_manager]
+        - amount: 25000
+          approvers: 2
+          roles: [finance_manager, finance_director]
+        - amount: 100000
+          approvers: 2
+          roles: [finance_director, cfo]
+
+    - type: expense
+      thresholds:
+        - amount: 0
+          approvers: 1
+          roles: [manager]
+        - amount: 2500
+          approvers: 1
+          roles: [director]
+        - amount: 10000
+          approvers: 2
+          roles: [director, finance_manager]
+
+    - type: budget_modification
+      always_require:
+        approvers: 2
+        roles: [finance_director, department_head]
+
+  # Reconciliation requirements
+  reconciliation:
+    frequency:
+      bank_accounts: daily
+      credit_cards: weekly
+      accounts_receivable: weekly
+      accounts_payable: weekly
+      general_ledger: monthly
+    tolerance:
+      bank: 0.01
+      credit_card: 0.01
+      ar_ap: 1.00
+    require_sign_off: true
+    escalate_unresolved_after_days: 3
+
+  # SOX compliance
+  sox_controls:
+    enabled: true
+    controls:
+      - segregation_of_duties
+      - access_controls
+      - change_management
+      - documentation_requirements
+    reporting:
+      frequency: quarterly
+      include_deficiencies: true
+
+  # Audit and reporting
+  audit:
+    log_all_transactions: true
+    log_approvals: true
+    log_modifications: true
+    log_access: true
+    retention_days: 2555  # 7 years
+
+    # Required audit fields
+    required_fields:
+      - transaction_id
+      - timestamp
+      - user_id
+      - action
+      - amount
+      - currency
+      - status
+      - approval_chain
+      - ip_address
+
+  # Compliance reports
+  compliance_reports:
+    - type: sox_quarterly
+      frequency: quarterly
+      include:
+        - control_effectiveness
+        - exceptions
+        - remediation_status
+    - type: transaction_summary
+      frequency: monthly
+      include:
+        - volume_by_type
+        - approval_turnaround
+        - exception_rate
+    - type: budget_variance
+      frequency: monthly
+      include:
+        - actual_vs_budget
+        - variance_analysis
+        - forecast_accuracy
+
+  # Metrics
+  metrics:
+    - name: finance_gate_pass_rate
+      type: gauge
+      labels: [check_name, artifact_type]
+    - name: finance_approval_time_seconds
+      type: histogram
+      labels: [amount_tier, artifact_type]
+    - name: finance_exceptions_total
+      type: counter
+      labels: [check_name, severity]
+    - name: budget_utilization_percent
+      type: gauge
+      labels: [department, category]
+    - name: reconciliation_variance
+      type: gauge
+      labels: [account_type]

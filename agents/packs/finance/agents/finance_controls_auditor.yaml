@@ -1,0 +1,53 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# FINANCE CONTROLS AUDITOR AGENT - Internal Controls Specialist
+# AgentOS v1.0.0
+# ═══════════════════════════════════════════════════════════════════════════════
+
+identity:
+  agent_id: "FINANCE-CTRL-05"
+  name: "Controls Auditor Agent"
+  version: "1.0.0"
+  icon: "✓"
+  role: "Internal Controls Specialist"
+  pack: "finance"
+  reports_to: "finance_pack_manager"
+
+  mission: "Ensure internal controls meet compliance requirements"
+
+  knowledge_domains:
+    - "Internal Controls"
+    - "SOX Compliance"
+    - "Audit Procedures"
+    - "Segregation of Duties"
+
+model:
+  provider: "anthropic"
+  model_id: "claude-sonnet-4-20250514"
+
+  parameters:
+    temperature: 0.10
+    top_p: 0.75
+    max_tokens: 10000
+
+authority:
+  level: "Specialist"
+  zone: "YELLOW"
+
+tools:
+  primary:
+    - name: "controls_assessor"
+      description: "Assess internal controls"
+
+    - name: "compliance_checker"
+      description: "Check SOX compliance"
+
+expected_results:
+  audit_report:
+    includes:
+      - "control_assessment"
+      - "compliance_status"
+      - "findings"
+      - "recommendations"
+
+activation:
+  keyboard_shortcut: "Cmd+Shift+F A"

@@ -1,0 +1,102 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# GOLDEN TASK: Quarterly Roadmap Creation
+# Planning Pack - Strategic Planning Workflow
+# ═══════════════════════════════════════════════════════════════════════════════
+
+metadata:
+  task_id: "GT-PLANNING-001"
+  name: "Quarterly Roadmap Creation"
+  pack: "planning"
+  version: "1.0.0"
+  difficulty: "advanced"
+  estimated_time: "60min"
+
+description: |
+  Create a comprehensive Q1 product roadmap incorporating stakeholder input,
+  resource constraints, dependencies, and risk assessment.
+
+objective: |
+  Develop a realistic, resource-balanced quarterly roadmap with clear
+  milestones, dependencies mapped, and risks identified.
+
+agents_involved:
+  - "planning_pack_manager"
+  - "planning_roadmap"
+  - "planning_resource"
+  - "planning_dependency"
+  - "planning_risk"
+
+input:
+  quarter: "Q1 2025"
+  objectives:
+    - "Launch mobile app v2.0"
+    - "Implement AI recommendation engine"
+    - "Scale infrastructure for 10x growth"
+  constraints:
+    team_size: 25
+    budget: "$500,000"
+    fixed_deadlines:
+      - "Mobile launch: March 15"
+  stakeholder_priorities:
+    engineering: ["technical_debt", "scalability"]
+    product: ["mobile_launch", "ai_features"]
+    business: ["revenue_growth", "market_expansion"]
+
+workflow:
+  steps:
+    - agent: "planning_roadmap"
+      action: "create_roadmap_draft"
+      input: "objectives_and_priorities"
+
+    - agent: "planning_resource"
+      action: "allocate_resources"
+      constraints: "team_and_budget"
+
+    - agent: "planning_dependency"
+      action: "map_dependencies"
+      output: "dependency_graph"
+
+    - agent: "planning_risk"
+      action: "assess_risks"
+      output: "risk_register"
+
+expected_output:
+  format: "roadmap_package"
+  deliverables:
+    roadmap_document:
+      - vision_statement
+      - quarterly_themes
+      - milestone_timeline
+      - success_metrics
+
+    resource_plan:
+      - team_allocation
+      - budget_breakdown
+      - capacity_analysis
+
+    dependency_map:
+      - critical_path
+      - blocking_dependencies
+      - external_dependencies
+
+    risk_assessment:
+      - identified_risks
+      - mitigation_strategies
+      - contingency_plans
+
+success_criteria:
+  - objectives_mapped: 1.0
+  - resources_balanced: true
+  - dependencies_resolved: true
+  - risks_mitigated: 0.90
+
+evaluation:
+  feasibility_check:
+    - resource_utilization_under_100
+    - no_unresolved_blockers
+    - all_deadlines_achievable
+
+  quality_check:
+    - stakeholder_alignment
+    - risk_coverage
+    - clarity_of_milestones

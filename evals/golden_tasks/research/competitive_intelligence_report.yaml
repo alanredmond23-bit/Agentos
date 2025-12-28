@@ -1,0 +1,85 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# GOLDEN TASK: Competitive Intelligence Report
+# Research Pack - Competitive Analysis Workflow
+# ═══════════════════════════════════════════════════════════════════════════════
+
+metadata:
+  task_id: "GT-RESEARCH-002"
+  name: "Competitive Intelligence Report"
+  pack: "research"
+  version: "1.0.0"
+  difficulty: "intermediate"
+  estimated_time: "30min"
+
+description: |
+  Generate a competitive intelligence report analyzing three direct competitors
+  with verified data points and synthesized strategic insights.
+
+objective: |
+  Research and analyze competitive landscape with verified facts, producing
+  actionable intelligence for strategic decision-making.
+
+agents_involved:
+  - "research_pack_manager"
+  - "research_searcher"
+  - "research_verifier"
+  - "research_synthesizer"
+
+input:
+  target_company: "Acme Tech"
+  competitors:
+    - "Competitor A"
+    - "Competitor B"
+    - "Competitor C"
+  analysis_dimensions:
+    - product_offerings
+    - pricing_strategy
+    - market_positioning
+    - recent_developments
+    - strengths_weaknesses
+
+workflow:
+  steps:
+    - agent: "research_searcher"
+      action: "gather_competitive_data"
+      sources:
+        - company_websites
+        - press_releases
+        - industry_reports
+        - social_media
+
+    - agent: "research_verifier"
+      action: "verify_claims"
+      validation:
+        - fact_check_pricing
+        - verify_product_features
+        - confirm_market_data
+
+    - agent: "research_synthesizer"
+      action: "create_intel_report"
+      format: "competitive_analysis"
+
+expected_output:
+  format: "intelligence_report"
+  includes:
+    - competitor_profiles
+    - feature_comparison_matrix
+    - pricing_analysis
+    - swot_analysis
+    - strategic_recommendations
+
+success_criteria:
+  - competitors_analyzed: 3
+  - data_points_verified: 0.95
+  - recommendations_actionable: true
+  - sources_cited: true
+
+evaluation:
+  accuracy_check:
+    - pricing_accuracy
+    - feature_accuracy
+    - market_data_accuracy
+
+  quality_check:
+    - insight_depth
+    - recommendation_quality

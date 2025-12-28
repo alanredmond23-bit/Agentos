@@ -1,1 +1,144 @@
-name: evals
+name: Evals
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'agents/**'
+      - 'evals/**'
+      - 'schemas/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'agents/**'
+      - 'evals/**'
+      - 'schemas/**'
+  schedule:
+    # Run nightly at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      pack:
+        description: 'Specific pack to run evals for'
+        required: false
+        type: string
+      suite:
+        description: 'Specific eval suite to run'
+        required: false
+        type: string
+
+concurrency:
+  group: evals-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  eval-matrix:
+    name: Determine Eval Matrix
+    runs-on: ubuntu-latest
+    outputs:
+      packs: ${{ steps.matrix.outputs.packs }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Determine packs to test
+        id: matrix
+        run: |
+          if [[ -n "${{ inputs.pack }}" ]]; then
+            echo "packs=[\"${{ inputs.pack }}\"]" >> $GITHUB_OUTPUT
+          else
+            # Get list of packs from evals directory
+            PACKS=$(ls -1 evals/golden_tasks 2>/dev/null | jq -R -s -c 'split("\n") | map(select(length > 0))')
+            echo "packs=$PACKS" >> $GITHUB_OUTPUT
+          fi
+
+  run-evals:
+    name: Run Evals
+    runs-on: ubuntu-latest
+    needs: eval-matrix
+    strategy:
+      fail-fast: false
+      matrix:
+        pack: ${{ fromJson(needs.eval-matrix.outputs.packs || '[]') }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run evals for ${{ matrix.pack }}
+        run: |
+          SUITE_ARG=""
+          if [[ -n "${{ inputs.suite }}" ]]; then
+            SUITE_ARG="--suite ${{ inputs.suite }}"
+          fi
+          npm run evals -- --pack ${{ matrix.pack }} --offline $SUITE_ARG --json > eval-results-${{ matrix.pack }}.json
+
+      - name: Upload eval results
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-results-${{ matrix.pack }}
+          path: eval-results-${{ matrix.pack }}.json
+          retention-days: 30
+
+  regression-check:
+    name: Regression Analysis
+    runs-on: ubuntu-latest
+    needs: run-evals
+    if: always()
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download all eval results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: eval-results-*
+          merge-multiple: true
+
+      - name: Analyze results
+        run: |
+          echo "=== Eval Results Summary ==="
+          for file in eval-results-*.json; do
+            if [[ -f "$file" ]]; then
+              echo ""
+              echo "--- $file ---"
+              cat "$file" | jq '{total, passed, failed, skipped, errors}'
+            fi
+          done
+
+      - name: Check for failures
+        run: |
+          FAILED=0
+          for file in eval-results-*.json; do
+            if [[ -f "$file" ]]; then
+              FAILURES=$(cat "$file" | jq '.failed + .errors')
+              if [[ "$FAILURES" -gt 0 ]]; then
+                echo "Failures detected in $file"
+                FAILED=1
+              fi
+            fi
+          done
+          if [[ "$FAILED" -eq 1 ]]; then
+            echo "One or more eval runs had failures"
+            exit 1
+          fi
+          echo "All evals passed!"
+
+  notify-results:
+    name: Notify Results
+    runs-on: ubuntu-latest
+    needs: [run-evals, regression-check]
+    if: failure() && github.event_name == 'schedule'
+    steps:
+      - name: Send notification
+        run: |
+          echo "Scheduled eval run failed - notification would be sent here"
+          # Add Slack/email notification here if needed

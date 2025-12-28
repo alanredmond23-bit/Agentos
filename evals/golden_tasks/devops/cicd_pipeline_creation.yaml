@@ -1,0 +1,93 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# GOLDEN TASK: CI/CD Pipeline Creation
+# Tests: devops_cicd agent capability
+# ═══════════════════════════════════════════════════════════════════════════════
+
+metadata:
+  id: "devops-golden-001"
+  name: "CI/CD Pipeline Creation - Full Stack App"
+  pack: "devops"
+  agent: "devops_cicd"
+  version: "1.0.0"
+  difficulty: "medium"
+  estimated_time: "45min"
+
+task:
+  description: |
+    Create a complete CI/CD pipeline for a TypeScript full-stack application
+    with testing, linting, building, and multi-environment deployment.
+
+  input:
+    project_type: "typescript_fullstack"
+    requirements:
+      - "Run linting (ESLint)"
+      - "Run type checking (tsc)"
+      - "Run unit tests with coverage"
+      - "Build application"
+      - "Deploy to staging on PR merge"
+      - "Deploy to production on release tag"
+      - "Slack notifications"
+      - "Cache dependencies"
+    platforms:
+      - "github_actions"
+    environments:
+      - "staging"
+      - "production"
+    deployment_target: "vercel"
+
+expected_output:
+  files:
+    - path: ".github/workflows/ci.yml"
+      must_contain:
+        - "on:"
+        - "jobs:"
+        - "npm ci"
+        - "cache"
+        - "eslint"
+        - "tsc"
+
+    - path: ".github/workflows/deploy-staging.yml"
+      must_contain:
+        - "push:"
+        - "main"
+        - "vercel"
+
+    - path: ".github/workflows/deploy-production.yml"
+      must_contain:
+        - "release:"
+        - "vercel"
+        - "--prod"
+
+  quality_checks:
+    - name: "workflow_valid"
+      threshold: 1.0
+
+    - name: "caching_configured"
+      threshold: 1.0
+
+    - name: "secrets_protected"
+      threshold: 1.0
+
+  behavior_checks:
+    - scenario: "PR opened"
+      expected: "CI runs tests and builds"
+
+    - scenario: "PR merged to main"
+      expected: "Deploys to staging"
+
+    - scenario: "Release tag created"
+      expected: "Deploys to production"
+
+evaluation:
+  scoring:
+    workflow_correctness: 0.30
+    caching_efficiency: 0.20
+    security: 0.25
+    documentation: 0.25
+
+  pass_threshold: 0.80
+
+tags:
+  - "cicd"
+  - "github_actions"
+  - "deployment"

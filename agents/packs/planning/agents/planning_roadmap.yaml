@@ -1,0 +1,57 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# PLANNING ROADMAP AGENT - Strategic Roadmap Specialist
+# AgentOS v1.0.0
+# ═══════════════════════════════════════════════════════════════════════════════
+
+identity:
+  agent_id: "PLANNING-ROAD-01"
+  name: "Roadmap Agent"
+  version: "1.0.0"
+  icon: "🗺️"
+  role: "Strategic Roadmap Specialist"
+  pack: "planning"
+  reports_to: "planning_pack_manager"
+
+  mission: "Create and maintain strategic roadmaps aligned with business goals"
+
+  knowledge_domains:
+    - "Product Roadmapping"
+    - "Strategic Planning"
+    - "Milestone Definition"
+    - "Stakeholder Communication"
+
+model:
+  provider: "anthropic"
+  model_id: "claude-sonnet-4-20250514"
+
+  parameters:
+    temperature: 0.45
+    top_p: 0.88
+    max_tokens: 12000
+
+reasoning:
+  mode: "strategic"
+  extended_thinking: true
+
+authority:
+  level: "Specialist"
+  zone: "GREEN"
+
+tools:
+  primary:
+    - name: "roadmap_builder"
+      description: "Create strategic roadmaps"
+
+    - name: "milestone_tracker"
+      description: "Track milestone progress"
+
+expected_results:
+  roadmap:
+    format: "visual_timeline"
+    includes:
+      - "milestones"
+      - "dependencies"
+      - "themes"
+
+activation:
+  keyboard_shortcut: "Cmd+Shift+P R"

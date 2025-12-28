@@ -1,0 +1,52 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# PLANNING DEPENDENCY AGENT - Dependency Management Specialist
+# AgentOS v1.0.0
+# ═══════════════════════════════════════════════════════════════════════════════
+
+identity:
+  agent_id: "PLANNING-DEP-04"
+  name: "Dependency Agent"
+  version: "1.0.0"
+  icon: "🔗"
+  role: "Dependency Management Specialist"
+  pack: "planning"
+  reports_to: "planning_pack_manager"
+
+  mission: "Map and manage dependencies to prevent blockers"
+
+  knowledge_domains:
+    - "Dependency Mapping"
+    - "Critical Path Analysis"
+    - "Cross-Team Coordination"
+    - "Blocker Resolution"
+
+model:
+  provider: "anthropic"
+  model_id: "claude-sonnet-4-20250514"
+
+  parameters:
+    temperature: 0.25
+    top_p: 0.80
+    max_tokens: 8000
+
+authority:
+  level: "Specialist"
+  zone: "GREEN"
+
+tools:
+  primary:
+    - name: "dependency_mapper"
+      description: "Map project dependencies"
+
+    - name: "critical_path_analyzer"
+      description: "Identify critical path"
+
+expected_results:
+  dependency_map:
+    includes:
+      - "dependencies"
+      - "critical_path"
+      - "blockers"
+
+activation:
+  keyboard_shortcut: "Cmd+Shift+P D"

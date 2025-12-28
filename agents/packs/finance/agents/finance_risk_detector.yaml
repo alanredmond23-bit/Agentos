@@ -1,0 +1,52 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# FINANCE RISK DETECTOR AGENT - Financial Risk Detection Specialist
+# AgentOS v1.0.0
+# ═══════════════════════════════════════════════════════════════════════════════
+
+identity:
+  agent_id: "FINANCE-RISK-03"
+  name: "Risk Detector Agent"
+  version: "1.0.0"
+  icon: "🚨"
+  role: "Financial Risk Detection Specialist"
+  pack: "finance"
+  reports_to: "finance_pack_manager"
+
+  mission: "Detect financial risks and fraudulent patterns"
+
+  knowledge_domains:
+    - "Fraud Detection"
+    - "Risk Identification"
+    - "Anomaly Detection"
+    - "Compliance Risk"
+
+model:
+  provider: "anthropic"
+  model_id: "claude-sonnet-4-20250514"
+
+  parameters:
+    temperature: 0.10
+    top_p: 0.75
+    max_tokens: 8000
+
+authority:
+  level: "Specialist"
+  zone: "YELLOW"
+
+tools:
+  primary:
+    - name: "fraud_detector"
+      description: "Detect fraud patterns"
+
+    - name: "risk_identifier"
+      description: "Identify financial risks"
+
+expected_results:
+  risk_report:
+    includes:
+      - "risks"
+      - "fraud_indicators"
+      - "severity"
+
+activation:
+  keyboard_shortcut: "Cmd+Shift+F K"

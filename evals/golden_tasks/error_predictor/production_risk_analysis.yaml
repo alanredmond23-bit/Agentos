@@ -1,0 +1,115 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# GOLDEN TASK: Production Risk Analysis
+# Error Predictor Pack - Risk Prediction Workflow
+# ═══════════════════════════════════════════════════════════════════════════════
+
+metadata:
+  task_id: "GT-ERRORPRED-001"
+  name: "Production Risk Analysis"
+  pack: "error_predictor"
+  version: "1.0.0"
+  difficulty: "advanced"
+  estimated_time: "45min"
+
+description: |
+  Analyze a pending production deployment for potential error patterns,
+  risk factors, and generate mitigation recommendations.
+
+objective: |
+  Predict potential production issues before deployment, score risks,
+  and provide actionable mitigation strategies.
+
+agents_involved:
+  - "error_predictor_pack_manager"
+  - "error_predictor_pattern_detector"
+  - "error_predictor_risk_scorer"
+  - "error_predictor_mitigation_planner"
+  - "error_predictor_alert_generator"
+
+input:
+  deployment:
+    name: "v2.5.0 Release"
+    changes:
+      - type: "database_migration"
+        tables_affected: 5
+        rollback_available: true
+      - type: "api_changes"
+        endpoints_modified: 12
+        breaking_changes: 2
+      - type: "dependency_update"
+        packages_updated: 8
+        major_versions: 3
+
+  historical_data:
+    similar_deployments: 15
+    incident_rate: 0.20
+    common_issues:
+      - "connection_pool_exhaustion"
+      - "cache_invalidation_failures"
+      - "timeout_increases"
+
+  system_metrics:
+    current_load: "75%"
+    error_rate_baseline: "0.1%"
+    p99_latency: "250ms"
+
+workflow:
+  steps:
+    - agent: "error_predictor_pattern_detector"
+      action: "analyze_change_patterns"
+      input: "deployment_changes"
+
+    - agent: "error_predictor_risk_scorer"
+      action: "calculate_risk_scores"
+      factors:
+        - change_complexity
+        - historical_incidents
+        - system_load
+
+    - agent: "error_predictor_mitigation_planner"
+      action: "generate_mitigation_plan"
+      output: "mitigation_strategies"
+
+    - agent: "error_predictor_alert_generator"
+      action: "configure_alerts"
+      output: "alert_configuration"
+
+expected_output:
+  format: "risk_analysis_report"
+  sections:
+    risk_summary:
+      - overall_risk_score
+      - confidence_level
+      - recommendation
+
+    identified_patterns:
+      - pattern_name
+      - probability
+      - impact
+      - historical_frequency
+
+    mitigation_plan:
+      - pre_deployment_checks
+      - deployment_safeguards
+      - rollback_triggers
+      - monitoring_focus
+
+    alert_config:
+      - alert_rules
+      - thresholds
+      - escalation_paths
+
+success_criteria:
+  - patterns_identified: ">= 3"
+  - risk_score_calculated: true
+  - mitigation_coverage: 0.95
+  - alerts_configured: true
+
+evaluation:
+  accuracy_check:
+    - risk_score_calibration
+    - pattern_relevance
+
+  completeness_check:
+    - all_changes_analyzed
+    - mitigations_actionable

@@ -1,0 +1,52 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# FINANCE RECONCILIATION AGENT - Account Reconciliation Specialist
+# AgentOS v1.0.0
+# ═══════════════════════════════════════════════════════════════════════════════
+
+identity:
+  agent_id: "FINANCE-RECON-02"
+  name: "Reconciliation Agent"
+  version: "1.0.0"
+  icon: "⚖️"
+  role: "Account Reconciliation Specialist"
+  pack: "finance"
+  reports_to: "finance_pack_manager"
+
+  mission: "Ensure accurate account reconciliation with zero discrepancies"
+
+  knowledge_domains:
+    - "Account Reconciliation"
+    - "Transaction Matching"
+    - "Discrepancy Detection"
+    - "Exception Handling"
+
+model:
+  provider: "anthropic"
+  model_id: "claude-sonnet-4-20250514"
+
+  parameters:
+    temperature: 0.10
+    top_p: 0.75
+    max_tokens: 10000
+
+authority:
+  level: "Specialist"
+  zone: "YELLOW"
+
+tools:
+  primary:
+    - name: "reconciler"
+      description: "Reconcile accounts"
+
+    - name: "discrepancy_detector"
+      description: "Detect discrepancies"
+
+expected_results:
+  reconciliation_report:
+    includes:
+      - "matched_transactions"
+      - "discrepancies"
+      - "exceptions"
+
+activation:
+  keyboard_shortcut: "Cmd+Shift+F R"

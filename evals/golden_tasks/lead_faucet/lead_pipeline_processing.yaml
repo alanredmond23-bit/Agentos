@@ -1,0 +1,137 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# GOLDEN TASK: Lead Pipeline Processing
+# Lead Faucet Pack - Complete Lead Processing Workflow
+# ═══════════════════════════════════════════════════════════════════════════════
+
+metadata:
+  task_id: "GT-LEADFAUCET-001"
+  name: "Lead Pipeline Processing"
+  pack: "lead_faucet"
+  version: "1.0.0"
+  difficulty: "advanced"
+  estimated_time: "45min"
+
+description: |
+  Process a batch of incoming leads through the complete pipeline:
+  validation, enrichment, scoring, fraud detection, and routing.
+
+objective: |
+  Process 100 leads end-to-end with validated data, enriched profiles,
+  accurate scores, fraud flags, and optimal routing assignments.
+
+agents_involved:
+  - "lead_faucet_pack_manager"
+  - "lead_faucet_validation"
+  - "lead_faucet_enrichment"
+  - "lead_faucet_scoring"
+  - "lead_faucet_fraud_risk"
+  - "lead_faucet_routing"
+
+input:
+  batch:
+    source: "webform_campaign_q1"
+    lead_count: 100
+    fields:
+      - email
+      - company_name
+      - job_title
+      - phone
+      - website
+
+  sample_leads:
+    - email: "john.smith@acmecorp.com"
+      company_name: "Acme Corporation"
+      job_title: "VP Engineering"
+      phone: "+1-555-123-4567"
+      website: "acmecorp.com"
+
+  processing_config:
+    enrichment_sources:
+      - clearbit
+      - zoominfo
+    scoring_model: "enterprise_b2b"
+    routing_rules: "territory_based"
+
+workflow:
+  steps:
+    - agent: "lead_faucet_validation"
+      action: "validate_batch"
+      checks:
+        - email_verification
+        - phone_format
+        - deduplication
+        - required_fields
+
+    - agent: "lead_faucet_enrichment"
+      action: "enrich_leads"
+      data_points:
+        - company_size
+        - industry
+        - revenue_range
+        - technologies
+        - social_profiles
+
+    - agent: "lead_faucet_fraud_risk"
+      action: "detect_fraud"
+      checks:
+        - bot_detection
+        - velocity_check
+        - email_risk
+        - ip_analysis
+
+    - agent: "lead_faucet_scoring"
+      action: "score_leads"
+      model: "enterprise_b2b"
+      factors:
+        - fit_score
+        - intent_score
+        - engagement_score
+
+    - agent: "lead_faucet_routing"
+      action: "route_leads"
+      rules: "territory_based"
+
+expected_output:
+  format: "pipeline_results"
+  includes:
+    validation_summary:
+      - total_processed
+      - valid_count
+      - invalid_count
+      - duplicate_count
+
+    enrichment_summary:
+      - enriched_count
+      - coverage_rate
+      - data_quality_score
+
+    fraud_summary:
+      - flagged_count
+      - risk_distribution
+      - blocked_count
+
+    scoring_summary:
+      - score_distribution
+      - qualified_count
+      - mql_count
+
+    routing_summary:
+      - routed_count
+      - territory_distribution
+      - rep_assignments
+
+success_criteria:
+  - validation_rate: ">= 0.90"
+  - enrichment_coverage: ">= 0.85"
+  - fraud_detection_accuracy: ">= 0.95"
+  - routing_completed: true
+  - sla_met: true
+
+evaluation:
+  quality_metrics:
+    - data_completeness
+    - score_accuracy
+
+  performance_metrics:
+    - processing_time
+    - throughput

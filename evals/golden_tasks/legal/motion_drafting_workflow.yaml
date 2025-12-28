@@ -1,0 +1,119 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# GOLDEN TASK: Motion Drafting Workflow
+# Legal Pack - Legal Document Drafting
+# ═══════════════════════════════════════════════════════════════════════════════
+
+metadata:
+  task_id: "GT-LEGAL-002"
+  name: "Motion Drafting Workflow"
+  pack: "legal"
+  version: "1.0.0"
+  difficulty: "advanced"
+  estimated_time: "45min"
+
+description: |
+  Draft a motion for summary judgment with supporting research, citation
+  verification, and evidence compilation.
+
+objective: |
+  Produce a well-researched, properly cited motion with all supporting
+  exhibits and declarations organized for filing.
+
+agents_involved:
+  - "legal_pack_manager"
+  - "legal_attorney"
+  - "legal_research"
+  - "legal_evidence"
+  - "legal_timeline"
+
+input:
+  case:
+    case_id: "2024-CV-12345"
+    court: "US District Court, Northern District"
+    matter: "Contract Dispute"
+
+  motion_type: "summary_judgment"
+  moving_party: "Defendant"
+
+  arguments:
+    - "No genuine dispute of material fact"
+    - "Statute of limitations expired"
+    - "Plaintiff failed to mitigate damages"
+
+  deadline: "2025-02-15"
+
+  evidence_available:
+    - contracts
+    - email_correspondence
+    - payment_records
+    - expert_declarations
+
+workflow:
+  steps:
+    - agent: "legal_research"
+      action: "research_precedents"
+      jurisdictions:
+        - "9th Circuit"
+        - "Supreme Court"
+      topics:
+        - "summary_judgment_standard"
+        - "statute_of_limitations"
+        - "mitigation_of_damages"
+
+    - agent: "legal_attorney"
+      action: "draft_motion"
+      sections:
+        - introduction
+        - statement_of_facts
+        - legal_standard
+        - argument
+        - conclusion
+
+    - agent: "legal_evidence"
+      action: "compile_exhibits"
+      output: "exhibit_list"
+
+    - agent: "legal_timeline"
+      action: "create_fact_chronology"
+      for: "statement_of_facts"
+
+expected_output:
+  format: "motion_package"
+  deliverables:
+    motion_document:
+      - caption
+      - table_of_contents
+      - table_of_authorities
+      - introduction
+      - statement_of_facts
+      - legal_standard
+      - argument
+      - conclusion
+      - signature_block
+
+    supporting_materials:
+      - proposed_order
+      - declaration_of_counsel
+      - exhibit_list
+      - exhibits
+
+    research_memo:
+      - key_cases
+      - citations
+      - distinguishing_factors
+
+success_criteria:
+  - motion_complete: true
+  - citations_verified: 1.0
+  - exhibits_organized: true
+  - deadline_met: true
+  - bluebook_compliant: true
+
+evaluation:
+  legal_accuracy:
+    - citation_accuracy
+    - legal_standard_correct
+
+  formatting_check:
+    - local_rules_compliance
+    - page_limits_met
