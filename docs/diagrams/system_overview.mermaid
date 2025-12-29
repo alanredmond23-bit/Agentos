@@ -1,0 +1,276 @@
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#1a1a2e',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#4a4a6a',
+    'lineColor': '#6366f1',
+    'secondaryColor': '#2d2d44',
+    'tertiaryColor': '#0f0f23',
+    'background': '#0f0f23',
+    'mainBkg': '#1a1a2e',
+    'nodeBorder': '#4a4a6a',
+    'clusterBkg': '#16213e',
+    'titleColor': '#ffffff',
+    'edgeLabelBackground': '#1a1a2e'
+  }
+}}%%
+
+%% ============================================================================
+%% AGENTOS SYSTEM OVERVIEW
+%% High-Level Architecture Diagram
+%% C-Suite Presentation Ready
+%% ============================================================================
+
+flowchart TB
+    subgraph EXTERNAL["External Systems & Integrations"]
+        direction LR
+
+        subgraph PROVIDERS["LLM Providers"]
+            ANTHROPIC["Anthropic<br/>Claude 4 Opus/Sonnet"]
+            OPENAI["OpenAI<br/>GPT-5"]
+            GEMINI["Google<br/>Gemini Pro"]
+            DEEPSEEK["DeepSeek<br/>V3"]
+        end
+
+        subgraph INTEGRATIONS["Third-Party Services"]
+            GITHUB["GitHub<br/>Version Control"]
+            SLACK["Slack<br/>Communications"]
+            JIRA["Jira/Linear<br/>Issue Tracking"]
+            STRIPE["Stripe<br/>Payments"]
+            TWILIO["Twilio<br/>SMS/Voice"]
+        end
+
+        subgraph STORAGE_EXT["External Storage"]
+            SUPABASE_DB[("Supabase<br/>PostgreSQL")]
+            S3["S3/GCS<br/>Object Storage"]
+            REDIS[("Redis<br/>Cache Layer")]
+        end
+    end
+
+    subgraph ENTRY["Entry Points"]
+        direction LR
+        API_GW["API Gateway<br/>REST/GraphQL"]
+        WEBHOOKS["Webhook Handler<br/>HMAC Verified"]
+        CLI["CLI Interface<br/>claude-code"]
+        SDK["Client SDKs<br/>TS/Python/Go"]
+    end
+
+    subgraph OPS["Operations Console"]
+        direction TB
+
+        subgraph DASHBOARD["Real-Time Dashboards"]
+            METRICS["KPI Metrics<br/>Latency, Cost, Success"]
+            HEALTH["System Health<br/>Service Status"]
+            USAGE["Usage Analytics<br/>Per-Pack Tracking"]
+        end
+
+        subgraph CONTROLS["Operational Controls"]
+            APPROVALS_UI["Approval Queue<br/>Pending Reviews"]
+            KILL_SWITCH["Kill Switch<br/>Emergency Stop"]
+            COST_CONTROLS["Cost Controls<br/>Budget Limits"]
+        end
+
+        subgraph AUDIT_UI["Audit & Compliance"]
+            AUDIT_LOG["Audit Log Viewer<br/>Full History"]
+            COMPLIANCE["Compliance Reports<br/>SOC2/HIPAA"]
+            ALERTS["Alert Management<br/>Anomaly Detection"]
+        end
+    end
+
+    subgraph RUNTIME["Runtime Engine"]
+        direction TB
+
+        subgraph ORCHESTRATION["Orchestration Layer"]
+            ORCHESTRATOR["Orchestrator<br/>Task Coordinator"]
+            TASK_ROUTER["Task Router<br/>Intelligent Routing"]
+            SCHEDULER["Scheduler<br/>Priority Queue"]
+        end
+
+        subgraph CORE["Core Services"]
+            STATE_STORE[("State Store<br/>Task & Context")]
+            POLICY_ENGINE["Policy Engine<br/>Rule Evaluation"]
+            GATES["Gate Executor<br/>Quality Checks"]
+        end
+
+        subgraph SECURITY_CORE["Security Layer"]
+            APPROVALS["Approval Manager<br/>Token System"]
+            IDEMPOTENCY["Idempotency<br/>Deduplication"]
+            AUDIT["Audit Logger<br/>PII Redaction"]
+        end
+
+        subgraph ADAPTERS["Model Adapters"]
+            MODEL_ROUTER["Model Router<br/>Provider Selection"]
+            FALLBACK["Fallback Chain<br/>Reliability"]
+            RATE_LIMITER["Rate Limiter<br/>Throttling"]
+        end
+
+        subgraph TOOLS["Tools Registry"]
+            TOOL_REG["Tool Registry<br/>Available Actions"]
+            MCP_SERVERS["MCP Servers<br/>External Tools"]
+            SANDBOXING["Sandbox<br/>Safe Execution"]
+        end
+    end
+
+    subgraph PACKS["Agent Packs (16 Domains)"]
+        direction TB
+
+        subgraph CORE_PACKS["Core Business Packs"]
+            PRODUCT["Product Pack<br/>PRDs, Stories, Roadmaps"]
+            ENGINEERING["Engineering Pack<br/>Code, Architecture"]
+            DESIGN["Design Pack<br/>UX, UI, Components"]
+        end
+
+        subgraph GROWTH_PACKS["Growth & Revenue Packs"]
+            MARKETING["Marketing Pack<br/>Campaigns, SMS"]
+            LEAD_FAUCET["Lead Faucet<br/>Generation, Qualification"]
+            ANALYTICS_PACK["Analytics Pack<br/>Insights, Reports"]
+        end
+
+        subgraph PLATFORM_PACKS["Platform Packs"]
+            SUPABASE_PACK["Supabase Pack<br/>Schema, RLS, Edge"]
+            DEVOPS["DevOps Pack<br/>CI/CD, Infrastructure"]
+            MOBILE["Mobile Pack<br/>iOS, Android"]
+        end
+
+        subgraph SUPPORT_PACKS["Support Packs"]
+            LEGAL["Legal Pack<br/>Contracts, Compliance"]
+            FINANCE["Finance Pack<br/>Budgets, Invoicing"]
+            QA["QA Pack<br/>Testing, Automation"]
+        end
+
+        subgraph INTELLIGENCE_PACKS["Intelligence Packs"]
+            RESEARCH["Research Pack<br/>Market Analysis"]
+            PLANNING["Planning Pack<br/>Roadmaps, Sprints"]
+            ERROR_PRED["Error Predictor<br/>Failure Prevention"]
+            ORCHESTRATION_PACK["Orchestration Pack<br/>Multi-Agent Coordination"]
+        end
+    end
+
+    subgraph DATA["Data Layer"]
+        direction LR
+
+        subgraph PERSISTENCE["Persistent Storage"]
+            TASK_DB[("Task Store<br/>History & State")]
+            AGENT_STATE[("Agent State<br/>Context & Memory")]
+            POLICY_DB[("Policy Store<br/>Rules & Gates")]
+        end
+
+        subgraph EPHEMERAL["Ephemeral Storage"]
+            CACHE[("Cache<br/>Hot Data")]
+            QUEUE[("Job Queue<br/>Pending Tasks")]
+            SESSION[("Session Store<br/>Active Contexts")]
+        end
+    end
+
+    %% ========================================================================
+    %% CONNECTION FLOWS
+    %% ========================================================================
+
+    %% Entry to Runtime
+    API_GW --> ORCHESTRATOR
+    WEBHOOKS --> ORCHESTRATOR
+    CLI --> ORCHESTRATOR
+    SDK --> API_GW
+
+    %% Runtime Internal Flow
+    ORCHESTRATOR --> TASK_ROUTER
+    TASK_ROUTER --> SCHEDULER
+    SCHEDULER --> POLICY_ENGINE
+    POLICY_ENGINE --> GATES
+    GATES --> APPROVALS
+
+    %% Approvals Flow
+    APPROVALS --> APPROVALS_UI
+    APPROVALS_UI --> APPROVALS
+
+    %% State Management
+    ORCHESTRATOR <--> STATE_STORE
+    STATE_STORE <--> TASK_DB
+    STATE_STORE <--> AGENT_STATE
+
+    %% Model Routing
+    SCHEDULER --> MODEL_ROUTER
+    MODEL_ROUTER --> ANTHROPIC
+    MODEL_ROUTER --> OPENAI
+    MODEL_ROUTER --> GEMINI
+    MODEL_ROUTER --> DEEPSEEK
+    MODEL_ROUTER --> FALLBACK
+    FALLBACK --> RATE_LIMITER
+
+    %% Pack Execution
+    SCHEDULER --> PRODUCT
+    SCHEDULER --> ENGINEERING
+    SCHEDULER --> DESIGN
+    SCHEDULER --> MARKETING
+    SCHEDULER --> SUPABASE_PACK
+    SCHEDULER --> DEVOPS
+    SCHEDULER --> MOBILE
+    SCHEDULER --> LEGAL
+    SCHEDULER --> FINANCE
+    SCHEDULER --> RESEARCH
+    SCHEDULER --> PLANNING
+    SCHEDULER --> ERROR_PRED
+    SCHEDULER --> LEAD_FAUCET
+    SCHEDULER --> QA
+    SCHEDULER --> ANALYTICS_PACK
+    SCHEDULER --> ORCHESTRATION_PACK
+
+    %% Tools & MCP
+    PRODUCT --> TOOL_REG
+    ENGINEERING --> TOOL_REG
+    TOOL_REG --> MCP_SERVERS
+    MCP_SERVERS --> GITHUB
+    MCP_SERVERS --> SLACK
+    MCP_SERVERS --> JIRA
+    MCP_SERVERS --> STRIPE
+    MCP_SERVERS --> TWILIO
+
+    %% Database Connections
+    SUPABASE_PACK --> SUPABASE_DB
+    STATE_STORE --> SUPABASE_DB
+    POLICY_ENGINE --> POLICY_DB
+    CACHE --> REDIS
+    QUEUE --> REDIS
+
+    %% Audit Flow
+    GATES --> AUDIT
+    APPROVALS --> AUDIT
+    AUDIT --> AUDIT_LOG
+
+    %% Ops Console Connections
+    ORCHESTRATOR --> METRICS
+    ORCHESTRATOR --> HEALTH
+    POLICY_ENGINE --> KILL_SWITCH
+    KILL_SWITCH --> ORCHESTRATOR
+    COST_CONTROLS --> POLICY_ENGINE
+
+    %% Idempotency
+    ORCHESTRATOR --> IDEMPOTENCY
+    IDEMPOTENCY --> CACHE
+
+    %% Sandbox Execution
+    TOOL_REG --> SANDBOXING
+    SANDBOXING --> S3
+
+    %% ========================================================================
+    %% STYLING
+    %% ========================================================================
+
+    classDef external fill:#2d3748,stroke:#4a5568,stroke-width:2px,color:#e2e8f0
+    classDef entry fill:#1e40af,stroke:#3b82f6,stroke-width:2px,color:#ffffff
+    classDef ops fill:#7c3aed,stroke:#8b5cf6,stroke-width:2px,color:#ffffff
+    classDef runtime fill:#0f766e,stroke:#14b8a6,stroke-width:2px,color:#ffffff
+    classDef pack fill:#c2410c,stroke:#f97316,stroke-width:2px,color:#ffffff
+    classDef data fill:#0369a1,stroke:#0ea5e9,stroke-width:2px,color:#ffffff
+    classDef security fill:#be123c,stroke:#f43f5e,stroke-width:2px,color:#ffffff
+    classDef provider fill:#4338ca,stroke:#818cf8,stroke-width:2px,color:#ffffff
+
+    class ANTHROPIC,OPENAI,GEMINI,DEEPSEEK provider
+    class GITHUB,SLACK,JIRA,STRIPE,TWILIO,SUPABASE_DB,S3,REDIS external
+    class API_GW,WEBHOOKS,CLI,SDK entry
+    class METRICS,HEALTH,USAGE,APPROVALS_UI,KILL_SWITCH,COST_CONTROLS,AUDIT_LOG,COMPLIANCE,ALERTS ops
+    class ORCHESTRATOR,TASK_ROUTER,SCHEDULER,STATE_STORE,POLICY_ENGINE,GATES,MODEL_ROUTER,FALLBACK,RATE_LIMITER,TOOL_REG,MCP_SERVERS,SANDBOXING runtime
+    class APPROVALS,IDEMPOTENCY,AUDIT security
+    class PRODUCT,ENGINEERING,DESIGN,MARKETING,LEAD_FAUCET,ANALYTICS_PACK,SUPABASE_PACK,DEVOPS,MOBILE,LEGAL,FINANCE,QA,RESEARCH,PLANNING,ERROR_PRED,ORCHESTRATION_PACK pack
+    class TASK_DB,AGENT_STATE,POLICY_DB,CACHE,QUEUE,SESSION data

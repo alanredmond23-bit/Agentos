@@ -1,0 +1,285 @@
+{
+  "pack": "lead_faucet",
+  "version": "1.0.0",
+  "description": "Golden tasks for lead faucet agents - lead sourcing, validation, enrichment, scoring, routing, and fraud detection",
+  "tasks": [
+    {
+      "id": "lead_faucet_001",
+      "agent": "agent.lead_faucet.source_manager.v1",
+      "name": "Configure Multi-Source Lead Collection",
+      "input": {
+        "sources": [
+          {"type": "webform", "url": "https://app.example.com/contact"},
+          {"type": "linkedin", "campaign": "enterprise_outreach"},
+          {"type": "content_download", "asset": "whitepaper_ai_2025"},
+          {"type": "webinar", "event": "product_demo_jan"}
+        ],
+        "attribution_model": "first_touch",
+        "utm_tracking": true
+      },
+      "expected_output": {
+        "type": "source_configuration",
+        "includes_integration_setup": true,
+        "includes_field_mapping": true,
+        "includes_attribution_logic": true,
+        "includes_monitoring": true
+      },
+      "evaluation_criteria": [
+        "sources_properly_configured",
+        "field_mapping_complete",
+        "attribution_correct",
+        "monitoring_in_place",
+        "error_handling_defined"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["lead_sources", "integration", "attribution"]
+    },
+    {
+      "id": "lead_faucet_002",
+      "agent": "agent.lead_faucet.validation.v1",
+      "name": "Validate Lead Data Quality",
+      "input": {
+        "leads": [
+          {"email": "john.doe@acmecorp.com", "phone": "+1-555-123-4567", "company": "Acme Corp"},
+          {"email": "test@test.com", "phone": "1234567890", "company": "Test"},
+          {"email": "jane.smith@enterprise.com", "phone": "+44-20-1234-5678", "company": "Enterprise Ltd"}
+        ],
+        "validation_rules": {
+          "email": ["format", "domain_exists", "disposable_check"],
+          "phone": ["format", "carrier_lookup"],
+          "company": ["existence_check", "enrichment_lookup"]
+        }
+      },
+      "expected_output": {
+        "type": "validation_report",
+        "includes_pass_fail": true,
+        "includes_issues": true,
+        "includes_corrections": true,
+        "includes_confidence_scores": true
+      },
+      "evaluation_criteria": [
+        "validation_rules_applied",
+        "issues_correctly_identified",
+        "corrections_suggested",
+        "confidence_calibrated",
+        "false_positives_minimized"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["validation", "data_quality", "hygiene"]
+    },
+    {
+      "id": "lead_faucet_003",
+      "agent": "agent.lead_faucet.enrichment.v1",
+      "name": "Enrich B2B Lead Data",
+      "input": {
+        "lead": {
+          "email": "sarah.johnson@techstartup.io",
+          "company": "TechStartup"
+        },
+        "enrichment_fields": [
+          "full_name",
+          "job_title",
+          "linkedin_url",
+          "company_size",
+          "industry",
+          "funding_stage",
+          "technologies_used"
+        ],
+        "data_sources": ["clearbit", "apollo", "linkedin"]
+      },
+      "expected_output": {
+        "type": "enriched_lead",
+        "includes_all_fields": true,
+        "includes_confidence_scores": true,
+        "includes_source_attribution": true,
+        "includes_freshness_date": true
+      },
+      "evaluation_criteria": [
+        "fields_populated",
+        "data_accurate",
+        "sources_attributed",
+        "freshness_tracked",
+        "gaps_identified"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["enrichment", "b2b", "data_append"]
+    },
+    {
+      "id": "lead_faucet_004",
+      "agent": "agent.lead_faucet.scoring.v1",
+      "name": "Build Lead Scoring Model",
+      "input": {
+        "scoring_criteria": {
+          "demographic": {
+            "company_size": {"enterprise": 30, "mid_market": 20, "smb": 10},
+            "industry": {"technology": 20, "finance": 15, "other": 5},
+            "job_title": {"c_level": 25, "vp": 20, "director": 15, "manager": 10}
+          },
+          "behavioral": {
+            "content_downloads": 10,
+            "webinar_attendance": 15,
+            "demo_request": 30,
+            "pricing_page_visit": 20
+          }
+        },
+        "threshold_tiers": {"hot": 80, "warm": 50, "cold": 20}
+      },
+      "expected_output": {
+        "type": "scoring_model",
+        "includes_model_definition": true,
+        "includes_tier_logic": true,
+        "includes_decay_rules": true,
+        "includes_validation": true
+      },
+      "evaluation_criteria": [
+        "criteria_weighted_correctly",
+        "tiers_properly_defined",
+        "decay_logic_reasonable",
+        "model_validated",
+        "documentation_complete"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 90000,
+      "tags": ["scoring", "qualification", "model"]
+    },
+    {
+      "id": "lead_faucet_005",
+      "agent": "agent.lead_faucet.routing.v1",
+      "name": "Configure Lead Routing Rules",
+      "input": {
+        "sales_team": [
+          {"name": "Team West", "territories": ["CA", "OR", "WA"], "capacity": 50},
+          {"name": "Team East", "territories": ["NY", "MA", "NJ"], "capacity": 40},
+          {"name": "Enterprise Team", "criteria": "company_size > 1000", "capacity": 20}
+        ],
+        "routing_rules": [
+          {"priority": 1, "condition": "score >= 80", "action": "immediate_assign"},
+          {"priority": 2, "condition": "demo_request = true", "action": "round_robin"},
+          {"priority": 3, "condition": "default", "action": "nurture_queue"}
+        ],
+        "sla_requirements": {"hot_leads": "5_minutes", "warm_leads": "1_hour"}
+      },
+      "expected_output": {
+        "type": "routing_configuration",
+        "includes_rules_engine": true,
+        "includes_assignment_logic": true,
+        "includes_sla_tracking": true,
+        "includes_overflow_handling": true
+      },
+      "evaluation_criteria": [
+        "rules_correctly_prioritized",
+        "territories_mapped",
+        "capacity_respected",
+        "sla_trackable",
+        "edge_cases_handled"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["routing", "assignment", "sla"]
+    },
+    {
+      "id": "lead_faucet_006",
+      "agent": "agent.lead_faucet.fraud_risk.v1",
+      "name": "Detect Fraudulent Lead Submissions",
+      "input": {
+        "leads_to_analyze": 500,
+        "fraud_indicators": [
+          "disposable_email",
+          "vpn_usage",
+          "form_fill_speed",
+          "duplicate_ip",
+          "bot_patterns",
+          "known_fraud_lists"
+        ],
+        "risk_tolerance": "medium"
+      },
+      "expected_output": {
+        "type": "fraud_analysis",
+        "includes_risk_scores": true,
+        "includes_flagged_leads": true,
+        "includes_patterns": true,
+        "includes_recommendations": true
+      },
+      "evaluation_criteria": [
+        "indicators_evaluated",
+        "risk_scores_calibrated",
+        "patterns_identified",
+        "false_positives_acceptable",
+        "recommendations_actionable"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 90000,
+      "tags": ["fraud", "risk", "detection"]
+    },
+    {
+      "id": "lead_faucet_007",
+      "agent": "agent.lead_faucet.reporting.v1",
+      "name": "Generate Lead Pipeline Report",
+      "input": {
+        "period": "Q4 2024",
+        "metrics": [
+          "leads_generated",
+          "conversion_rates",
+          "source_performance",
+          "time_to_conversion",
+          "lead_quality_score",
+          "cost_per_lead"
+        ],
+        "breakdowns": ["source", "campaign", "territory", "rep"]
+      },
+      "expected_output": {
+        "type": "pipeline_report",
+        "includes_executive_summary": true,
+        "includes_trend_analysis": true,
+        "includes_visualizations": true,
+        "includes_recommendations": true
+      },
+      "evaluation_criteria": [
+        "metrics_accurate",
+        "trends_identified",
+        "breakdowns_useful",
+        "insights_actionable",
+        "recommendations_data_driven"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["reporting", "pipeline", "analytics"]
+    },
+    {
+      "id": "lead_faucet_008",
+      "agent": "agent.lead_faucet.validation.v1",
+      "name": "Implement TCPA Compliance Check",
+      "input": {
+        "leads": 1000,
+        "compliance_checks": [
+          "consent_verification",
+          "do_not_call_list",
+          "state_restrictions",
+          "time_of_day_restrictions",
+          "disclosure_requirements"
+        ],
+        "jurisdiction": "us"
+      },
+      "expected_output": {
+        "type": "compliance_report",
+        "includes_compliant_count": true,
+        "includes_violations": true,
+        "includes_remediation": true,
+        "includes_audit_trail": true
+      },
+      "evaluation_criteria": [
+        "all_checks_performed",
+        "violations_identified",
+        "remediation_clear",
+        "audit_trail_complete",
+        "risk_documented"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 90000,
+      "tags": ["compliance", "tcpa", "legal"]
+    }
+  ]
+}

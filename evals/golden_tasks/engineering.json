@@ -1,0 +1,318 @@
+{
+  "pack": "engineering",
+  "version": "1.0.0",
+  "description": "Golden tasks for engineering agents - feature development, architecture, code analysis, performance, and debugging",
+  "tasks": [
+    {
+      "id": "engineering_001",
+      "agent": "agent.engineering.product_developer.v1",
+      "name": "Build User Profile Component",
+      "input": {
+        "feature": "User profile page with avatar upload and bio editing",
+        "framework": "next.js",
+        "ui_library": "shadcn/ui",
+        "requirements": {
+          "avatar_upload": "with_cropping",
+          "bio_editing": "rich_text",
+          "social_links": true,
+          "responsive": true
+        },
+        "integrations": ["supabase_storage", "supabase_auth"]
+      },
+      "expected_output": {
+        "type": "react_component",
+        "includes_typescript": true,
+        "includes_tests": true,
+        "includes_stories": true,
+        "accessibility_compliant": true
+      },
+      "evaluation_criteria": [
+        "component_properly_typed",
+        "error_handling_complete",
+        "loading_states_handled",
+        "accessibility_wcag_aa",
+        "tests_cover_happy_path_and_errors"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 120000,
+      "tags": ["frontend", "react", "component", "upload"]
+    },
+    {
+      "id": "engineering_002",
+      "agent": "agent.engineering.architecture.v1",
+      "name": "Design Microservices Architecture",
+      "input": {
+        "system": "E-commerce Platform",
+        "services": ["orders", "inventory", "payments", "shipping", "notifications"],
+        "requirements": {
+          "availability": "99.9%",
+          "throughput": "10000_rps",
+          "data_consistency": "eventual"
+        },
+        "constraints": {
+          "cloud_provider": "aws",
+          "budget": "moderate"
+        }
+      },
+      "expected_output": {
+        "type": "architecture_document",
+        "includes_diagrams": true,
+        "includes_adr": true,
+        "includes_sequence_diagrams": true,
+        "includes_failure_modes": true
+      },
+      "evaluation_criteria": [
+        "services_properly_bounded",
+        "communication_patterns_defined",
+        "data_ownership_clear",
+        "failure_modes_addressed",
+        "scalability_considered"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 120000,
+      "tags": ["architecture", "microservices", "system_design"]
+    },
+    {
+      "id": "engineering_003",
+      "agent": "agent.engineering.code_analysis.v1",
+      "name": "Security Code Review",
+      "input": {
+        "repository": "api-gateway",
+        "focus_areas": ["authentication", "authorization", "input_validation", "sql_injection", "xss"],
+        "files_to_review": [
+          "src/auth/**/*.ts",
+          "src/middleware/**/*.ts",
+          "src/routes/**/*.ts"
+        ],
+        "severity_threshold": "medium"
+      },
+      "expected_output": {
+        "type": "security_review",
+        "includes_findings": true,
+        "includes_severity_ratings": true,
+        "includes_remediation": true,
+        "includes_cwe_references": true
+      },
+      "evaluation_criteria": [
+        "vulnerabilities_correctly_identified",
+        "severity_appropriately_rated",
+        "remediation_code_provided",
+        "false_positives_minimized",
+        "owasp_coverage_complete"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 90000,
+      "tags": ["security", "code_review", "vulnerability"]
+    },
+    {
+      "id": "engineering_004",
+      "agent": "agent.engineering.performance.v1",
+      "name": "Optimize Database Queries",
+      "input": {
+        "problem": "Dashboard loading slowly (8+ seconds)",
+        "slow_queries": [
+          "SELECT * FROM orders JOIN users ON orders.user_id = users.id WHERE orders.created_at > ?",
+          "SELECT COUNT(*) FROM transactions GROUP BY status, DATE(created_at)"
+        ],
+        "table_sizes": {
+          "orders": "10M rows",
+          "users": "500K rows",
+          "transactions": "50M rows"
+        }
+      },
+      "expected_output": {
+        "type": "optimization_report",
+        "includes_query_plans": true,
+        "includes_index_recommendations": true,
+        "includes_rewritten_queries": true,
+        "includes_benchmarks": true
+      },
+      "evaluation_criteria": [
+        "root_cause_identified",
+        "indexes_strategically_placed",
+        "queries_properly_optimized",
+        "benchmarks_show_improvement",
+        "tradeoffs_documented"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 90000,
+      "tags": ["performance", "database", "optimization"]
+    },
+    {
+      "id": "engineering_005",
+      "agent": "agent.engineering.plumber.v1",
+      "name": "Build Slack Integration",
+      "input": {
+        "features": [
+          "send_notifications",
+          "receive_slash_commands",
+          "interactive_modals",
+          "oauth_installation"
+        ],
+        "events_to_handle": [
+          "task_assigned",
+          "task_completed",
+          "mention_in_comment"
+        ],
+        "commands": [
+          "/create-task",
+          "/list-tasks",
+          "/update-status"
+        ]
+      },
+      "expected_output": {
+        "type": "integration_code",
+        "includes_oauth_flow": true,
+        "includes_event_handlers": true,
+        "includes_command_handlers": true,
+        "includes_tests": true
+      },
+      "evaluation_criteria": [
+        "oauth_flow_secure",
+        "signature_verification_correct",
+        "rate_limiting_handled",
+        "error_responses_user_friendly",
+        "event_acknowledgment_fast"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 120000,
+      "tags": ["integration", "slack", "api", "oauth"]
+    },
+    {
+      "id": "engineering_006",
+      "agent": "agent.engineering.debugger.v1",
+      "name": "Debug Memory Leak",
+      "input": {
+        "symptom": "Node.js server memory grows from 200MB to 2GB over 24 hours",
+        "environment": "production",
+        "suspected_areas": ["websocket_connections", "cache_management", "event_listeners"],
+        "heap_snapshot_available": true
+      },
+      "expected_output": {
+        "type": "debug_report",
+        "includes_root_cause": true,
+        "includes_fix": true,
+        "includes_prevention_measures": true,
+        "includes_monitoring_recommendations": true
+      },
+      "evaluation_criteria": [
+        "root_cause_accurately_identified",
+        "fix_addresses_root_cause",
+        "no_regression_introduced",
+        "monitoring_catches_future_leaks",
+        "documentation_updated"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 90000,
+      "tags": ["debugging", "memory_leak", "nodejs"]
+    },
+    {
+      "id": "engineering_007",
+      "agent": "agent.engineering.refactor.v1",
+      "name": "Refactor Legacy Payment Module",
+      "input": {
+        "module": "src/payments",
+        "issues": [
+          "god_class_pattern",
+          "no_separation_of_concerns",
+          "hardcoded_configs",
+          "no_error_handling"
+        ],
+        "target_patterns": ["strategy_pattern", "dependency_injection"],
+        "maintain_backwards_compatibility": true
+      },
+      "expected_output": {
+        "type": "refactored_code",
+        "includes_migration_plan": true,
+        "includes_tests": true,
+        "includes_documentation": true,
+        "backwards_compatible": true
+      },
+      "evaluation_criteria": [
+        "patterns_correctly_applied",
+        "concerns_properly_separated",
+        "all_tests_pass",
+        "backwards_compatibility_verified",
+        "code_coverage_maintained"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 120000,
+      "tags": ["refactoring", "design_patterns", "legacy"]
+    },
+    {
+      "id": "engineering_008",
+      "agent": "agent.engineering.product_developer.v1",
+      "name": "Implement Real-time Notifications",
+      "input": {
+        "feature": "In-app notification system with real-time updates",
+        "requirements": {
+          "notification_types": ["info", "success", "warning", "error"],
+          "persistence": true,
+          "mark_as_read": true,
+          "bulk_actions": true,
+          "sound_alerts": "optional"
+        },
+        "tech_stack": {
+          "frontend": "react",
+          "backend": "supabase_realtime",
+          "storage": "supabase"
+        }
+      },
+      "expected_output": {
+        "type": "full_feature",
+        "includes_frontend": true,
+        "includes_backend": true,
+        "includes_migrations": true,
+        "includes_tests": true
+      },
+      "evaluation_criteria": [
+        "realtime_updates_work",
+        "notifications_persisted",
+        "optimistic_updates_implemented",
+        "error_states_handled",
+        "accessible_implementation"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 120000,
+      "tags": ["feature", "realtime", "notifications"]
+    },
+    {
+      "id": "engineering_009",
+      "agent": "agent.engineering.architecture.v1",
+      "name": "Design Event-Driven Architecture",
+      "input": {
+        "domain": "Order Processing System",
+        "events": [
+          "OrderPlaced",
+          "PaymentReceived",
+          "InventoryReserved",
+          "OrderShipped",
+          "DeliveryCompleted"
+        ],
+        "consumers": ["billing", "inventory", "shipping", "analytics", "notifications"],
+        "requirements": {
+          "ordering_guarantee": "per_aggregate",
+          "at_least_once": true,
+          "replay_capability": true
+        }
+      },
+      "expected_output": {
+        "type": "architecture_document",
+        "includes_event_schema": true,
+        "includes_consumer_groups": true,
+        "includes_dead_letter_handling": true,
+        "includes_monitoring": true
+      },
+      "evaluation_criteria": [
+        "events_properly_designed",
+        "consumers_idempotent",
+        "ordering_requirements_met",
+        "failure_handling_complete",
+        "observability_built_in"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 90000,
+      "tags": ["architecture", "event_driven", "messaging"]
+    }
+  ]
+}

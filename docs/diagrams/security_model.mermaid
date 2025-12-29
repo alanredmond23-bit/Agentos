@@ -1,0 +1,463 @@
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#1a1a2e',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#4a4a6a',
+    'lineColor': '#6366f1',
+    'secondaryColor': '#2d2d44',
+    'tertiaryColor': '#0f0f23'
+  }
+}}%%
+
+%% ============================================================================
+%% AGENTOS SECURITY MODEL
+%% Zone-Based Security, RBAC, Audit Logging, and Compliance Framework
+%% C-Suite Presentation Ready
+%% ============================================================================
+
+flowchart TB
+    %% ========================================================================
+    %% SECURITY PERIMETER
+    %% ========================================================================
+
+    subgraph PERIMETER["Security Perimeter"]
+        direction TB
+
+        subgraph EDGE["Edge Security"]
+            WAF["Web Application Firewall<br/>OWASP Top 10 Protection"]
+            DDOS["DDoS Protection<br/>Rate Limiting & Filtering"]
+            CDN["CDN Edge<br/>Geographic Distribution"]
+            TLS_TERM["TLS Termination<br/>Certificate Management"]
+        end
+
+        subgraph GATEWAY["API Gateway"]
+            API_AUTH["Authentication<br/>JWT/API Key Validation"]
+            API_RATE["Rate Limiting<br/>Per-User Quotas"]
+            API_VALIDATE["Request Validation<br/>Schema Enforcement"]
+            API_LOG["Access Logging<br/>Request/Response Capture"]
+        end
+    end
+
+    %% ========================================================================
+    %% ZONE CLASSIFICATION SYSTEM
+    %% ========================================================================
+
+    subgraph ZONES["Zone Classification System"]
+        direction TB
+
+        subgraph RED_ZONE["RED ZONE - Critical Operations"]
+            direction TB
+            RED_LABEL["RESTRICTED ACCESS<br/>Human Approval Required"]
+
+            subgraph RED_OPS["Protected Operations"]
+                RED_LEGAL["Legal Documents<br/>Contracts, NDAs, Agreements"]
+                RED_BILLING["Billing Operations<br/>Charges, Refunds, Subscriptions"]
+                RED_EVIDENCE["Evidence Chain<br/>Audit Trails, Compliance Data"]
+                RED_PII["PII Operations<br/>Personal Data Modifications"]
+                RED_CREDS["Credential Management<br/>API Keys, Secrets"]
+                RED_DELETE["Data Deletion<br/>Permanent Removals"]
+            end
+
+            subgraph RED_CONTROLS["Red Zone Controls"]
+                RED_2FA["2FA Required<br/>Multi-Factor Authentication"]
+                RED_APPROVE["Mandatory Approval<br/>Human Review Queue"]
+                RED_AUDIT["Enhanced Audit<br/>Full Event Capture"]
+                RED_TIMEOUT["Short Timeouts<br/>5 Minute Expiry"]
+            end
+        end
+
+        subgraph YELLOW_ZONE["YELLOW ZONE - Sensitive Operations"]
+            direction TB
+            YELLOW_LABEL["MONITORED ACCESS<br/>Conditional Approval"]
+
+            subgraph YELLOW_OPS["Monitored Operations"]
+                YELLOW_API["External API Calls<br/>Third-Party Integrations"]
+                YELLOW_CORE["Core Services<br/>Database, Cache, Queue"]
+                YELLOW_EMAIL["Email Operations<br/>Outbound Communications"]
+                YELLOW_CONFIG["Configuration Changes<br/>Feature Flags, Settings"]
+                YELLOW_DEPLOY["Deployments<br/>Code & Infrastructure"]
+            end
+
+            subgraph YELLOW_CONTROLS["Yellow Zone Controls"]
+                YELLOW_POLICY["Policy Check<br/>Rule-Based Decisions"]
+                YELLOW_LOG["Standard Audit<br/>Operation Logging"]
+                YELLOW_REVIEW["Post-Hoc Review<br/>Async Verification"]
+                YELLOW_LIMIT["Operation Limits<br/>Daily Quotas"]
+            end
+        end
+
+        subgraph GREEN_ZONE["GREEN ZONE - Standard Operations"]
+            direction TB
+            GREEN_LABEL["AUTONOMOUS ACCESS<br/>Auto-Approved"]
+
+            subgraph GREEN_OPS["Autonomous Operations"]
+                GREEN_READ["Read Operations<br/>Data Queries, Lookups"]
+                GREEN_DOCS["Documentation<br/>Markdown, Comments"]
+                GREEN_FEATURE["Feature Development<br/>Non-Production Code"]
+                GREEN_ANALYSIS["Analysis Tasks<br/>Reports, Insights"]
+                GREEN_TEST["Test Execution<br/>Non-Destructive Tests"]
+            end
+
+            subgraph GREEN_CONTROLS["Green Zone Controls"]
+                GREEN_AUTO["Auto-Approve<br/>Immediate Execution"]
+                GREEN_BASIC["Basic Logging<br/>Minimal Audit Trail"]
+                GREEN_SANDBOX["Sandboxed<br/>Isolated Execution"]
+                GREEN_CACHE["Result Caching<br/>Idempotent Operations"]
+            end
+        end
+    end
+
+    %% ========================================================================
+    %% RBAC MODEL
+    %% ========================================================================
+
+    subgraph RBAC["Role-Based Access Control"]
+        direction TB
+
+        subgraph ROLES["Role Hierarchy"]
+            ROLE_SUPER["Super Admin<br/>Full System Access"]
+            ROLE_ADMIN["Admin<br/>Pack & Agent Management"]
+            ROLE_OPERATOR["Operator<br/>Task & Approval Management"]
+            ROLE_DEVELOPER["Developer<br/>Agent Development"]
+            ROLE_VIEWER["Viewer<br/>Read-Only Access"]
+            ROLE_AGENT["Agent<br/>Programmatic Access"]
+
+            ROLE_SUPER --> ROLE_ADMIN
+            ROLE_ADMIN --> ROLE_OPERATOR
+            ROLE_OPERATOR --> ROLE_DEVELOPER
+            ROLE_DEVELOPER --> ROLE_VIEWER
+        end
+
+        subgraph PERMISSIONS["Permission Matrix"]
+            direction LR
+
+            subgraph PERM_READ["Read Permissions"]
+                P_VIEW_TASKS["view:tasks"]
+                P_VIEW_AGENTS["view:agents"]
+                P_VIEW_LOGS["view:logs"]
+                P_VIEW_METRICS["view:metrics"]
+            end
+
+            subgraph PERM_WRITE["Write Permissions"]
+                P_CREATE_TASKS["create:tasks"]
+                P_MODIFY_AGENTS["modify:agents"]
+                P_APPROVE["approve:requests"]
+                P_DEPLOY["deploy:agents"]
+            end
+
+            subgraph PERM_ADMIN["Admin Permissions"]
+                P_MANAGE_USERS["manage:users"]
+                P_MANAGE_ROLES["manage:roles"]
+                P_MANAGE_POLICIES["manage:policies"]
+                P_KILL_SWITCH["execute:killswitch"]
+            end
+
+            subgraph PERM_SUPER["Super Permissions"]
+                P_ACCESS_RED["access:red_zone"]
+                P_MODIFY_BILLING["modify:billing"]
+                P_DELETE_DATA["delete:data"]
+                P_ROTATE_SECRETS["rotate:secrets"]
+            end
+        end
+
+        subgraph ROLE_MAPPING["Role-Permission Mapping"]
+            ROLE_VIEWER --> P_VIEW_TASKS
+            ROLE_VIEWER --> P_VIEW_AGENTS
+            ROLE_VIEWER --> P_VIEW_LOGS
+            ROLE_VIEWER --> P_VIEW_METRICS
+
+            ROLE_DEVELOPER --> P_CREATE_TASKS
+            ROLE_DEVELOPER --> P_MODIFY_AGENTS
+
+            ROLE_OPERATOR --> P_APPROVE
+            ROLE_OPERATOR --> P_DEPLOY
+
+            ROLE_ADMIN --> P_MANAGE_USERS
+            ROLE_ADMIN --> P_MANAGE_ROLES
+            ROLE_ADMIN --> P_MANAGE_POLICIES
+            ROLE_ADMIN --> P_KILL_SWITCH
+
+            ROLE_SUPER --> P_ACCESS_RED
+            ROLE_SUPER --> P_MODIFY_BILLING
+            ROLE_SUPER --> P_DELETE_DATA
+            ROLE_SUPER --> P_ROTATE_SECRETS
+        end
+    end
+
+    %% ========================================================================
+    %% APPROVAL SYSTEM
+    %% ========================================================================
+
+    subgraph APPROVALS["Approval Workflow System"]
+        direction TB
+
+        subgraph APPROVAL_REQUEST["Request Phase"]
+            APR_CREATE["Create Request<br/>Operation + Justification"]
+            APR_CLASSIFY["Zone Classification<br/>Determine Required Approval"]
+            APR_ROUTE["Route to Approvers<br/>Based on Operation Type"]
+        end
+
+        subgraph APPROVAL_PROCESS["Review Phase"]
+            APR_QUEUE["Approval Queue<br/>Pending Requests"]
+            APR_REVIEW["Human Review<br/>Context + Justification"]
+            APR_DECISION["Decision<br/>Approve/Reject/Modify"]
+        end
+
+        subgraph APPROVAL_TOKEN["Token Phase"]
+            APR_ISSUE["Token Issuance<br/>Single-Use, Time-Limited"]
+            APR_VALIDATE["Token Validation<br/>Checksum Verification"]
+            APR_CONSUME["Token Consumption<br/>Marked as Used"]
+        end
+
+        APR_CREATE --> APR_CLASSIFY
+        APR_CLASSIFY --> APR_ROUTE
+        APR_ROUTE --> APR_QUEUE
+        APR_QUEUE --> APR_REVIEW
+        APR_REVIEW --> APR_DECISION
+        APR_DECISION -->|"Approved"| APR_ISSUE
+        APR_ISSUE --> APR_VALIDATE
+        APR_VALIDATE --> APR_CONSUME
+    end
+
+    %% ========================================================================
+    %% SECRET MANAGEMENT
+    %% ========================================================================
+
+    subgraph SECRETS["Secret Management"]
+        direction TB
+
+        subgraph SECRET_STORE["Secret Storage"]
+            VAULT["HashiCorp Vault<br/>Primary Secret Store"]
+            KMS["AWS KMS / GCP KMS<br/>Key Management"]
+            ENV_SECRETS["Environment Variables<br/>Runtime Injection"]
+        end
+
+        subgraph SECRET_LIFECYCLE["Secret Lifecycle"]
+            SEC_CREATE["Creation<br/>Secure Generation"]
+            SEC_STORE["Storage<br/>Encrypted at Rest"]
+            SEC_ACCESS["Access<br/>Audit Logged"]
+            SEC_ROTATE["Rotation<br/>90-Day Cycle"]
+            SEC_REVOKE["Revocation<br/>Immediate Invalidation"]
+
+            SEC_CREATE --> SEC_STORE
+            SEC_STORE --> SEC_ACCESS
+            SEC_ACCESS --> SEC_ROTATE
+            SEC_ROTATE --> SEC_STORE
+            SEC_ACCESS --> SEC_REVOKE
+        end
+
+        subgraph SECRET_TYPES["Secret Types"]
+            SEC_API_KEYS["API Keys<br/>Provider Credentials"]
+            SEC_DB_CREDS["Database Credentials<br/>Connection Strings"]
+            SEC_SIGNING["Signing Keys<br/>JWT/Webhook Signatures"]
+            SEC_ENCRYPT["Encryption Keys<br/>Data Protection"]
+        end
+    end
+
+    %% ========================================================================
+    %% AUDIT LOGGING
+    %% ========================================================================
+
+    subgraph AUDIT["Audit Logging System"]
+        direction TB
+
+        subgraph AUDIT_CAPTURE["Event Capture"]
+            AUD_ACTION["Action Events<br/>CRUD Operations"]
+            AUD_AUTH["Auth Events<br/>Login/Logout/Token"]
+            AUD_APPROVAL["Approval Events<br/>Request/Decision"]
+            AUD_ERROR["Error Events<br/>Failures/Violations"]
+            AUD_SECURITY["Security Events<br/>Threats/Anomalies"]
+        end
+
+        subgraph AUDIT_PROCESS["Processing Pipeline"]
+            AUD_ENRICH["Enrichment<br/>Add Context/Metadata"]
+            AUD_REDACT["PII Redaction<br/>Sensitive Data Masking"]
+            AUD_CHECKSUM["Checksum<br/>Integrity Verification"]
+            AUD_COMPRESS["Compression<br/>Storage Optimization"]
+        end
+
+        subgraph AUDIT_STORE["Storage"]
+            AUD_HOT["Hot Storage<br/>Last 7 Days"]
+            AUD_WARM["Warm Storage<br/>30 Days"]
+            AUD_COLD["Cold Storage<br/>7 Years (Compliance)"]
+            AUD_IMMUTABLE["Immutable Archive<br/>Tamper-Proof"]
+        end
+
+        subgraph AUDIT_ACCESS["Access & Analysis"]
+            AUD_QUERY["Query Interface<br/>Search & Filter"]
+            AUD_EXPORT["Export<br/>Compliance Reports"]
+            AUD_ALERT["Alerting<br/>Real-Time Notifications"]
+            AUD_DASHBOARD["Dashboard<br/>Visualization"]
+        end
+
+        AUD_ACTION --> AUD_ENRICH
+        AUD_AUTH --> AUD_ENRICH
+        AUD_APPROVAL --> AUD_ENRICH
+        AUD_ERROR --> AUD_ENRICH
+        AUD_SECURITY --> AUD_ENRICH
+
+        AUD_ENRICH --> AUD_REDACT
+        AUD_REDACT --> AUD_CHECKSUM
+        AUD_CHECKSUM --> AUD_COMPRESS
+        AUD_COMPRESS --> AUD_HOT
+        AUD_HOT --> AUD_WARM
+        AUD_WARM --> AUD_COLD
+        AUD_COLD --> AUD_IMMUTABLE
+
+        AUD_HOT --> AUD_QUERY
+        AUD_QUERY --> AUD_EXPORT
+        AUD_QUERY --> AUD_ALERT
+        AUD_QUERY --> AUD_DASHBOARD
+    end
+
+    %% ========================================================================
+    %% COMPLIANCE FRAMEWORK
+    %% ========================================================================
+
+    subgraph COMPLIANCE["Compliance Framework"]
+        direction TB
+
+        subgraph STANDARDS["Compliance Standards"]
+            SOC2["SOC 2 Type II<br/>Security & Availability"]
+            GDPR["GDPR<br/>Data Protection"]
+            CCPA["CCPA<br/>California Privacy"]
+            HIPAA["HIPAA<br/>Health Information"]
+            TCPA["TCPA/CTIA<br/>Telecommunications"]
+            PCI["PCI DSS<br/>Payment Card Data"]
+        end
+
+        subgraph CONTROLS["Compliance Controls"]
+            CTRL_ACCESS["Access Controls<br/>Authentication & Authorization"]
+            CTRL_ENCRYPT["Encryption<br/>Transit & At-Rest"]
+            CTRL_AUDIT["Audit Trails<br/>Immutable Logging"]
+            CTRL_RETENTION["Data Retention<br/>Policy Enforcement"]
+            CTRL_CONSENT["Consent Management<br/>Opt-In/Opt-Out"]
+            CTRL_BREACH["Breach Detection<br/>Incident Response"]
+        end
+
+        subgraph EVIDENCE["Evidence Collection"]
+            EVD_AUTO["Automated Collection<br/>Continuous Monitoring"]
+            EVD_REPORT["Report Generation<br/>Scheduled Reports"]
+            EVD_ATTEST["Attestation<br/>Third-Party Audits"]
+        end
+
+        SOC2 --> CTRL_ACCESS
+        SOC2 --> CTRL_AUDIT
+        GDPR --> CTRL_CONSENT
+        GDPR --> CTRL_RETENTION
+        HIPAA --> CTRL_ENCRYPT
+        HIPAA --> CTRL_ACCESS
+        TCPA --> CTRL_CONSENT
+        PCI --> CTRL_ENCRYPT
+        CCPA --> CTRL_CONSENT
+
+        CTRL_ACCESS --> EVD_AUTO
+        CTRL_ENCRYPT --> EVD_AUTO
+        CTRL_AUDIT --> EVD_AUTO
+        EVD_AUTO --> EVD_REPORT
+        EVD_REPORT --> EVD_ATTEST
+    end
+
+    %% ========================================================================
+    %% THREAT DETECTION
+    %% ========================================================================
+
+    subgraph THREATS["Threat Detection & Response"]
+        direction TB
+
+        subgraph DETECTION["Detection Mechanisms"]
+            THR_ANOMALY["Anomaly Detection<br/>ML-Based Patterns"]
+            THR_SIGNATURE["Signature Matching<br/>Known Attack Patterns"]
+            THR_BEHAVIOR["Behavioral Analysis<br/>User/Agent Profiling"]
+            THR_HONEYPOT["Honeypots<br/>Deception Technology"]
+        end
+
+        subgraph RESPONSE["Response Actions"]
+            RSP_ALERT["Alert<br/>Notification Channels"]
+            RSP_BLOCK["Block<br/>Immediate Denial"]
+            RSP_ISOLATE["Isolate<br/>Quarantine Agent/User"]
+            RSP_KILL["Kill Switch<br/>System-Wide Halt"]
+        end
+
+        subgraph RECOVERY["Recovery"]
+            REC_ROLLBACK["Rollback<br/>State Restoration"]
+            REC_ROTATE["Credential Rotation<br/>Key Invalidation"]
+            REC_PATCH["Patch<br/>Vulnerability Fix"]
+            REC_REVIEW["Post-Mortem<br/>Incident Analysis"]
+        end
+
+        THR_ANOMALY --> RSP_ALERT
+        THR_SIGNATURE --> RSP_BLOCK
+        THR_BEHAVIOR --> RSP_ISOLATE
+        THR_HONEYPOT --> RSP_ALERT
+
+        RSP_BLOCK --> REC_ROLLBACK
+        RSP_ISOLATE --> REC_ROTATE
+        RSP_KILL --> REC_PATCH
+        RSP_ALERT --> REC_REVIEW
+    end
+
+    %% ========================================================================
+    %% CONNECTIONS
+    %% ========================================================================
+
+    %% Perimeter to Zones
+    TLS_TERM --> API_AUTH
+    API_AUTH --> API_RATE
+    API_RATE --> API_VALIDATE
+    API_VALIDATE --> API_LOG
+    API_LOG --> RED_ZONE
+    API_LOG --> YELLOW_ZONE
+    API_LOG --> GREEN_ZONE
+
+    %% Zones to RBAC
+    RED_OPS --> ROLE_SUPER
+    YELLOW_OPS --> ROLE_OPERATOR
+    GREEN_OPS --> ROLE_DEVELOPER
+
+    %% RBAC to Approvals
+    ROLE_OPERATOR --> APR_REVIEW
+    ROLE_SUPER --> APR_REVIEW
+
+    %% Approvals to Audit
+    APR_DECISION --> AUD_APPROVAL
+    APR_CONSUME --> AUD_ACTION
+
+    %% Secrets Integration
+    VAULT --> SEC_API_KEYS
+    VAULT --> SEC_DB_CREDS
+    VAULT --> SEC_SIGNING
+    KMS --> SEC_ENCRYPT
+
+    %% Audit to Compliance
+    AUD_EXPORT --> EVD_REPORT
+
+    %% Threats to Response
+    AUD_ALERT --> THR_ANOMALY
+
+    %% ========================================================================
+    %% STYLING
+    %% ========================================================================
+
+    classDef perimeter fill:#7c3aed,stroke:#8b5cf6,stroke-width:2px,color:#ffffff
+    classDef redzone fill:#be123c,stroke:#f43f5e,stroke-width:3px,color:#ffffff
+    classDef yellowzone fill:#c2410c,stroke:#f97316,stroke-width:2px,color:#ffffff
+    classDef greenzone fill:#047857,stroke:#10b981,stroke-width:2px,color:#ffffff
+    classDef rbac fill:#1e40af,stroke:#3b82f6,stroke-width:2px,color:#ffffff
+    classDef approval fill:#0f766e,stroke:#14b8a6,stroke-width:2px,color:#ffffff
+    classDef secret fill:#4338ca,stroke:#818cf8,stroke-width:2px,color:#ffffff
+    classDef audit fill:#0369a1,stroke:#0ea5e9,stroke-width:2px,color:#ffffff
+    classDef compliance fill:#6d28d9,stroke:#a78bfa,stroke-width:2px,color:#ffffff
+    classDef threat fill:#991b1b,stroke:#dc2626,stroke-width:2px,color:#ffffff
+
+    class WAF,DDOS,CDN,TLS_TERM,API_AUTH,API_RATE,API_VALIDATE,API_LOG perimeter
+    class RED_LABEL,RED_LEGAL,RED_BILLING,RED_EVIDENCE,RED_PII,RED_CREDS,RED_DELETE,RED_2FA,RED_APPROVE,RED_AUDIT,RED_TIMEOUT redzone
+    class YELLOW_LABEL,YELLOW_API,YELLOW_CORE,YELLOW_EMAIL,YELLOW_CONFIG,YELLOW_DEPLOY,YELLOW_POLICY,YELLOW_LOG,YELLOW_REVIEW,YELLOW_LIMIT yellowzone
+    class GREEN_LABEL,GREEN_READ,GREEN_DOCS,GREEN_FEATURE,GREEN_ANALYSIS,GREEN_TEST,GREEN_AUTO,GREEN_BASIC,GREEN_SANDBOX,GREEN_CACHE greenzone
+    class ROLE_SUPER,ROLE_ADMIN,ROLE_OPERATOR,ROLE_DEVELOPER,ROLE_VIEWER,ROLE_AGENT,P_VIEW_TASKS,P_VIEW_AGENTS,P_VIEW_LOGS,P_VIEW_METRICS,P_CREATE_TASKS,P_MODIFY_AGENTS,P_APPROVE,P_DEPLOY,P_MANAGE_USERS,P_MANAGE_ROLES,P_MANAGE_POLICIES,P_KILL_SWITCH,P_ACCESS_RED,P_MODIFY_BILLING,P_DELETE_DATA,P_ROTATE_SECRETS rbac
+    class APR_CREATE,APR_CLASSIFY,APR_ROUTE,APR_QUEUE,APR_REVIEW,APR_DECISION,APR_ISSUE,APR_VALIDATE,APR_CONSUME approval
+    class VAULT,KMS,ENV_SECRETS,SEC_CREATE,SEC_STORE,SEC_ACCESS,SEC_ROTATE,SEC_REVOKE,SEC_API_KEYS,SEC_DB_CREDS,SEC_SIGNING,SEC_ENCRYPT secret
+    class AUD_ACTION,AUD_AUTH,AUD_APPROVAL,AUD_ERROR,AUD_SECURITY,AUD_ENRICH,AUD_REDACT,AUD_CHECKSUM,AUD_COMPRESS,AUD_HOT,AUD_WARM,AUD_COLD,AUD_IMMUTABLE,AUD_QUERY,AUD_EXPORT,AUD_ALERT,AUD_DASHBOARD audit
+    class SOC2,GDPR,CCPA,HIPAA,TCPA,PCI,CTRL_ACCESS,CTRL_ENCRYPT,CTRL_AUDIT,CTRL_RETENTION,CTRL_CONSENT,CTRL_BREACH,EVD_AUTO,EVD_REPORT,EVD_ATTEST compliance
+    class THR_ANOMALY,THR_SIGNATURE,THR_BEHAVIOR,THR_HONEYPOT,RSP_ALERT,RSP_BLOCK,RSP_ISOLATE,RSP_KILL,REC_ROLLBACK,REC_ROTATE,REC_PATCH,REC_REVIEW threat

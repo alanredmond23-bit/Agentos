@@ -1,0 +1,266 @@
+{
+  "pack": "design",
+  "version": "1.0.0",
+  "description": "Golden tasks for design agents - UI/UX, design systems, accessibility, and prototyping",
+  "tasks": [
+    {
+      "id": "design_001",
+      "agent": "agent.design.uiux.v1",
+      "name": "Design Modal Component System",
+      "input": {
+        "component": "modal",
+        "variants": ["default", "confirmation", "form", "wizard"],
+        "sizes": ["sm", "md", "lg", "fullscreen"],
+        "features": {
+          "close_on_overlay": true,
+          "keyboard_navigation": true,
+          "focus_trap": true,
+          "animation": "slide_up"
+        }
+      },
+      "expected_output": {
+        "type": "react_component",
+        "includes_all_variants": true,
+        "includes_storybook": true,
+        "includes_tests": true,
+        "uses_design_tokens": true
+      },
+      "evaluation_criteria": [
+        "all_variants_implemented",
+        "focus_trap_working",
+        "keyboard_accessible",
+        "animation_performant",
+        "design_tokens_used"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 90000,
+      "tags": ["component", "modal", "accessibility"]
+    },
+    {
+      "id": "design_002",
+      "agent": "agent.design.system.v1",
+      "name": "Create Color Token System",
+      "input": {
+        "brand_colors": {
+          "primary": "#6366f1",
+          "secondary": "#8b5cf6"
+        },
+        "modes": ["light", "dark"],
+        "semantic_colors": ["success", "warning", "error", "info"],
+        "accessibility_target": "wcag_aaa"
+      },
+      "expected_output": {
+        "type": "design_tokens",
+        "format": "css_variables",
+        "includes_all_shades": true,
+        "includes_semantic": true,
+        "includes_documentation": true
+      },
+      "evaluation_criteria": [
+        "contrast_ratios_meet_aaa",
+        "dark_mode_properly_inverted",
+        "semantic_colors_consistent",
+        "tokens_properly_named",
+        "documentation_complete"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["design_system", "color", "tokens"]
+    },
+    {
+      "id": "design_003",
+      "agent": "agent.design.accessibility.v1",
+      "name": "Audit Form Accessibility",
+      "input": {
+        "form_type": "multi_step_registration",
+        "elements": ["text_inputs", "selects", "checkboxes", "radio_groups", "file_upload"],
+        "validation": "inline_and_summary",
+        "wcag_level": "AA"
+      },
+      "expected_output": {
+        "type": "accessibility_audit",
+        "includes_violations": true,
+        "includes_remediation": true,
+        "includes_aria_patterns": true,
+        "includes_screen_reader_testing": true
+      },
+      "evaluation_criteria": [
+        "all_violations_identified",
+        "remediation_code_correct",
+        "aria_patterns_appropriate",
+        "focus_management_correct",
+        "error_announcements_work"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["accessibility", "forms", "wcag"]
+    },
+    {
+      "id": "design_004",
+      "agent": "agent.design.prototyping.v1",
+      "name": "Create Onboarding Flow Prototype",
+      "input": {
+        "steps": [
+          "welcome_screen",
+          "account_type_selection",
+          "profile_setup",
+          "team_invitation",
+          "workspace_customization",
+          "completion"
+        ],
+        "animations": "smooth_transitions",
+        "progress_indicator": true,
+        "skip_option": true
+      },
+      "expected_output": {
+        "type": "interactive_prototype",
+        "includes_all_steps": true,
+        "includes_transitions": true,
+        "includes_error_states": true,
+        "includes_responsive_views": true
+      },
+      "evaluation_criteria": [
+        "flow_is_intuitive",
+        "transitions_are_smooth",
+        "progress_clearly_indicated",
+        "error_handling_graceful",
+        "skip_option_accessible"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 90000,
+      "tags": ["prototype", "onboarding", "user_flow"]
+    },
+    {
+      "id": "design_005",
+      "agent": "agent.design.uiux.v1",
+      "name": "Design Dashboard Layout",
+      "input": {
+        "dashboard_type": "analytics",
+        "widgets": ["kpi_cards", "charts", "tables", "activity_feed"],
+        "layout": "responsive_grid",
+        "customization": {
+          "widget_reordering": true,
+          "widget_resizing": true,
+          "saved_layouts": true
+        }
+      },
+      "expected_output": {
+        "type": "layout_component",
+        "includes_grid_system": true,
+        "includes_drag_drop": true,
+        "includes_persistence": true,
+        "includes_mobile_view": true
+      },
+      "evaluation_criteria": [
+        "grid_system_flexible",
+        "drag_drop_accessible",
+        "responsive_breakpoints_work",
+        "state_properly_persisted",
+        "performance_optimized"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 120000,
+      "tags": ["dashboard", "layout", "drag_drop"]
+    },
+    {
+      "id": "design_006",
+      "agent": "agent.design.system.v1",
+      "name": "Build Typography Scale",
+      "input": {
+        "base_size": 16,
+        "scale_ratio": 1.25,
+        "font_families": {
+          "sans": "Inter",
+          "mono": "JetBrains Mono"
+        },
+        "weights": ["regular", "medium", "semibold", "bold"],
+        "line_heights": "optimized_for_reading"
+      },
+      "expected_output": {
+        "type": "typography_system",
+        "includes_scale": true,
+        "includes_utility_classes": true,
+        "includes_responsive_scaling": true,
+        "includes_documentation": true
+      },
+      "evaluation_criteria": [
+        "scale_mathematically_consistent",
+        "line_heights_appropriate",
+        "responsive_scaling_smooth",
+        "utility_classes_comprehensive",
+        "documentation_includes_examples"
+      ],
+      "difficulty": "easy",
+      "timeout_ms": 45000,
+      "tags": ["typography", "design_system", "tokens"]
+    },
+    {
+      "id": "design_007",
+      "agent": "agent.design.accessibility.v1",
+      "name": "Implement Skip Links and Landmarks",
+      "input": {
+        "page_structure": {
+          "header": true,
+          "main_nav": true,
+          "sidebar_nav": true,
+          "main_content": true,
+          "footer": true
+        },
+        "skip_targets": ["main_content", "navigation", "search"],
+        "landmark_roles": true
+      },
+      "expected_output": {
+        "type": "accessibility_implementation",
+        "includes_skip_links": true,
+        "includes_landmarks": true,
+        "includes_heading_structure": true,
+        "includes_testing": true
+      },
+      "evaluation_criteria": [
+        "skip_links_visible_on_focus",
+        "landmarks_properly_labeled",
+        "heading_hierarchy_correct",
+        "screen_reader_testing_passed",
+        "keyboard_navigation_logical"
+      ],
+      "difficulty": "easy",
+      "timeout_ms": 45000,
+      "tags": ["accessibility", "landmarks", "navigation"]
+    },
+    {
+      "id": "design_008",
+      "agent": "agent.design.prototyping.v1",
+      "name": "Design Error State Patterns",
+      "input": {
+        "error_types": [
+          "empty_state",
+          "loading_error",
+          "not_found",
+          "permission_denied",
+          "server_error",
+          "offline"
+        ],
+        "context": "saas_application",
+        "includes_illustrations": true,
+        "action_patterns": true
+      },
+      "expected_output": {
+        "type": "pattern_library",
+        "includes_all_states": true,
+        "includes_variations": true,
+        "includes_copy": true,
+        "includes_components": true
+      },
+      "evaluation_criteria": [
+        "states_cover_all_scenarios",
+        "messaging_is_helpful",
+        "actions_are_clear",
+        "tone_is_consistent",
+        "components_are_reusable"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["error_states", "patterns", "ux"]
+    }
+  ]
+}

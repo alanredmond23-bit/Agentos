@@ -1,0 +1,225 @@
+{
+  "pack": "analytics",
+  "version": "1.0.0",
+  "description": "Golden tasks for analytics agents - data analysis, dashboards, and reporting",
+  "tasks": [
+    {
+      "id": "analytics_001",
+      "agent": "agent.analytics.data_analyst.v1",
+      "name": "Analyze User Retention Cohorts",
+      "input": {
+        "cohort_type": "weekly_signup",
+        "date_range": {
+          "start": "2024-10-01",
+          "end": "2024-12-31"
+        },
+        "retention_periods": ["day_1", "day_7", "day_14", "day_30"],
+        "segments": ["free", "pro", "enterprise"]
+      },
+      "expected_output": {
+        "type": "cohort_analysis",
+        "includes_retention_table": true,
+        "includes_visualization": true,
+        "includes_benchmarks": true,
+        "includes_insights": true
+      },
+      "evaluation_criteria": [
+        "cohorts_correctly_calculated",
+        "segments_properly_compared",
+        "trends_identified",
+        "insights_actionable",
+        "methodology_documented"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 90000,
+      "tags": ["cohort_analysis", "retention", "user_analytics"]
+    },
+    {
+      "id": "analytics_002",
+      "agent": "agent.analytics.dashboard.v1",
+      "name": "Design Executive KPI Dashboard",
+      "input": {
+        "audience": "c_suite",
+        "kpis": ["mrr", "arr", "churn_rate", "cac", "ltv", "nps"],
+        "refresh_frequency": "daily",
+        "comparison": "mom_and_yoy",
+        "alerts": true
+      },
+      "expected_output": {
+        "type": "dashboard_spec",
+        "includes_layout": true,
+        "includes_visualizations": true,
+        "includes_data_sources": true,
+        "includes_alert_rules": true
+      },
+      "evaluation_criteria": [
+        "kpis_properly_defined",
+        "visualizations_appropriate",
+        "comparisons_meaningful",
+        "alerts_actionable",
+        "executive_friendly"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["dashboard", "kpi", "executive"]
+    },
+    {
+      "id": "analytics_003",
+      "agent": "agent.analytics.reporting.v1",
+      "name": "Generate Monthly Business Review",
+      "input": {
+        "month": "December 2024",
+        "sections": [
+          "revenue_performance",
+          "customer_metrics",
+          "product_usage",
+          "support_metrics",
+          "marketing_roi"
+        ],
+        "comparison": "vs_forecast_and_prior_year"
+      },
+      "expected_output": {
+        "type": "monthly_report",
+        "includes_executive_summary": true,
+        "includes_charts": true,
+        "includes_variance_analysis": true,
+        "includes_recommendations": true
+      },
+      "evaluation_criteria": [
+        "metrics_accurate",
+        "variances_explained",
+        "trends_highlighted",
+        "recommendations_actionable",
+        "narrative_clear"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 90000,
+      "tags": ["reporting", "mbr", "business_review"]
+    },
+    {
+      "id": "analytics_004",
+      "agent": "agent.analytics.data_analyst.v1",
+      "name": "Perform Funnel Analysis",
+      "input": {
+        "funnel_name": "Onboarding",
+        "steps": [
+          "signup_started",
+          "email_verified",
+          "profile_completed",
+          "first_project_created",
+          "first_integration_connected"
+        ],
+        "date_range": "last_90_days",
+        "breakdown_by": ["acquisition_channel", "plan_type"]
+      },
+      "expected_output": {
+        "type": "funnel_analysis",
+        "includes_conversion_rates": true,
+        "includes_drop_off_analysis": true,
+        "includes_segment_comparison": true,
+        "includes_recommendations": true
+      },
+      "evaluation_criteria": [
+        "conversion_rates_accurate",
+        "bottlenecks_identified",
+        "segments_compared",
+        "drop_off_reasons_hypothesized",
+        "improvements_suggested"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 90000,
+      "tags": ["funnel", "conversion", "onboarding"]
+    },
+    {
+      "id": "analytics_005",
+      "agent": "agent.analytics.data_analyst.v1",
+      "name": "Conduct A/B Test Analysis",
+      "input": {
+        "experiment": "Pricing Page Redesign",
+        "variants": ["control", "variant_a", "variant_b"],
+        "primary_metric": "signup_conversion",
+        "secondary_metrics": ["time_on_page", "bounce_rate", "plan_selection"],
+        "sample_size_per_variant": 5000
+      },
+      "expected_output": {
+        "type": "ab_test_report",
+        "includes_statistical_analysis": true,
+        "includes_confidence_intervals": true,
+        "includes_winner_recommendation": true,
+        "includes_segment_analysis": true
+      },
+      "evaluation_criteria": [
+        "statistical_methods_correct",
+        "significance_properly_calculated",
+        "effect_size_reported",
+        "recommendation_justified",
+        "caveats_documented"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 90000,
+      "tags": ["ab_testing", "experimentation", "statistics"]
+    },
+    {
+      "id": "analytics_006",
+      "agent": "agent.analytics.dashboard.v1",
+      "name": "Build Product Usage Dashboard",
+      "input": {
+        "product_areas": ["core_features", "integrations", "api_usage", "mobile"],
+        "metrics": ["dau", "mau", "feature_adoption", "session_duration", "actions_per_session"],
+        "user_segments": ["new", "returning", "power_users"],
+        "time_granularity": ["daily", "weekly", "monthly"]
+      },
+      "expected_output": {
+        "type": "dashboard_spec",
+        "includes_widget_designs": true,
+        "includes_filter_options": true,
+        "includes_drill_down_paths": true,
+        "includes_export_options": true
+      },
+      "evaluation_criteria": [
+        "metrics_well_defined",
+        "segments_useful",
+        "drill_downs_logical",
+        "performance_optimized",
+        "stakeholder_needs_met"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["dashboard", "product_analytics", "usage"]
+    },
+    {
+      "id": "analytics_007",
+      "agent": "agent.analytics.reporting.v1",
+      "name": "Create Customer Health Scorecard",
+      "input": {
+        "health_indicators": [
+          "product_usage_trend",
+          "support_ticket_volume",
+          "nps_score",
+          "feature_adoption",
+          "billing_status"
+        ],
+        "customer_segments": ["enterprise", "mid_market", "smb"],
+        "alert_thresholds": true,
+        "action_triggers": true
+      },
+      "expected_output": {
+        "type": "health_scorecard",
+        "includes_scoring_model": true,
+        "includes_segment_benchmarks": true,
+        "includes_action_playbooks": true,
+        "includes_automation_rules": true
+      },
+      "evaluation_criteria": [
+        "indicators_comprehensive",
+        "scoring_fair",
+        "thresholds_appropriate",
+        "actions_defined",
+        "automation_practical"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 90000,
+      "tags": ["customer_health", "scoring", "churn_prevention"]
+    }
+  ]
+}

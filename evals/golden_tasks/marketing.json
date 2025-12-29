@@ -1,0 +1,261 @@
+{
+  "pack": "marketing",
+  "version": "1.0.0",
+  "description": "Golden tasks for marketing agents - content creation, SEO, social media, email campaigns, and analytics",
+  "tasks": [
+    {
+      "id": "marketing_001",
+      "agent": "agent.marketing.content_writer.v1",
+      "name": "Write SEO Blog Post",
+      "input": {
+        "topic": "How AI is Transforming Customer Support in 2025",
+        "target_keywords": ["ai customer support", "chatbot automation", "customer service ai"],
+        "word_count": 1800,
+        "tone": "professional_friendly",
+        "target_audience": "b2b_decision_makers",
+        "include_cta": true
+      },
+      "expected_output": {
+        "type": "blog_post",
+        "min_word_count": 1600,
+        "max_word_count": 2000,
+        "includes_meta_description": true,
+        "includes_headings": true,
+        "keyword_density_range": [0.01, 0.03]
+      },
+      "evaluation_criteria": [
+        "keyword_optimization_appropriate",
+        "headings_use_keywords_naturally",
+        "content_is_original_and_valuable",
+        "cta_is_compelling",
+        "readability_score_above_60"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 90000,
+      "tags": ["blog", "seo", "ai", "content"]
+    },
+    {
+      "id": "marketing_002",
+      "agent": "agent.marketing.seo.v1",
+      "name": "Conduct Keyword Research",
+      "input": {
+        "seed_keywords": ["project management software", "team collaboration tool"],
+        "competitor_domains": ["asana.com", "monday.com", "notion.so"],
+        "target_market": "US",
+        "difficulty_preference": "medium"
+      },
+      "expected_output": {
+        "type": "keyword_research_report",
+        "min_keywords": 50,
+        "includes_search_volume": true,
+        "includes_difficulty_score": true,
+        "includes_cpc": true,
+        "clustered_by_intent": true
+      },
+      "evaluation_criteria": [
+        "keywords_are_relevant",
+        "mix_of_head_and_long_tail",
+        "intent_classification_accurate",
+        "competitor_gaps_identified",
+        "actionable_recommendations_included"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["seo", "keyword_research", "competitive_analysis"]
+    },
+    {
+      "id": "marketing_003",
+      "agent": "agent.marketing.social_media.v1",
+      "name": "Create Product Launch Twitter Thread",
+      "input": {
+        "product": "AI Writing Assistant 2.0",
+        "key_features": [
+          "Real-time grammar correction",
+          "Tone adjustment",
+          "Multi-language support",
+          "Integration with popular editors"
+        ],
+        "launch_date": "2025-01-15",
+        "thread_length": 8,
+        "hashtags": ["#AIWriting", "#ProductLaunch"]
+      },
+      "expected_output": {
+        "type": "twitter_thread",
+        "tweet_count": 8,
+        "each_tweet_max_chars": 280,
+        "includes_emoji": true,
+        "includes_call_to_action": true
+      },
+      "evaluation_criteria": [
+        "hook_tweet_is_engaging",
+        "features_explained_simply",
+        "builds_narrative_arc",
+        "cta_is_clear",
+        "hashtags_used_appropriately"
+      ],
+      "difficulty": "easy",
+      "timeout_ms": 30000,
+      "tags": ["social_media", "twitter", "product_launch"]
+    },
+    {
+      "id": "marketing_004",
+      "agent": "agent.marketing.email.v1",
+      "name": "Create Welcome Email Sequence",
+      "input": {
+        "product": "SaaS Analytics Platform",
+        "sequence_length": 5,
+        "goals": [
+          "introduce_product",
+          "drive_first_action",
+          "showcase_features",
+          "social_proof",
+          "upgrade_prompt"
+        ],
+        "sending_cadence": "days_1_3_5_7_14"
+      },
+      "expected_output": {
+        "type": "email_sequence",
+        "email_count": 5,
+        "includes_subject_lines": true,
+        "includes_preview_text": true,
+        "includes_ctas": true,
+        "personalization_tokens": true
+      },
+      "evaluation_criteria": [
+        "subject_lines_compelling",
+        "progressive_engagement_strategy",
+        "ctas_are_specific_and_actionable",
+        "personalization_used_effectively",
+        "unsubscribe_compliant"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["email", "onboarding", "drip_campaign"]
+    },
+    {
+      "id": "marketing_005",
+      "agent": "agent.marketing.analytics.v1",
+      "name": "Analyze Campaign Performance",
+      "input": {
+        "campaign_name": "Black Friday 2024",
+        "channels": ["email", "paid_social", "display", "search"],
+        "date_range": {
+          "start": "2024-11-20",
+          "end": "2024-12-02"
+        },
+        "kpis": ["roas", "cpa", "conversion_rate", "revenue"]
+      },
+      "expected_output": {
+        "type": "campaign_report",
+        "includes_channel_breakdown": true,
+        "includes_attribution": true,
+        "includes_recommendations": true,
+        "includes_yoy_comparison": true
+      },
+      "evaluation_criteria": [
+        "metrics_accurately_calculated",
+        "attribution_model_explained",
+        "channel_performance_ranked",
+        "insights_are_actionable",
+        "recommendations_data_backed"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 90000,
+      "tags": ["analytics", "campaign", "attribution"]
+    },
+    {
+      "id": "marketing_006",
+      "agent": "agent.marketing.campaign.v1",
+      "name": "Plan Multi-Channel Product Launch",
+      "input": {
+        "product": "Enterprise Security Suite",
+        "launch_date": "2025-02-01",
+        "budget": 150000,
+        "target_audience": "enterprise_ciso_it_directors",
+        "channels": ["linkedin", "email", "webinar", "pr"]
+      },
+      "expected_output": {
+        "type": "campaign_plan",
+        "includes_timeline": true,
+        "includes_budget_allocation": true,
+        "includes_content_calendar": true,
+        "includes_kpis": true
+      },
+      "evaluation_criteria": [
+        "timeline_is_realistic",
+        "budget_allocation_strategic",
+        "channel_mix_appropriate_for_audience",
+        "kpis_are_measurable",
+        "contingency_plans_included"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 120000,
+      "tags": ["campaign", "product_launch", "multi_channel"]
+    },
+    {
+      "id": "marketing_007",
+      "agent": "agent.marketing.content_writer.v1",
+      "name": "Write Landing Page Copy",
+      "input": {
+        "product": "Cloud Database Platform",
+        "target_persona": "developer",
+        "value_propositions": [
+          "10x faster queries",
+          "Zero-downtime scaling",
+          "Pay-as-you-go pricing"
+        ],
+        "competitor_comparison": true,
+        "social_proof_type": "logos_and_testimonials"
+      },
+      "expected_output": {
+        "type": "landing_page_copy",
+        "sections": ["hero", "features", "benefits", "social_proof", "pricing", "faq", "cta"],
+        "includes_microcopy": true,
+        "conversion_focused": true
+      },
+      "evaluation_criteria": [
+        "hero_communicates_value_instantly",
+        "benefits_over_features",
+        "objection_handling_in_faq",
+        "cta_copy_action_oriented",
+        "maintains_consistent_voice"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["landing_page", "copywriting", "conversion"]
+    },
+    {
+      "id": "marketing_008",
+      "agent": "agent.marketing.seo.v1",
+      "name": "Perform Technical SEO Audit",
+      "input": {
+        "domain": "example-saas.com",
+        "pages_to_audit": 100,
+        "focus_areas": [
+          "core_web_vitals",
+          "crawlability",
+          "indexation",
+          "schema_markup",
+          "mobile_usability"
+        ]
+      },
+      "expected_output": {
+        "type": "seo_audit_report",
+        "includes_priority_issues": true,
+        "includes_quick_wins": true,
+        "includes_implementation_guide": true,
+        "severity_classification": true
+      },
+      "evaluation_criteria": [
+        "issues_correctly_identified",
+        "severity_appropriately_ranked",
+        "recommendations_are_actionable",
+        "implementation_steps_clear",
+        "expected_impact_estimated"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 120000,
+      "tags": ["seo", "technical_audit", "core_web_vitals"]
+    }
+  ]
+}

@@ -1,0 +1,258 @@
+{
+  "pack": "devops",
+  "version": "1.0.0",
+  "description": "Golden tasks for DevOps agents - infrastructure, CI/CD, Kubernetes, monitoring, and incident response",
+  "tasks": [
+    {
+      "id": "devops_001",
+      "agent": "agent.devops.terraform.v1",
+      "name": "Provision EKS Cluster",
+      "input": {
+        "cloud": "aws",
+        "region": "us-east-1",
+        "cluster_name": "production",
+        "node_groups": [
+          {
+            "name": "general",
+            "instance_type": "t3.large",
+            "min_size": 2,
+            "max_size": 10
+          },
+          {
+            "name": "compute",
+            "instance_type": "c5.2xlarge",
+            "min_size": 0,
+            "max_size": 5
+          }
+        ],
+        "addons": ["vpc-cni", "coredns", "kube-proxy", "aws-ebs-csi-driver"]
+      },
+      "expected_output": {
+        "type": "terraform_module",
+        "includes_vpc": true,
+        "includes_iam": true,
+        "includes_security_groups": true,
+        "includes_outputs": true
+      },
+      "evaluation_criteria": [
+        "terraform_validates",
+        "security_groups_least_privilege",
+        "iam_roles_scoped_correctly",
+        "node_groups_autoscaling_configured",
+        "cluster_logging_enabled"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 120000,
+      "tags": ["terraform", "eks", "kubernetes", "aws"]
+    },
+    {
+      "id": "devops_002",
+      "agent": "agent.devops.kubernetes.v1",
+      "name": "Create Helm Chart for Microservice",
+      "input": {
+        "service_name": "api-gateway",
+        "image": "api-gateway:latest",
+        "replicas": 3,
+        "resources": {
+          "cpu_request": "100m",
+          "cpu_limit": "500m",
+          "memory_request": "256Mi",
+          "memory_limit": "512Mi"
+        },
+        "features": ["hpa", "pdb", "ingress", "service_account", "configmap", "secrets"]
+      },
+      "expected_output": {
+        "type": "helm_chart",
+        "includes_templates": true,
+        "includes_values": true,
+        "includes_helpers": true,
+        "includes_tests": true
+      },
+      "evaluation_criteria": [
+        "chart_lints_successfully",
+        "values_properly_templated",
+        "hpa_configured_correctly",
+        "pdb_ensures_availability",
+        "security_context_set"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 90000,
+      "tags": ["kubernetes", "helm", "microservices"]
+    },
+    {
+      "id": "devops_003",
+      "agent": "agent.devops.cicd.v1",
+      "name": "Design GitHub Actions Pipeline",
+      "input": {
+        "repository_type": "monorepo",
+        "applications": ["web", "api", "worker"],
+        "stages": ["lint", "test", "build", "security_scan", "deploy"],
+        "environments": ["staging", "production"],
+        "triggers": ["push_to_main", "pull_request", "manual"]
+      },
+      "expected_output": {
+        "type": "github_actions_workflows",
+        "includes_reusable_workflows": true,
+        "includes_caching": true,
+        "includes_matrix_builds": true,
+        "includes_approval_gates": true
+      },
+      "evaluation_criteria": [
+        "workflows_are_modular",
+        "caching_optimizes_builds",
+        "secrets_handled_securely",
+        "approvals_for_production",
+        "failure_notifications_configured"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 120000,
+      "tags": ["cicd", "github_actions", "monorepo"]
+    },
+    {
+      "id": "devops_004",
+      "agent": "agent.devops.monitoring.v1",
+      "name": "Set Up Observability Stack",
+      "input": {
+        "stack": "prometheus_grafana_loki",
+        "targets": ["kubernetes_cluster", "application_metrics", "custom_metrics"],
+        "retention": "30_days",
+        "dashboards": ["cluster_overview", "application_performance", "business_metrics"]
+      },
+      "expected_output": {
+        "type": "monitoring_configuration",
+        "includes_prometheus_rules": true,
+        "includes_grafana_dashboards": true,
+        "includes_loki_config": true,
+        "includes_alertmanager": true
+      },
+      "evaluation_criteria": [
+        "metrics_collection_complete",
+        "dashboards_are_useful",
+        "alert_rules_actionable",
+        "retention_configured_correctly",
+        "high_availability_considered"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 120000,
+      "tags": ["monitoring", "prometheus", "grafana", "observability"]
+    },
+    {
+      "id": "devops_005",
+      "agent": "agent.devops.alerting.v1",
+      "name": "Configure Alert Rules",
+      "input": {
+        "services": ["api-gateway", "order-service", "payment-service"],
+        "slos": {
+          "availability": 99.9,
+          "latency_p99": "500ms",
+          "error_rate": "0.1%"
+        },
+        "notification_channels": ["slack", "pagerduty"],
+        "escalation_policy": true
+      },
+      "expected_output": {
+        "type": "alerting_configuration",
+        "includes_prometheus_rules": true,
+        "includes_notification_routing": true,
+        "includes_escalation": true,
+        "includes_runbooks": true
+      },
+      "evaluation_criteria": [
+        "alerts_based_on_slos",
+        "no_alert_fatigue",
+        "escalation_policy_clear",
+        "runbooks_actionable",
+        "silencing_rules_appropriate"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["alerting", "slo", "pagerduty"]
+    },
+    {
+      "id": "devops_006",
+      "agent": "agent.devops.incident_response.v1",
+      "name": "Create Incident Runbook",
+      "input": {
+        "incident_type": "database_failover",
+        "affected_systems": ["postgresql", "application_tier", "caching"],
+        "severity_levels": ["sev1", "sev2", "sev3"],
+        "stakeholders": ["on_call_engineer", "database_team", "engineering_manager"]
+      },
+      "expected_output": {
+        "type": "runbook",
+        "includes_detection": true,
+        "includes_diagnosis": true,
+        "includes_mitigation": true,
+        "includes_communication_templates": true,
+        "includes_post_incident": true
+      },
+      "evaluation_criteria": [
+        "steps_are_actionable",
+        "diagnosis_logical",
+        "mitigation_time_optimized",
+        "communication_clear",
+        "post_incident_thorough"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["incident_response", "runbook", "database"]
+    },
+    {
+      "id": "devops_007",
+      "agent": "agent.devops.security.v1",
+      "name": "Implement Secret Management",
+      "input": {
+        "platform": "kubernetes",
+        "secret_store": "aws_secrets_manager",
+        "sync_method": "external_secrets_operator",
+        "secrets_to_manage": ["database_credentials", "api_keys", "certificates"],
+        "rotation_policy": "90_days"
+      },
+      "expected_output": {
+        "type": "secret_management_config",
+        "includes_eso_config": true,
+        "includes_iam_roles": true,
+        "includes_secret_stores": true,
+        "includes_rotation": true
+      },
+      "evaluation_criteria": [
+        "secrets_not_in_git",
+        "iam_least_privilege",
+        "rotation_automated",
+        "audit_logging_enabled",
+        "emergency_access_documented"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 90000,
+      "tags": ["security", "secrets", "kubernetes"]
+    },
+    {
+      "id": "devops_008",
+      "agent": "agent.devops.terraform.v1",
+      "name": "Create Multi-Environment Infrastructure",
+      "input": {
+        "environments": ["dev", "staging", "production"],
+        "resources": ["vpc", "rds", "elasticache", "s3", "cloudfront"],
+        "approach": "terraform_workspaces",
+        "state_backend": "s3_with_dynamodb_locking"
+      },
+      "expected_output": {
+        "type": "terraform_project",
+        "includes_modules": true,
+        "includes_tfvars": true,
+        "includes_backend_config": true,
+        "includes_ci_integration": true
+      },
+      "evaluation_criteria": [
+        "environments_properly_isolated",
+        "modules_are_reusable",
+        "state_management_secure",
+        "drift_detection_possible",
+        "cost_optimization_considered"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 120000,
+      "tags": ["terraform", "multi_environment", "infrastructure"]
+    }
+  ]
+}

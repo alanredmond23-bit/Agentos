@@ -1,0 +1,256 @@
+{
+  "pack": "legal",
+  "version": "1.0.0",
+  "description": "Golden tasks for legal agents - research, discovery, privilege review, evidence management, and timeline construction",
+  "tasks": [
+    {
+      "id": "legal_001",
+      "agent": "agent.legal.research.v1",
+      "name": "Research Case Law on Software Patents",
+      "input": {
+        "topic": "software patent eligibility under Alice Corp",
+        "jurisdiction": "federal_circuit",
+        "date_range": {
+          "start": "2020-01-01",
+          "end": "2024-12-31"
+        },
+        "key_issues": ["abstract_idea", "inventive_concept", "technical_improvement"]
+      },
+      "expected_output": {
+        "type": "legal_memo",
+        "includes_case_summaries": true,
+        "includes_holdings": true,
+        "includes_analysis": true,
+        "citations_bluebook": true
+      },
+      "evaluation_criteria": [
+        "relevant_cases_identified",
+        "holdings_accurately_stated",
+        "analysis_supports_conclusions",
+        "citations_properly_formatted",
+        "trends_identified"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 120000,
+      "tags": ["research", "patents", "case_law"]
+    },
+    {
+      "id": "legal_002",
+      "agent": "agent.legal.discovery.v1",
+      "name": "Process Document Production",
+      "input": {
+        "document_count": 5000,
+        "document_types": ["email", "spreadsheet", "presentation", "contract"],
+        "review_categories": ["responsive", "privileged", "confidential", "not_responsive"],
+        "deadline_days": 14
+      },
+      "expected_output": {
+        "type": "discovery_report",
+        "includes_classification": true,
+        "includes_deduplication": true,
+        "includes_privilege_log": true,
+        "includes_production_set": true
+      },
+      "evaluation_criteria": [
+        "classification_accurate",
+        "privileged_docs_protected",
+        "deduplication_complete",
+        "production_format_correct",
+        "deadline_achievable"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 120000,
+      "tags": ["discovery", "document_review", "production"]
+    },
+    {
+      "id": "legal_003",
+      "agent": "agent.legal.privilege.v1",
+      "name": "Conduct Privilege Review",
+      "input": {
+        "documents": 500,
+        "privilege_types": ["attorney_client", "work_product", "common_interest"],
+        "sensitivity": "high",
+        "two_tier_review": true
+      },
+      "expected_output": {
+        "type": "privilege_review",
+        "includes_determinations": true,
+        "includes_privilege_log": true,
+        "includes_waiver_analysis": true,
+        "redaction_recommendations": true
+      },
+      "evaluation_criteria": [
+        "privilege_correctly_identified",
+        "waiver_risks_flagged",
+        "log_entries_complete",
+        "redactions_appropriate",
+        "no_privilege_waiver"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 90000,
+      "tags": ["privilege", "review", "confidentiality"]
+    },
+    {
+      "id": "legal_004",
+      "agent": "agent.legal.evidence.v1",
+      "name": "Organize Trial Exhibits",
+      "input": {
+        "case_type": "breach_of_contract",
+        "exhibit_count": 150,
+        "categories": ["contracts", "communications", "financial_records", "expert_reports"],
+        "format": "federal_court"
+      },
+      "expected_output": {
+        "type": "exhibit_list",
+        "includes_exhibit_numbers": true,
+        "includes_descriptions": true,
+        "includes_foundation_notes": true,
+        "includes_objection_analysis": true
+      },
+      "evaluation_criteria": [
+        "numbering_consistent",
+        "descriptions_clear",
+        "foundation_sufficient",
+        "objections_anticipated",
+        "organization_logical"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["evidence", "trial_prep", "exhibits"]
+    },
+    {
+      "id": "legal_005",
+      "agent": "agent.legal.timeline.v1",
+      "name": "Construct Case Timeline",
+      "input": {
+        "case_type": "employment_discrimination",
+        "date_range": {
+          "start": "2022-01-01",
+          "end": "2024-06-30"
+        },
+        "key_events": [
+          "hiring",
+          "performance_reviews",
+          "complaints",
+          "investigation",
+          "termination",
+          "eeoc_filing"
+        ],
+        "sources": ["documents", "depositions", "declarations"]
+      },
+      "expected_output": {
+        "type": "timeline",
+        "includes_chronology": true,
+        "includes_source_citations": true,
+        "includes_gaps_analysis": true,
+        "includes_visualization": true
+      },
+      "evaluation_criteria": [
+        "dates_accurate",
+        "events_properly_sourced",
+        "gaps_identified",
+        "conflicts_flagged",
+        "narrative_coherent"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["timeline", "chronology", "case_analysis"]
+    },
+    {
+      "id": "legal_006",
+      "agent": "agent.legal.attorney.v1",
+      "name": "Draft Motion to Dismiss",
+      "input": {
+        "case": "ABC Corp v. XYZ Inc",
+        "grounds": ["failure_to_state_claim", "lack_of_standing"],
+        "jurisdiction": "sdny",
+        "page_limit": 25,
+        "supporting_cases": 10
+      },
+      "expected_output": {
+        "type": "motion_brief",
+        "includes_introduction": true,
+        "includes_facts": true,
+        "includes_argument": true,
+        "includes_conclusion": true,
+        "citations_bluebook": true
+      },
+      "evaluation_criteria": [
+        "legal_standards_correct",
+        "arguments_persuasive",
+        "cases_properly_cited",
+        "page_limit_met",
+        "court_rules_followed"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 120000,
+      "tags": ["motion", "brief_writing", "litigation"]
+    },
+    {
+      "id": "legal_007",
+      "agent": "agent.legal.research.v1",
+      "name": "Analyze Contract Clause",
+      "input": {
+        "clause_type": "limitation_of_liability",
+        "contract_type": "saas_agreement",
+        "issues": [
+          "enforceability",
+          "carve_outs",
+          "cap_amount",
+          "consequential_damages"
+        ],
+        "jurisdiction": "delaware"
+      },
+      "expected_output": {
+        "type": "clause_analysis",
+        "includes_current_law": true,
+        "includes_market_terms": true,
+        "includes_risk_assessment": true,
+        "includes_recommendations": true
+      },
+      "evaluation_criteria": [
+        "law_accurately_stated",
+        "market_terms_current",
+        "risks_identified",
+        "recommendations_practical",
+        "redline_provided"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["contracts", "analysis", "negotiation"]
+    },
+    {
+      "id": "legal_008",
+      "agent": "agent.legal.discovery.v1",
+      "name": "Draft Interrogatories",
+      "input": {
+        "case_type": "trade_secret_misappropriation",
+        "discovery_phase": "initial",
+        "topics": [
+          "employment_history",
+          "access_to_trade_secrets",
+          "data_transfers",
+          "communications_with_competitor"
+        ],
+        "limit": 25
+      },
+      "expected_output": {
+        "type": "interrogatories",
+        "count": 25,
+        "includes_definitions": true,
+        "includes_instructions": true,
+        "includes_objection_responses": true
+      },
+      "evaluation_criteria": [
+        "questions_relevant",
+        "definitions_comprehensive",
+        "not_overly_broad",
+        "contention_questions_appropriate",
+        "within_limit"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["discovery", "interrogatories", "litigation"]
+    }
+  ]
+}

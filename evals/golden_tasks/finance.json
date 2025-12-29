@@ -1,0 +1,233 @@
+{
+  "pack": "finance",
+  "version": "1.0.0",
+  "description": "Golden tasks for finance agents - cashflow modeling, reconciliation, risk detection, forecasting, and controls auditing",
+  "tasks": [
+    {
+      "id": "finance_001",
+      "agent": "agent.finance.cashflow_modeler.v1",
+      "name": "Build 13-Week Cash Flow Forecast",
+      "input": {
+        "starting_cash": 2500000,
+        "recurring_revenue": 450000,
+        "growth_rate": 0.05,
+        "operating_expenses": 380000,
+        "planned_investments": [
+          {"week": 4, "amount": 100000, "purpose": "infrastructure"},
+          {"week": 8, "amount": 50000, "purpose": "marketing"}
+        ],
+        "ar_collection_days": 45,
+        "ap_payment_days": 30
+      },
+      "expected_output": {
+        "type": "cashflow_forecast",
+        "includes_weekly_projection": true,
+        "includes_scenarios": true,
+        "includes_runway_calculation": true,
+        "includes_sensitivity_analysis": true
+      },
+      "evaluation_criteria": [
+        "projections_accurate",
+        "scenarios_realistic",
+        "runway_correctly_calculated",
+        "sensitivity_factors_identified",
+        "recommendations_provided"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 90000,
+      "tags": ["cashflow", "forecasting", "treasury"]
+    },
+    {
+      "id": "finance_002",
+      "agent": "agent.finance.reconciliation.v1",
+      "name": "Reconcile Stripe Transactions",
+      "input": {
+        "period": "December 2024",
+        "data_sources": ["stripe_api", "accounting_system", "bank_statements"],
+        "expected_volume": 15000,
+        "tolerance_threshold": 0.01,
+        "match_fields": ["amount", "date", "customer_id", "invoice_number"]
+      },
+      "expected_output": {
+        "type": "reconciliation_report",
+        "includes_match_summary": true,
+        "includes_exceptions": true,
+        "includes_variance_analysis": true,
+        "includes_audit_trail": true
+      },
+      "evaluation_criteria": [
+        "matching_accurate",
+        "exceptions_categorized",
+        "variances_explained",
+        "audit_trail_complete",
+        "recommendations_actionable"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 90000,
+      "tags": ["reconciliation", "stripe", "accounting"]
+    },
+    {
+      "id": "finance_003",
+      "agent": "agent.finance.risk_detector.v1",
+      "name": "Detect Anomalous Transactions",
+      "input": {
+        "transaction_data": "last_90_days",
+        "detection_types": ["amount_anomaly", "velocity_spike", "pattern_deviation", "new_counterparty"],
+        "risk_thresholds": {
+          "amount_z_score": 3,
+          "velocity_multiplier": 5,
+          "pattern_deviation_percent": 50
+        }
+      },
+      "expected_output": {
+        "type": "anomaly_report",
+        "includes_flagged_transactions": true,
+        "includes_risk_scores": true,
+        "includes_investigation_steps": true,
+        "includes_false_positive_handling": true
+      },
+      "evaluation_criteria": [
+        "anomalies_correctly_identified",
+        "risk_scores_calibrated",
+        "investigation_steps_clear",
+        "false_positives_minimized",
+        "patterns_documented"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 90000,
+      "tags": ["fraud_detection", "anomaly", "risk"]
+    },
+    {
+      "id": "finance_004",
+      "agent": "agent.finance.forecast.v1",
+      "name": "Create Revenue Forecast",
+      "input": {
+        "historical_data": "24_months",
+        "forecast_horizon": "12_months",
+        "segments": ["enterprise", "mid_market", "smb"],
+        "factors": ["churn", "expansion", "new_business"],
+        "confidence_levels": [0.80, 0.90, 0.95]
+      },
+      "expected_output": {
+        "type": "revenue_forecast",
+        "includes_monthly_projections": true,
+        "includes_confidence_intervals": true,
+        "includes_segment_breakdown": true,
+        "includes_assumptions": true
+      },
+      "evaluation_criteria": [
+        "methodology_sound",
+        "confidence_intervals_appropriate",
+        "segments_analyzed",
+        "assumptions_documented",
+        "sensitivity_tested"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 120000,
+      "tags": ["forecasting", "revenue", "financial_planning"]
+    },
+    {
+      "id": "finance_005",
+      "agent": "agent.finance.controls_auditor.v1",
+      "name": "Audit Expense Approval Controls",
+      "input": {
+        "control": "expense_approval_workflow",
+        "policy": {
+          "thresholds": [
+            {"amount": 1000, "approver": "manager"},
+            {"amount": 5000, "approver": "director"},
+            {"amount": 25000, "approver": "vp_finance"}
+          ],
+          "required_documentation": ["receipt", "business_purpose"]
+        },
+        "audit_period": "Q4 2024",
+        "sample_size": 100
+      },
+      "expected_output": {
+        "type": "control_audit",
+        "includes_compliance_rate": true,
+        "includes_exceptions": true,
+        "includes_root_cause": true,
+        "includes_recommendations": true
+      },
+      "evaluation_criteria": [
+        "sample_representative",
+        "exceptions_documented",
+        "root_causes_identified",
+        "recommendations_prioritized",
+        "remediation_timeline_set"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["controls", "audit", "compliance"]
+    },
+    {
+      "id": "finance_006",
+      "agent": "agent.finance.cashflow_modeler.v1",
+      "name": "Model Funding Scenarios",
+      "input": {
+        "current_runway_months": 18,
+        "monthly_burn": 280000,
+        "growth_scenarios": [
+          {"name": "aggressive", "hiring": 20, "marketing": 100000},
+          {"name": "moderate", "hiring": 10, "marketing": 50000},
+          {"name": "conservative", "hiring": 5, "marketing": 25000}
+        ],
+        "funding_options": [
+          {"type": "series_a", "amount": 5000000, "dilution": 0.20},
+          {"type": "revenue_financing", "amount": 1000000, "cost": 0.12}
+        ]
+      },
+      "expected_output": {
+        "type": "funding_analysis",
+        "includes_scenario_comparison": true,
+        "includes_runway_impact": true,
+        "includes_dilution_analysis": true,
+        "includes_recommendations": true
+      },
+      "evaluation_criteria": [
+        "scenarios_realistic",
+        "runway_correctly_calculated",
+        "dilution_properly_analyzed",
+        "tradeoffs_clear",
+        "recommendation_justified"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 90000,
+      "tags": ["funding", "scenario_analysis", "runway"]
+    },
+    {
+      "id": "finance_007",
+      "agent": "agent.finance.reconciliation.v1",
+      "name": "Perform Month-End Close",
+      "input": {
+        "period": "December 2024",
+        "close_activities": [
+          "revenue_recognition",
+          "expense_accruals",
+          "deferred_revenue",
+          "intercompany_elimination",
+          "fx_translation"
+        ],
+        "materiality_threshold": 10000
+      },
+      "expected_output": {
+        "type": "close_checklist",
+        "includes_journal_entries": true,
+        "includes_reconciliations": true,
+        "includes_variance_explanations": true,
+        "includes_sign_offs": true
+      },
+      "evaluation_criteria": [
+        "entries_accurate",
+        "reconciliations_complete",
+        "variances_explained",
+        "materiality_respected",
+        "audit_ready"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 120000,
+      "tags": ["month_end", "close", "accounting"]
+    }
+  ]
+}

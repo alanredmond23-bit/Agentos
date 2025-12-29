@@ -1,0 +1,246 @@
+{
+  "pack": "error_predictor",
+  "version": "1.0.0",
+  "description": "Golden tasks for error predictor agents - pattern detection, risk scoring, mitigation planning, and alerting",
+  "tasks": [
+    {
+      "id": "error_predictor_001",
+      "agent": "agent.error_predictor.pattern_detector.v1",
+      "name": "Detect Error Patterns in Logs",
+      "input": {
+        "log_source": "application_logs",
+        "time_window": "last_24_hours",
+        "error_types": ["exception", "timeout", "connection_error", "rate_limit"],
+        "min_occurrence": 5,
+        "correlation_window": "5_minutes"
+      },
+      "expected_output": {
+        "type": "pattern_report",
+        "includes_patterns": true,
+        "includes_frequency": true,
+        "includes_correlations": true,
+        "includes_root_cause_hints": true
+      },
+      "evaluation_criteria": [
+        "patterns_correctly_identified",
+        "frequency_accurate",
+        "correlations_meaningful",
+        "false_positives_minimized",
+        "root_cause_hints_helpful"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 120000,
+      "tags": ["pattern_detection", "logs", "correlation"]
+    },
+    {
+      "id": "error_predictor_002",
+      "agent": "agent.error_predictor.risk_scorer.v1",
+      "name": "Calculate Deployment Risk Score",
+      "input": {
+        "deployment": {
+          "service": "payment-service",
+          "change_size": "large",
+          "files_changed": 45,
+          "test_coverage": 78,
+          "author_experience": "senior"
+        },
+        "historical_data": {
+          "recent_incidents": 2,
+          "rollback_rate": 0.15,
+          "avg_recovery_time": "30_minutes"
+        }
+      },
+      "expected_output": {
+        "type": "risk_score",
+        "includes_score": true,
+        "includes_factors": true,
+        "includes_recommendations": true,
+        "includes_monitoring_focus": true
+      },
+      "evaluation_criteria": [
+        "score_calibrated",
+        "factors_weighted_correctly",
+        "recommendations_actionable",
+        "monitoring_targeted",
+        "historical_data_used"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["risk_scoring", "deployment", "prediction"]
+    },
+    {
+      "id": "error_predictor_003",
+      "agent": "agent.error_predictor.mitigation_planner.v1",
+      "name": "Generate Mitigation Plan for Memory Leak",
+      "input": {
+        "issue": {
+          "type": "memory_leak",
+          "service": "api-gateway",
+          "trend": "growing_linearly",
+          "current_usage": "85%",
+          "time_to_oom": "4_hours"
+        },
+        "constraints": {
+          "downtime_tolerance": "zero",
+          "rollback_available": true,
+          "horizontal_scaling": true
+        }
+      },
+      "expected_output": {
+        "type": "mitigation_plan",
+        "includes_immediate_actions": true,
+        "includes_investigation_steps": true,
+        "includes_long_term_fix": true,
+        "includes_rollback_criteria": true
+      },
+      "evaluation_criteria": [
+        "immediate_actions_effective",
+        "investigation_systematic",
+        "long_term_fix_addresses_root_cause",
+        "rollback_criteria_clear",
+        "timeline_realistic"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 90000,
+      "tags": ["mitigation", "memory_leak", "incident"]
+    },
+    {
+      "id": "error_predictor_004",
+      "agent": "agent.error_predictor.alert_generator.v1",
+      "name": "Configure Predictive Alerts",
+      "input": {
+        "metrics": [
+          {"name": "error_rate", "threshold": "1%", "prediction_window": "1_hour"},
+          {"name": "latency_p99", "threshold": "500ms", "prediction_window": "30_minutes"},
+          {"name": "disk_usage", "threshold": "90%", "prediction_window": "4_hours"}
+        ],
+        "notification_channels": ["slack", "pagerduty"],
+        "severity_mapping": true
+      },
+      "expected_output": {
+        "type": "alert_configuration",
+        "includes_alert_rules": true,
+        "includes_prediction_models": true,
+        "includes_routing": true,
+        "includes_escalation": true
+      },
+      "evaluation_criteria": [
+        "thresholds_appropriate",
+        "prediction_windows_useful",
+        "routing_correct",
+        "escalation_defined",
+        "noise_minimized"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["alerting", "predictive", "configuration"]
+    },
+    {
+      "id": "error_predictor_005",
+      "agent": "agent.error_predictor.pattern_detector.v1",
+      "name": "Identify Cascading Failure Patterns",
+      "input": {
+        "topology": {
+          "services": ["api-gateway", "auth", "orders", "inventory", "payments"],
+          "dependencies": [
+            {"from": "api-gateway", "to": ["auth", "orders"]},
+            {"from": "orders", "to": ["inventory", "payments"]}
+          ]
+        },
+        "historical_incidents": [
+          {"trigger": "auth", "cascaded_to": ["api-gateway"]},
+          {"trigger": "inventory", "cascaded_to": ["orders", "api-gateway"]}
+        ]
+      },
+      "expected_output": {
+        "type": "cascade_analysis",
+        "includes_risk_map": true,
+        "includes_blast_radius": true,
+        "includes_circuit_breakers": true,
+        "includes_recommendations": true
+      },
+      "evaluation_criteria": [
+        "dependencies_mapped",
+        "blast_radius_calculated",
+        "weak_points_identified",
+        "circuit_breakers_placed",
+        "recommendations_prioritized"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 120000,
+      "tags": ["cascading_failure", "dependencies", "resilience"]
+    },
+    {
+      "id": "error_predictor_006",
+      "agent": "agent.error_predictor.risk_scorer.v1",
+      "name": "Assess Infrastructure Vulnerability",
+      "input": {
+        "infrastructure": {
+          "kubernetes_version": "1.27",
+          "node_count": 15,
+          "pod_density": "high",
+          "pdb_coverage": 0.6
+        },
+        "recent_events": [
+          "node_failure",
+          "pod_evictions",
+          "resource_exhaustion"
+        ],
+        "planned_maintenance": true
+      },
+      "expected_output": {
+        "type": "vulnerability_assessment",
+        "includes_risk_areas": true,
+        "includes_scores": true,
+        "includes_remediations": true,
+        "includes_maintenance_advice": true
+      },
+      "evaluation_criteria": [
+        "risks_comprehensively_assessed",
+        "scores_justified",
+        "remediations_practical",
+        "maintenance_timing_advised",
+        "priority_ranking_clear"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["infrastructure", "vulnerability", "kubernetes"]
+    },
+    {
+      "id": "error_predictor_007",
+      "agent": "agent.error_predictor.mitigation_planner.v1",
+      "name": "Plan Database Failover",
+      "input": {
+        "database": {
+          "type": "postgresql",
+          "role": "primary",
+          "replication": "synchronous",
+          "replica_count": 2,
+          "lag_threshold": "1_second"
+        },
+        "trigger_conditions": [
+          "primary_unreachable",
+          "replication_lag_exceeded",
+          "disk_failure"
+        ]
+      },
+      "expected_output": {
+        "type": "failover_plan",
+        "includes_runbook": true,
+        "includes_automation": true,
+        "includes_validation_steps": true,
+        "includes_rollback": true
+      },
+      "evaluation_criteria": [
+        "runbook_complete",
+        "automation_safe",
+        "validation_thorough",
+        "rollback_possible",
+        "rpo_rto_documented"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 90000,
+      "tags": ["database", "failover", "disaster_recovery"]
+    }
+  ]
+}

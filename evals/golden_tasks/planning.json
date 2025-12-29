@@ -1,0 +1,237 @@
+{
+  "pack": "planning",
+  "version": "1.0.0",
+  "description": "Golden tasks for planning agents - roadmaps, sprints, resources, dependencies, and risk management",
+  "tasks": [
+    {
+      "id": "planning_001",
+      "agent": "agent.planning.roadmap.v1",
+      "name": "Create Quarterly OKR Roadmap",
+      "input": {
+        "quarter": "Q1 2025",
+        "objectives": [
+          "Launch enterprise tier",
+          "Achieve 99.9% uptime",
+          "Reduce customer onboarding time by 50%"
+        ],
+        "teams": ["engineering", "product", "customer_success"],
+        "constraints": {
+          "headcount": 45,
+          "budget": 2000000
+        }
+      },
+      "expected_output": {
+        "type": "okr_roadmap",
+        "includes_key_results": true,
+        "includes_milestones": true,
+        "includes_team_allocation": true,
+        "includes_dependencies": true
+      },
+      "evaluation_criteria": [
+        "okrs_measurable",
+        "milestones_achievable",
+        "resources_balanced",
+        "dependencies_identified",
+        "timeline_realistic"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 90000,
+      "tags": ["roadmap", "okrs", "quarterly"]
+    },
+    {
+      "id": "planning_002",
+      "agent": "agent.planning.sprint.v1",
+      "name": "Plan Two-Week Sprint",
+      "input": {
+        "sprint_number": 24,
+        "team_velocity": 42,
+        "team_members": 6,
+        "pto_days": 3,
+        "backlog_items": [
+          {"id": "US-101", "points": 8, "priority": "high"},
+          {"id": "US-102", "points": 5, "priority": "high"},
+          {"id": "US-103", "points": 13, "priority": "medium"},
+          {"id": "BUG-45", "points": 3, "priority": "critical"},
+          {"id": "TECH-22", "points": 8, "priority": "medium"}
+        ]
+      },
+      "expected_output": {
+        "type": "sprint_plan",
+        "includes_committed_items": true,
+        "includes_capacity_calculation": true,
+        "includes_risk_buffer": true,
+        "includes_sprint_goal": true
+      },
+      "evaluation_criteria": [
+        "capacity_correctly_calculated",
+        "commitment_reasonable",
+        "priorities_respected",
+        "buffer_appropriate",
+        "goal_is_achievable"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 45000,
+      "tags": ["sprint", "agile", "capacity"]
+    },
+    {
+      "id": "planning_003",
+      "agent": "agent.planning.resource.v1",
+      "name": "Optimize Team Allocation",
+      "input": {
+        "projects": [
+          {"name": "Platform Migration", "priority": 1, "required_skills": ["backend", "devops"]},
+          {"name": "Mobile App v2", "priority": 2, "required_skills": ["ios", "android"]},
+          {"name": "Analytics Dashboard", "priority": 3, "required_skills": ["frontend", "data"]}
+        ],
+        "team_members": [
+          {"name": "Alice", "skills": ["backend", "devops"], "availability": 0.8},
+          {"name": "Bob", "skills": ["ios", "frontend"], "availability": 1.0},
+          {"name": "Carol", "skills": ["android", "backend"], "availability": 1.0},
+          {"name": "Dave", "skills": ["frontend", "data"], "availability": 0.5}
+        ]
+      },
+      "expected_output": {
+        "type": "allocation_plan",
+        "includes_assignments": true,
+        "includes_gaps": true,
+        "includes_recommendations": true,
+        "includes_risk_areas": true
+      },
+      "evaluation_criteria": [
+        "skills_matched",
+        "priorities_respected",
+        "availability_honored",
+        "gaps_identified",
+        "recommendations_actionable"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["resource_allocation", "team_planning"]
+    },
+    {
+      "id": "planning_004",
+      "agent": "agent.planning.dependency.v1",
+      "name": "Map Project Dependencies",
+      "input": {
+        "projects": [
+          {"id": "P1", "name": "API v3", "start": "2025-01-15"},
+          {"id": "P2", "name": "Auth Service", "depends_on": ["P1"]},
+          {"id": "P3", "name": "Mobile App", "depends_on": ["P2"]},
+          {"id": "P4", "name": "Web Dashboard", "depends_on": ["P1", "P2"]},
+          {"id": "P5", "name": "Analytics", "depends_on": ["P4"]}
+        ],
+        "target_completion": "2025-06-30"
+      },
+      "expected_output": {
+        "type": "dependency_map",
+        "includes_critical_path": true,
+        "includes_gantt": true,
+        "includes_slack_analysis": true,
+        "includes_recommendations": true
+      },
+      "evaluation_criteria": [
+        "dependencies_correctly_mapped",
+        "critical_path_identified",
+        "timeline_achievable",
+        "bottlenecks_flagged",
+        "parallel_opportunities_found"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["dependencies", "critical_path", "scheduling"]
+    },
+    {
+      "id": "planning_005",
+      "agent": "agent.planning.risk.v1",
+      "name": "Conduct Project Risk Assessment",
+      "input": {
+        "project": "Cloud Migration",
+        "duration_months": 6,
+        "budget": 500000,
+        "risk_categories": ["technical", "schedule", "resource", "external"],
+        "stakeholders": ["engineering", "finance", "operations", "security"]
+      },
+      "expected_output": {
+        "type": "risk_assessment",
+        "includes_risk_register": true,
+        "includes_probability_impact_matrix": true,
+        "includes_mitigation_plans": true,
+        "includes_contingency_budget": true
+      },
+      "evaluation_criteria": [
+        "risks_comprehensive",
+        "probability_realistic",
+        "impact_quantified",
+        "mitigations_practical",
+        "contingency_appropriate"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 90000,
+      "tags": ["risk_management", "assessment"]
+    },
+    {
+      "id": "planning_006",
+      "agent": "agent.planning.sprint.v1",
+      "name": "Facilitate Sprint Retrospective",
+      "input": {
+        "sprint_number": 23,
+        "sprint_data": {
+          "committed_points": 40,
+          "completed_points": 35,
+          "bugs_found": 3,
+          "blockers": 2,
+          "team_sentiment": "mixed"
+        },
+        "previous_action_items": [
+          {"item": "Improve code review turnaround", "status": "completed"},
+          {"item": "Add integration tests", "status": "in_progress"}
+        ]
+      },
+      "expected_output": {
+        "type": "retrospective_summary",
+        "includes_what_went_well": true,
+        "includes_improvements": true,
+        "includes_action_items": true,
+        "includes_metrics_analysis": true
+      },
+      "evaluation_criteria": [
+        "analysis_data_driven",
+        "improvements_specific",
+        "action_items_assignable",
+        "previous_items_tracked",
+        "team_voice_captured"
+      ],
+      "difficulty": "easy",
+      "timeout_ms": 45000,
+      "tags": ["retrospective", "continuous_improvement"]
+    },
+    {
+      "id": "planning_007",
+      "agent": "agent.planning.roadmap.v1",
+      "name": "Create Product Launch Plan",
+      "input": {
+        "product": "Enterprise AI Assistant",
+        "launch_date": "2025-03-15",
+        "phases": ["beta", "limited_ga", "full_ga"],
+        "workstreams": ["engineering", "marketing", "sales", "support", "legal"]
+      },
+      "expected_output": {
+        "type": "launch_plan",
+        "includes_timeline": true,
+        "includes_checklists": true,
+        "includes_rollback_plan": true,
+        "includes_success_metrics": true
+      },
+      "evaluation_criteria": [
+        "all_workstreams_covered",
+        "milestones_clear",
+        "rollback_plan_viable",
+        "metrics_measurable",
+        "contingencies_defined"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 90000,
+      "tags": ["launch", "go_to_market", "cross_functional"]
+    }
+  ]
+}

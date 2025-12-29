@@ -1,0 +1,484 @@
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#1a1a2e',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#4a4a6a',
+    'lineColor': '#6366f1',
+    'secondaryColor': '#2d2d44',
+    'tertiaryColor': '#0f0f23'
+  }
+}}%%
+
+%% ============================================================================
+%% AGENTOS DEPLOYMENT ARCHITECTURE
+%% Cloud Infrastructure, Scaling Patterns, and High Availability Configuration
+%% C-Suite Presentation Ready
+%% ============================================================================
+
+flowchart TB
+    %% ========================================================================
+    %% GLOBAL TRAFFIC MANAGEMENT
+    %% ========================================================================
+
+    subgraph GLOBAL["Global Traffic Management"]
+        direction LR
+
+        DNS["Route 53 / Cloud DNS<br/>Geo-Routing & Health Checks"]
+        GLB["Global Load Balancer<br/>Anycast IP, SSL Termination"]
+
+        subgraph EDGE_LOCATIONS["Edge Locations"]
+            EDGE_US["US Edge<br/>us-east-1, us-west-2"]
+            EDGE_EU["EU Edge<br/>eu-west-1, eu-central-1"]
+            EDGE_APAC["APAC Edge<br/>ap-southeast-1, ap-northeast-1"]
+        end
+
+        DNS --> GLB
+        GLB --> EDGE_US
+        GLB --> EDGE_EU
+        GLB --> EDGE_APAC
+    end
+
+    %% ========================================================================
+    %% PRIMARY REGION (US-EAST-1)
+    %% ========================================================================
+
+    subgraph PRIMARY["Primary Region (us-east-1)"]
+        direction TB
+
+        subgraph PRIMARY_NETWORK["VPC - 10.0.0.0/16"]
+            direction TB
+
+            subgraph PUBLIC_SUBNET["Public Subnets"]
+                direction LR
+                ALB_PRI["Application Load Balancer<br/>HTTPS, WebSocket"]
+                NAT_PRI["NAT Gateway<br/>Outbound Internet"]
+                BASTION["Bastion Host<br/>SSH Jump Server"]
+            end
+
+            subgraph PRIVATE_APP["Private App Subnets"]
+                direction TB
+
+                subgraph EKS_CLUSTER["EKS Cluster - AgentOS"]
+                    direction TB
+
+                    subgraph CONTROL_PLANE["Control Plane"]
+                        K8S_API["Kubernetes API<br/>Managed by AWS"]
+                    end
+
+                    subgraph WORKER_NODES["Worker Node Groups"]
+                        direction LR
+
+                        subgraph NG_RUNTIME["Runtime Node Group"]
+                            direction TB
+                            RT_NODE1["m6i.2xlarge<br/>8 vCPU, 32GB"]
+                            RT_NODE2["m6i.2xlarge<br/>8 vCPU, 32GB"]
+                            RT_NODE3["m6i.2xlarge<br/>8 vCPU, 32GB"]
+                        end
+
+                        subgraph NG_AGENTS["Agent Node Group"]
+                            direction TB
+                            AG_NODE1["c6i.4xlarge<br/>16 vCPU, 32GB"]
+                            AG_NODE2["c6i.4xlarge<br/>16 vCPU, 32GB"]
+                            AG_NODE3["c6i.4xlarge<br/>16 vCPU, 32GB"]
+                        end
+
+                        subgraph NG_GPU["GPU Node Group (Optional)"]
+                            direction TB
+                            GPU_NODE1["g5.xlarge<br/>NVIDIA A10G"]
+                            GPU_NODE2["g5.xlarge<br/>NVIDIA A10G"]
+                        end
+                    end
+
+                    subgraph K8S_WORKLOADS["Kubernetes Workloads"]
+                        direction TB
+
+                        subgraph CORE_SERVICES["Core Services"]
+                            direction LR
+                            ORCH_DEPLOY["orchestrator<br/>Deployment: 3 replicas"]
+                            ROUTER_DEPLOY["task-router<br/>Deployment: 3 replicas"]
+                            GATES_DEPLOY["gate-executor<br/>Deployment: 2 replicas"]
+                            APPROVAL_DEPLOY["approval-manager<br/>Deployment: 2 replicas"]
+                        end
+
+                        subgraph PACK_SERVICES["Pack Services"]
+                            direction LR
+                            PRODUCT_DEPLOY["product-pack<br/>Deployment: 2 replicas"]
+                            ENG_DEPLOY["engineering-pack<br/>Deployment: 3 replicas"]
+                            MARKET_DEPLOY["marketing-pack<br/>Deployment: 2 replicas"]
+                            SUPABASE_DEPLOY["supabase-pack<br/>Deployment: 2 replicas"]
+                        end
+
+                        subgraph INFRA_SERVICES["Infrastructure Services"]
+                            direction LR
+                            AUDIT_DEPLOY["audit-logger<br/>Deployment: 2 replicas"]
+                            METRICS_DEPLOY["metrics-collector<br/>Deployment: 1 replica"]
+                            WEBHOOK_DEPLOY["webhook-handler<br/>Deployment: 2 replicas"]
+                        end
+                    end
+
+                    subgraph K8S_INFRA["Kubernetes Infrastructure"]
+                        direction LR
+                        INGRESS["Ingress Controller<br/>AWS ALB Ingress"]
+                        MESH["Service Mesh<br/>Istio / Linkerd"]
+                        HPA["Horizontal Pod Autoscaler<br/>CPU/Memory Based"]
+                        VPA["Vertical Pod Autoscaler<br/>Resource Optimization"]
+                    end
+                end
+            end
+
+            subgraph PRIVATE_DATA["Private Data Subnets"]
+                direction TB
+
+                subgraph DATABASES["Database Layer"]
+                    direction LR
+                    RDS_PRIMARY["RDS PostgreSQL<br/>Primary (db.r6g.2xlarge)"]
+                    RDS_READ1["RDS Read Replica<br/>Analytics Queries"]
+                    RDS_READ2["RDS Read Replica<br/>Reporting Queries"]
+                end
+
+                subgraph CACHE_LAYER["Cache Layer"]
+                    direction LR
+                    REDIS_PRIMARY["ElastiCache Redis<br/>Primary (cache.r6g.xlarge)"]
+                    REDIS_REPLICA["ElastiCache Redis<br/>Replica"]
+                end
+
+                subgraph QUEUE_LAYER["Queue Layer"]
+                    direction LR
+                    SQS_TASKS["SQS - Task Queue<br/>FIFO, Deduplication"]
+                    SQS_DLQ["SQS - Dead Letter<br/>Failed Tasks"]
+                    SNS_EVENTS["SNS - Event Topics<br/>Pub/Sub"]
+                end
+            end
+        end
+
+        subgraph PRIMARY_STORAGE["Storage"]
+            direction LR
+            S3_ARTIFACTS["S3 - Artifacts<br/>Build Outputs, Logs"]
+            S3_BACKUPS["S3 - Backups<br/>Encrypted, Versioned"]
+            EFS["EFS - Shared Storage<br/>Agent State Files"]
+        end
+    end
+
+    %% ========================================================================
+    %% SECONDARY REGION (US-WEST-2) - DR
+    %% ========================================================================
+
+    subgraph SECONDARY["Secondary Region (us-west-2) - DR"]
+        direction TB
+
+        subgraph SECONDARY_NETWORK["VPC - 10.1.0.0/16"]
+            direction TB
+
+            ALB_SEC["Application Load Balancer<br/>Standby"]
+
+            subgraph EKS_STANDBY["EKS Cluster - Standby"]
+                direction TB
+
+                subgraph STANDBY_NODES["Standby Node Groups"]
+                    STANDBY_RT["Runtime Nodes<br/>Scaled Down (1 node)"]
+                    STANDBY_AG["Agent Nodes<br/>Scaled Down (1 node)"]
+                end
+
+                subgraph STANDBY_WORKLOADS["Standby Workloads"]
+                    STANDBY_CORE["Core Services<br/>1 Replica Each"]
+                    STANDBY_PACKS["Pack Services<br/>0-1 Replicas"]
+                end
+            end
+
+            subgraph SECONDARY_DATA["Data Layer"]
+                RDS_STANDBY["RDS PostgreSQL<br/>Standby (Cross-Region)"]
+                REDIS_STANDBY["ElastiCache Redis<br/>Global Datastore"]
+            end
+        end
+
+        subgraph SECONDARY_STORAGE["Storage"]
+            S3_REPL["S3 - Cross-Region Replication<br/>Backup Copy"]
+        end
+    end
+
+    %% ========================================================================
+    %% OBSERVABILITY STACK
+    %% ========================================================================
+
+    subgraph OBSERVABILITY["Observability Stack"]
+        direction TB
+
+        subgraph MONITORING["Monitoring"]
+            direction LR
+            PROMETHEUS["Prometheus<br/>Metrics Collection"]
+            GRAFANA["Grafana<br/>Dashboards & Alerts"]
+            ALERTMANAGER["AlertManager<br/>Alert Routing"]
+        end
+
+        subgraph LOGGING["Logging"]
+            direction LR
+            FLUENTBIT["Fluent Bit<br/>Log Collection"]
+            OPENSEARCH["OpenSearch<br/>Log Storage & Search"]
+            CLOUDWATCH["CloudWatch Logs<br/>AWS Native Logs"]
+        end
+
+        subgraph TRACING["Tracing"]
+            direction LR
+            OTEL["OpenTelemetry<br/>Distributed Tracing"]
+            JAEGER["Jaeger<br/>Trace Visualization"]
+            XRAY["AWS X-Ray<br/>Service Map"]
+        end
+
+        subgraph APM["Application Performance"]
+            direction LR
+            SENTRY["Sentry<br/>Error Tracking"]
+            PROFILER["Continuous Profiler<br/>CPU/Memory Analysis"]
+        end
+    end
+
+    %% ========================================================================
+    %% CI/CD PIPELINE
+    %% ========================================================================
+
+    subgraph CICD["CI/CD Pipeline"]
+        direction TB
+
+        subgraph SOURCE["Source Control"]
+            GITHUB_REPO["GitHub Repository<br/>Main Branch Protected"]
+            GITHUB_ACTIONS["GitHub Actions<br/>CI Workflows"]
+        end
+
+        subgraph BUILD["Build Stage"]
+            direction LR
+            LINT["Lint & Format<br/>ESLint, Prettier"]
+            TEST["Test Suite<br/>Unit, Integration, E2E"]
+            SECURITY_SCAN["Security Scan<br/>SAST, Dependency Audit"]
+            BUILD_IMAGE["Build Container<br/>Docker Multi-Stage"]
+        end
+
+        subgraph REGISTRY["Container Registry"]
+            ECR["Amazon ECR<br/>Image Repository"]
+            ECR_SCAN["ECR Scanning<br/>CVE Detection"]
+        end
+
+        subgraph DEPLOY["Deployment"]
+            direction LR
+            ARGOCD["ArgoCD<br/>GitOps Deployment"]
+            HELM["Helm Charts<br/>K8s Manifests"]
+            CANARY["Canary Releases<br/>Progressive Rollout"]
+            ROLLBACK["Rollback<br/>Automatic on Failure"]
+        end
+
+        GITHUB_REPO --> GITHUB_ACTIONS
+        GITHUB_ACTIONS --> LINT
+        LINT --> TEST
+        TEST --> SECURITY_SCAN
+        SECURITY_SCAN --> BUILD_IMAGE
+        BUILD_IMAGE --> ECR
+        ECR --> ECR_SCAN
+        ECR_SCAN --> ARGOCD
+        ARGOCD --> HELM
+        HELM --> CANARY
+        CANARY --> ROLLBACK
+    end
+
+    %% ========================================================================
+    %% EXTERNAL SERVICES
+    %% ========================================================================
+
+    subgraph EXTERNAL["External Services"]
+        direction TB
+
+        subgraph LLM_PROVIDERS["LLM Providers"]
+            direction LR
+            ANTHROPIC_API["Anthropic API<br/>Claude Models"]
+            OPENAI_API["OpenAI API<br/>GPT Models"]
+            GOOGLE_API["Google AI<br/>Gemini Models"]
+        end
+
+        subgraph INTEGRATIONS["Integration Partners"]
+            direction LR
+            GITHUB_API["GitHub API<br/>Repository Actions"]
+            SLACK_API["Slack API<br/>Notifications"]
+            STRIPE_API["Stripe API<br/>Billing"]
+            TWILIO_API["Twilio API<br/>SMS/Voice"]
+        end
+
+        subgraph SECURITY_SERVICES["Security Services"]
+            direction LR
+            VAULT_CLOUD["HashiCorp Vault<br/>Secret Management"]
+            AWS_KMS["AWS KMS<br/>Key Management"]
+            AWS_WAF["AWS WAF<br/>Web Application Firewall"]
+        end
+    end
+
+    %% ========================================================================
+    %% SCALING CONFIGURATION
+    %% ========================================================================
+
+    subgraph SCALING["Auto-Scaling Configuration"]
+        direction TB
+
+        subgraph CLUSTER_SCALING["Cluster Auto-Scaling"]
+            direction LR
+            CAS["Cluster Autoscaler<br/>Node Scaling"]
+            KARPENTER["Karpenter<br/>Spot Instance Management"]
+        end
+
+        subgraph POD_SCALING["Pod Auto-Scaling"]
+            direction LR
+            HPA_CONFIG["HPA Configuration"]
+            HPA_ORCH["orchestrator<br/>Min: 3, Max: 10<br/>CPU Target: 70%"]
+            HPA_ROUTER["task-router<br/>Min: 3, Max: 15<br/>CPU Target: 60%"]
+            HPA_PACKS["pack-services<br/>Min: 2, Max: 10<br/>Custom Metrics"]
+        end
+
+        subgraph SCALING_TRIGGERS["Scaling Triggers"]
+            direction LR
+            TRIGGER_CPU["CPU Utilization<br/>Target: 70%"]
+            TRIGGER_MEM["Memory Utilization<br/>Target: 80%"]
+            TRIGGER_QUEUE["Queue Depth<br/>Tasks Pending"]
+            TRIGGER_LATENCY["Request Latency<br/>P99 Target"]
+        end
+    end
+
+    %% ========================================================================
+    %% DISASTER RECOVERY
+    %% ========================================================================
+
+    subgraph DR["Disaster Recovery"]
+        direction TB
+
+        subgraph DR_CONFIG["DR Configuration"]
+            direction LR
+            RPO["RPO: 1 hour<br/>Recovery Point Objective"]
+            RTO["RTO: 4 hours<br/>Recovery Time Objective"]
+            DR_MODE["Active-Passive<br/>Warm Standby"]
+        end
+
+        subgraph DR_RUNBOOK["DR Runbook"]
+            direction TB
+            DR_DETECT["1. Detect Failure<br/>Health Check Failure"]
+            DR_FAILOVER["2. Initiate Failover<br/>DNS Cutover"]
+            DR_SCALE["3. Scale Secondary<br/>Increase Replicas"]
+            DR_VERIFY["4. Verify Services<br/>Health Checks"]
+            DR_NOTIFY["5. Notify Stakeholders<br/>Status Page Update"]
+
+            DR_DETECT --> DR_FAILOVER
+            DR_FAILOVER --> DR_SCALE
+            DR_SCALE --> DR_VERIFY
+            DR_VERIFY --> DR_NOTIFY
+        end
+
+        subgraph BACKUP_STRATEGY["Backup Strategy"]
+            direction LR
+            BACKUP_DB["Database Backups<br/>Hourly Snapshots"]
+            BACKUP_CONFIG["Config Backups<br/>GitOps State"]
+            BACKUP_SECRETS["Secret Backups<br/>Vault Snapshots"]
+        end
+    end
+
+    %% ========================================================================
+    %% CONNECTIONS
+    %% ========================================================================
+
+    %% Global to Regional
+    EDGE_US --> ALB_PRI
+    EDGE_EU --> ALB_PRI
+    EDGE_APAC --> ALB_PRI
+    GLB --> ALB_SEC
+
+    %% ALB to Ingress
+    ALB_PRI --> INGRESS
+    INGRESS --> ORCH_DEPLOY
+    INGRESS --> WEBHOOK_DEPLOY
+
+    %% Service Mesh
+    MESH --> ORCH_DEPLOY
+    MESH --> ROUTER_DEPLOY
+    MESH --> GATES_DEPLOY
+    MESH --> APPROVAL_DEPLOY
+
+    %% Core to Packs
+    ROUTER_DEPLOY --> PRODUCT_DEPLOY
+    ROUTER_DEPLOY --> ENG_DEPLOY
+    ROUTER_DEPLOY --> MARKET_DEPLOY
+    ROUTER_DEPLOY --> SUPABASE_DEPLOY
+
+    %% Data Access
+    ORCH_DEPLOY --> RDS_PRIMARY
+    AUDIT_DEPLOY --> RDS_PRIMARY
+    RDS_PRIMARY --> RDS_READ1
+    RDS_PRIMARY --> RDS_READ2
+
+    ORCH_DEPLOY --> REDIS_PRIMARY
+    REDIS_PRIMARY --> REDIS_REPLICA
+
+    ORCH_DEPLOY --> SQS_TASKS
+    SQS_TASKS --> SQS_DLQ
+    SNS_EVENTS --> SQS_TASKS
+
+    %% Storage
+    AUDIT_DEPLOY --> S3_ARTIFACTS
+    EFS --> AG_NODE1
+    EFS --> AG_NODE2
+    EFS --> AG_NODE3
+
+    %% Cross-Region Replication
+    RDS_PRIMARY -.->|"Cross-Region Replication"| RDS_STANDBY
+    REDIS_PRIMARY -.->|"Global Datastore"| REDIS_STANDBY
+    S3_ARTIFACTS -.->|"S3 Replication"| S3_REPL
+
+    %% Observability
+    K8S_WORKLOADS --> PROMETHEUS
+    K8S_WORKLOADS --> FLUENTBIT
+    K8S_WORKLOADS --> OTEL
+    PROMETHEUS --> GRAFANA
+    GRAFANA --> ALERTMANAGER
+    FLUENTBIT --> OPENSEARCH
+    OTEL --> JAEGER
+
+    %% External Services
+    ROUTER_DEPLOY --> ANTHROPIC_API
+    ROUTER_DEPLOY --> OPENAI_API
+    ROUTER_DEPLOY --> GOOGLE_API
+    ENG_DEPLOY --> GITHUB_API
+    MARKET_DEPLOY --> TWILIO_API
+
+    %% Security
+    K8S_WORKLOADS --> VAULT_CLOUD
+    K8S_WORKLOADS --> AWS_KMS
+    ALB_PRI --> AWS_WAF
+
+    %% CI/CD to Cluster
+    ARGOCD --> EKS_CLUSTER
+
+    %% Autoscaling
+    HPA --> ORCH_DEPLOY
+    HPA --> ROUTER_DEPLOY
+    CAS --> WORKER_NODES
+    KARPENTER --> WORKER_NODES
+
+    %% ========================================================================
+    %% STYLING
+    %% ========================================================================
+
+    classDef global fill:#7c3aed,stroke:#8b5cf6,stroke-width:2px,color:#ffffff
+    classDef network fill:#0f766e,stroke:#14b8a6,stroke-width:2px,color:#ffffff
+    classDef compute fill:#1e40af,stroke:#3b82f6,stroke-width:2px,color:#ffffff
+    classDef data fill:#4338ca,stroke:#818cf8,stroke-width:2px,color:#ffffff
+    classDef storage fill:#0369a1,stroke:#0ea5e9,stroke-width:2px,color:#ffffff
+    classDef observability fill:#c2410c,stroke:#f97316,stroke-width:2px,color:#ffffff
+    classDef cicd fill:#047857,stroke:#10b981,stroke-width:2px,color:#ffffff
+    classDef external fill:#6d28d9,stroke:#a78bfa,stroke-width:2px,color:#ffffff
+    classDef dr fill:#be123c,stroke:#f43f5e,stroke-width:2px,color:#ffffff
+    classDef scaling fill:#0891b2,stroke:#22d3ee,stroke-width:2px,color:#ffffff
+
+    class DNS,GLB,EDGE_US,EDGE_EU,EDGE_APAC global
+    class ALB_PRI,NAT_PRI,BASTION,ALB_SEC network
+    class K8S_API,RT_NODE1,RT_NODE2,RT_NODE3,AG_NODE1,AG_NODE2,AG_NODE3,GPU_NODE1,GPU_NODE2,STANDBY_RT,STANDBY_AG compute
+    class ORCH_DEPLOY,ROUTER_DEPLOY,GATES_DEPLOY,APPROVAL_DEPLOY,PRODUCT_DEPLOY,ENG_DEPLOY,MARKET_DEPLOY,SUPABASE_DEPLOY,AUDIT_DEPLOY,METRICS_DEPLOY,WEBHOOK_DEPLOY,STANDBY_CORE,STANDBY_PACKS compute
+    class INGRESS,MESH,HPA,VPA compute
+    class RDS_PRIMARY,RDS_READ1,RDS_READ2,REDIS_PRIMARY,REDIS_REPLICA,SQS_TASKS,SQS_DLQ,SNS_EVENTS,RDS_STANDBY,REDIS_STANDBY data
+    class S3_ARTIFACTS,S3_BACKUPS,EFS,S3_REPL storage
+    class PROMETHEUS,GRAFANA,ALERTMANAGER,FLUENTBIT,OPENSEARCH,CLOUDWATCH,OTEL,JAEGER,XRAY,SENTRY,PROFILER observability
+    class GITHUB_REPO,GITHUB_ACTIONS,LINT,TEST,SECURITY_SCAN,BUILD_IMAGE,ECR,ECR_SCAN,ARGOCD,HELM,CANARY,ROLLBACK cicd
+    class ANTHROPIC_API,OPENAI_API,GOOGLE_API,GITHUB_API,SLACK_API,STRIPE_API,TWILIO_API,VAULT_CLOUD,AWS_KMS,AWS_WAF external
+    class RPO,RTO,DR_MODE,DR_DETECT,DR_FAILOVER,DR_SCALE,DR_VERIFY,DR_NOTIFY,BACKUP_DB,BACKUP_CONFIG,BACKUP_SECRETS dr
+    class CAS,KARPENTER,HPA_CONFIG,HPA_ORCH,HPA_ROUTER,HPA_PACKS,TRIGGER_CPU,TRIGGER_MEM,TRIGGER_QUEUE,TRIGGER_LATENCY scaling

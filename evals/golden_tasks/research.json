@@ -1,0 +1,226 @@
+{
+  "pack": "research",
+  "version": "1.0.0",
+  "description": "Golden tasks for research agents - information gathering, verification, and synthesis",
+  "tasks": [
+    {
+      "id": "research_001",
+      "agent": "agent.research.searcher.v1",
+      "name": "Competitive Analysis Research",
+      "input": {
+        "topic": "AI code assistant market landscape",
+        "competitors": ["GitHub Copilot", "Cursor", "Codeium", "Tabnine", "Amazon CodeWhisperer"],
+        "aspects": ["pricing", "features", "integrations", "market_share", "funding"],
+        "depth": "comprehensive"
+      },
+      "expected_output": {
+        "type": "research_report",
+        "includes_comparison_matrix": true,
+        "includes_swot": true,
+        "includes_market_trends": true,
+        "sources_cited": true
+      },
+      "evaluation_criteria": [
+        "all_competitors_analyzed",
+        "data_is_current",
+        "sources_credible",
+        "analysis_objective",
+        "insights_actionable"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 120000,
+      "tags": ["competitive_analysis", "market_research"]
+    },
+    {
+      "id": "research_002",
+      "agent": "agent.research.verifier.v1",
+      "name": "Fact-Check Technical Claims",
+      "input": {
+        "claims": [
+          "RAG improves LLM accuracy by 50% on domain-specific tasks",
+          "Vector databases can handle 1 billion embeddings with sub-second latency",
+          "Fine-tuning LLMs requires at least 10,000 examples for good results"
+        ],
+        "verification_depth": "thorough",
+        "source_requirements": "peer_reviewed_or_official"
+      },
+      "expected_output": {
+        "type": "verification_report",
+        "includes_verdict": true,
+        "includes_evidence": true,
+        "includes_confidence_score": true,
+        "includes_nuance": true
+      },
+      "evaluation_criteria": [
+        "claims_properly_evaluated",
+        "evidence_quality_assessed",
+        "nuance_captured",
+        "confidence_calibrated",
+        "sources_authoritative"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 90000,
+      "tags": ["fact_checking", "verification"]
+    },
+    {
+      "id": "research_003",
+      "agent": "agent.research.synthesizer.v1",
+      "name": "Synthesize Technology Trends Report",
+      "input": {
+        "domain": "Enterprise AI Adoption",
+        "timeframe": "2024-2025",
+        "focus_areas": [
+          "llm_integration",
+          "ai_governance",
+          "build_vs_buy",
+          "roi_measurement"
+        ],
+        "output_format": "executive_briefing"
+      },
+      "expected_output": {
+        "type": "synthesis_report",
+        "includes_key_findings": true,
+        "includes_trends": true,
+        "includes_recommendations": true,
+        "max_pages": 5
+      },
+      "evaluation_criteria": [
+        "findings_well_supported",
+        "trends_correctly_identified",
+        "recommendations_practical",
+        "executive_appropriate",
+        "actionable_insights"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 120000,
+      "tags": ["synthesis", "trends", "executive"]
+    },
+    {
+      "id": "research_004",
+      "agent": "agent.research.searcher.v1",
+      "name": "Research Academic Papers",
+      "input": {
+        "topic": "Retrieval Augmented Generation techniques",
+        "sources": ["arxiv", "semantic_scholar", "acl_anthology"],
+        "date_range": "2023-2024",
+        "paper_count": 20,
+        "focus": ["novel_techniques", "benchmarks", "production_systems"]
+      },
+      "expected_output": {
+        "type": "literature_review",
+        "includes_paper_summaries": true,
+        "includes_methodology_comparison": true,
+        "includes_gap_analysis": true,
+        "includes_bibliography": true
+      },
+      "evaluation_criteria": [
+        "papers_relevant",
+        "summaries_accurate",
+        "methodologies_compared",
+        "gaps_identified",
+        "citations_correct"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 120000,
+      "tags": ["academic", "literature_review", "ai"]
+    },
+    {
+      "id": "research_005",
+      "agent": "agent.research.verifier.v1",
+      "name": "Cross-Reference Data Sources",
+      "input": {
+        "data_points": [
+          {"claim": "Global SaaS market size 2024", "value": "$197 billion"},
+          {"claim": "Average SaaS churn rate", "value": "5-7% annually"},
+          {"claim": "Enterprise software growth rate", "value": "11% CAGR"}
+        ],
+        "required_sources": 3,
+        "recency_requirement": "within_12_months"
+      },
+      "expected_output": {
+        "type": "data_validation",
+        "includes_source_comparison": true,
+        "includes_consensus_value": true,
+        "includes_confidence": true,
+        "includes_methodology_notes": true
+      },
+      "evaluation_criteria": [
+        "multiple_sources_checked",
+        "discrepancies_noted",
+        "consensus_reasonable",
+        "methodology_considered",
+        "recency_verified"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["data_validation", "cross_reference"]
+    },
+    {
+      "id": "research_006",
+      "agent": "agent.research.synthesizer.v1",
+      "name": "Create Technology Comparison",
+      "input": {
+        "technologies": ["PostgreSQL", "MySQL", "MongoDB", "CockroachDB"],
+        "use_case": "high_volume_saas_application",
+        "evaluation_criteria": [
+          "scalability",
+          "performance",
+          "cost",
+          "operational_complexity",
+          "ecosystem"
+        ]
+      },
+      "expected_output": {
+        "type": "comparison_report",
+        "includes_matrix": true,
+        "includes_use_case_fit": true,
+        "includes_recommendations": true,
+        "includes_tradeoffs": true
+      },
+      "evaluation_criteria": [
+        "criteria_fairly_evaluated",
+        "benchmarks_cited",
+        "use_case_considered",
+        "tradeoffs_clear",
+        "recommendation_justified"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 90000,
+      "tags": ["comparison", "technology_selection"]
+    },
+    {
+      "id": "research_007",
+      "agent": "agent.research.pack_manager.v1",
+      "name": "Conduct Due Diligence Research",
+      "input": {
+        "company": "Target Acquisition Corp",
+        "research_areas": [
+          "financial_health",
+          "technology_stack",
+          "customer_reviews",
+          "employee_sentiment",
+          "competitive_position"
+        ],
+        "depth": "thorough",
+        "timeline_days": 5
+      },
+      "expected_output": {
+        "type": "due_diligence_report",
+        "includes_executive_summary": true,
+        "includes_risk_assessment": true,
+        "includes_recommendations": true,
+        "includes_data_room_requests": true
+      },
+      "evaluation_criteria": [
+        "all_areas_covered",
+        "risks_identified",
+        "sources_diverse",
+        "red_flags_highlighted",
+        "actionable_next_steps"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 180000,
+      "tags": ["due_diligence", "acquisition", "comprehensive"]
+    }
+  ]
+}

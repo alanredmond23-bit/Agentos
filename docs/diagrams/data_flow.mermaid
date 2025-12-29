@@ -1,0 +1,414 @@
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#1a1a2e',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#4a4a6a',
+    'lineColor': '#6366f1',
+    'secondaryColor': '#2d2d44',
+    'tertiaryColor': '#0f0f23'
+  }
+}}%%
+
+%% ============================================================================
+%% AGENTOS DATA FLOW DIAGRAM
+%% Complete Data Flow with PII Redaction and Encryption Boundaries
+%% C-Suite Presentation Ready
+%% ============================================================================
+
+flowchart TB
+    %% ========================================================================
+    %% INPUT SOURCES
+    %% ========================================================================
+
+    subgraph INPUTS["Data Input Sources"]
+        direction TB
+
+        subgraph USER_INPUT["User Inputs"]
+            CLI_INPUT["CLI Commands<br/>Text/Files"]
+            API_REQUEST["API Requests<br/>JSON/GraphQL"]
+            WEBHOOK_DATA["Webhook Payloads<br/>Provider Events"]
+            UPLOAD["File Uploads<br/>Documents/Images"]
+        end
+
+        subgraph SYSTEM_INPUT["System Inputs"]
+            SCHEDULED["Scheduled Tasks<br/>Cron Jobs"]
+            EVENTS["System Events<br/>Lifecycle Hooks"]
+            INTEGRATIONS_IN["Integration Data<br/>GitHub/Jira/Slack"]
+        end
+
+        subgraph CONTEXT_INPUT["Context Data"]
+            HISTORY["Conversation History<br/>Prior Messages"]
+            AGENT_MEMORY["Agent Memory<br/>Long-term Context"]
+            ENV_CONFIG["Environment Config<br/>Settings/Secrets"]
+        end
+    end
+
+    %% ========================================================================
+    %% INGRESS LAYER
+    %% ========================================================================
+
+    subgraph INGRESS["Ingress Layer"]
+        direction TB
+
+        subgraph VALIDATION["Input Validation"]
+            SCHEMA_VAL["Schema Validation<br/>JSON Schema"]
+            SIZE_CHECK["Size Limits<br/>Payload Bounds"]
+            TYPE_CHECK["Type Checking<br/>Content-Type"]
+            SANITIZE["Input Sanitization<br/>XSS/Injection"]
+        end
+
+        subgraph AUTH_CHECK["Authentication"]
+            API_KEY_VAL["API Key Validation<br/>Token Verification"]
+            JWT_DECODE["JWT Decode<br/>Claims Extraction"]
+            RBAC_CHECK["RBAC Check<br/>Permission Verify"]
+        end
+    end
+
+    %% ========================================================================
+    %% PII DETECTION LAYER
+    %% ========================================================================
+
+    subgraph PII_LAYER["PII Detection & Redaction"]
+        direction TB
+
+        subgraph DETECTION["PII Detection"]
+            EMAIL_DETECT["Email Detection<br/>Regex Pattern"]
+            PHONE_DETECT["Phone Detection<br/>US/International"]
+            SSN_DETECT["SSN Detection<br/>XXX-XX-XXXX"]
+            CC_DETECT["Credit Card Detection<br/>Luhn Validation"]
+            IP_DETECT["IP Address Detection<br/>IPv4/IPv6"]
+            API_KEY_DETECT["API Key Detection<br/>sk_/pk_/token_"]
+            JWT_DETECT["JWT Detection<br/>eyJ Pattern"]
+            CUSTOM_PII["Custom PII Patterns<br/>Org-Specific"]
+        end
+
+        subgraph REDACTION["PII Redaction"]
+            REDACT_ENGINE["Redaction Engine<br/>Pattern Replace"]
+            TOKENIZE["Tokenization<br/>Reversible for Auth"]
+            HASH_PII["Hashing<br/>Irreversible"]
+            MASK["Masking<br/>Partial Display"]
+        end
+
+        subgraph REDACTION_LOG["Redaction Audit"]
+            REDACT_META["Redaction Metadata<br/>What Was Redacted"]
+            REDACT_COUNT["Redaction Counts<br/>By Type"]
+        end
+    end
+
+    %% ========================================================================
+    %% ENCRYPTION BOUNDARY - TRANSIT
+    %% ========================================================================
+
+    subgraph ENCRYPT_TRANSIT["Encryption Boundary - In Transit"]
+        direction LR
+
+        TLS["TLS 1.3<br/>All Connections"]
+        MTLS["mTLS<br/>Service-to-Service"]
+        E2E["End-to-End Encryption<br/>Sensitive Payloads"]
+    end
+
+    %% ========================================================================
+    %% PROCESSING LAYER
+    %% ========================================================================
+
+    subgraph PROCESSING["Data Processing"]
+        direction TB
+
+        subgraph TRANSFORM["Data Transformation"]
+            NORMALIZE["Normalization<br/>Standard Formats"]
+            ENRICH["Enrichment<br/>Add Metadata"]
+            AGGREGATE["Aggregation<br/>Combine Sources"]
+            FILTER["Filtering<br/>Remove Noise"]
+        end
+
+        subgraph LLM_PROCESS["LLM Processing"]
+            PROMPT_BUILD["Prompt Construction<br/>Template + Context"]
+            LLM_CALL["LLM API Call<br/>Provider Request"]
+            RESPONSE_PARSE["Response Parsing<br/>Extract Output"]
+            STREAM_HANDLE["Stream Handling<br/>Token-by-Token"]
+        end
+
+        subgraph TOOL_PROCESS["Tool Processing"]
+            TOOL_INPUT["Tool Input<br/>Structured Args"]
+            TOOL_EXEC["Tool Execution<br/>Sandboxed"]
+            TOOL_OUTPUT["Tool Output<br/>Structured Result"]
+        end
+    end
+
+    %% ========================================================================
+    %% OUTPUT GATES
+    %% ========================================================================
+
+    subgraph OUTPUT_GATES["Output Quality Gates"]
+        direction TB
+
+        subgraph QUALITY_CHECKS["Quality Checks"]
+            NOT_EMPTY["Not Empty Check<br/>Has Content"]
+            LENGTH_CHECK["Length Check<br/>Min/Max Bounds"]
+            FORMAT_CHECK["Format Check<br/>Valid Structure"]
+            JSON_VALID["JSON Validation<br/>Parse Check"]
+        end
+
+        subgraph SECURITY_CHECKS["Security Checks"]
+            OUTPUT_PII["Output PII Scan<br/>No Leakage"]
+            SECRET_SCAN["Secret Scanning<br/>No Keys/Tokens"]
+            INJECTION_CHECK["Injection Check<br/>No Malicious Code"]
+        end
+
+        subgraph COMPLIANCE_CHECKS["Compliance Checks"]
+            TCPA_CHECK["TCPA/CTIA Check<br/>SMS Compliance"]
+            GDPR_CHECK["GDPR Check<br/>Data Residency"]
+            HIPAA_CHECK["HIPAA Check<br/>PHI Handling"]
+        end
+    end
+
+    %% ========================================================================
+    %% ENCRYPTION BOUNDARY - AT REST
+    %% ========================================================================
+
+    subgraph ENCRYPT_REST["Encryption Boundary - At Rest"]
+        direction TB
+
+        subgraph KEY_MGMT["Key Management"]
+            KMS["KMS<br/>Key Management Service"]
+            KEY_ROTATION["Key Rotation<br/>90-Day Cycle"]
+            KEY_HIERARCHY["Key Hierarchy<br/>DEK/KEK"]
+        end
+
+        subgraph ENCRYPT_TYPES["Encryption Types"]
+            AES256["AES-256-GCM<br/>Data Encryption"]
+            ENVELOPE["Envelope Encryption<br/>Wrapped Keys"]
+            FIELD_LEVEL["Field-Level Encryption<br/>Sensitive Fields"]
+        end
+    end
+
+    %% ========================================================================
+    %% STORAGE LAYER
+    %% ========================================================================
+
+    subgraph STORAGE["Data Storage"]
+        direction TB
+
+        subgraph PRIMARY_STORE["Primary Storage"]
+            POSTGRES[("PostgreSQL<br/>Supabase<br/>RLS Enabled")]
+            TASK_TABLE["tasks<br/>Task Records"]
+            AGENT_TABLE["agent_state<br/>Context/Memory"]
+            AUDIT_TABLE["audit_log<br/>Immutable Trail"]
+        end
+
+        subgraph CACHE_STORE["Cache Layer"]
+            REDIS_CACHE[("Redis<br/>Hot Data Cache")]
+            IDEM_CACHE["Idempotency Keys<br/>TTL: 24h"]
+            SESSION_CACHE["Session Data<br/>TTL: 1h"]
+            RESULT_CACHE["Result Cache<br/>TTL: 5m"]
+        end
+
+        subgraph OBJECT_STORE["Object Storage"]
+            S3_BUCKET[("S3/GCS<br/>Large Objects")]
+            ARTIFACTS["Build Artifacts<br/>Versioned"]
+            LOGS_BUCKET["Log Archives<br/>Compressed"]
+            BACKUPS["Database Backups<br/>Encrypted"]
+        end
+
+        subgraph AUDIT_STORE["Audit Storage"]
+            AUDIT_JSONL["audit-YYYY-MM-DD.jsonl<br/>Append-Only"]
+            CHECKSUM["SHA-256 Checksums<br/>Integrity Verify"]
+            RETENTION["30-Day Retention<br/>Rolling Window"]
+        end
+    end
+
+    %% ========================================================================
+    %% OUTPUT LAYER
+    %% ========================================================================
+
+    subgraph OUTPUTS["Data Outputs"]
+        direction TB
+
+        subgraph SYNC_OUTPUT["Synchronous Outputs"]
+            API_RESPONSE["API Response<br/>JSON/GraphQL"]
+            CLI_OUTPUT["CLI Output<br/>Text/Tables"]
+            STREAM_OUTPUT["Stream Response<br/>SSE/WebSocket"]
+        end
+
+        subgraph ASYNC_OUTPUT["Asynchronous Outputs"]
+            WEBHOOK_OUT["Webhook Delivery<br/>Signed Payloads"]
+            EMAIL_OUT["Email Notifications<br/>Templated"]
+            SMS_OUT["SMS/MMS<br/>TCPA Compliant"]
+            PUSH_OUT["Push Notifications<br/>Mobile/Web"]
+        end
+
+        subgraph INTEGRATION_OUTPUT["Integration Outputs"]
+            GITHUB_OUT["GitHub<br/>Issues/PRs/Comments"]
+            SLACK_OUT["Slack<br/>Messages/Threads"]
+            JIRA_OUT["Jira/Linear<br/>Tickets/Updates"]
+            NOTION_OUT["Notion<br/>Pages/Databases"]
+        end
+
+        subgraph ANALYTICS_OUTPUT["Analytics Outputs"]
+            METRICS_OUT["Metrics<br/>Prometheus/Grafana"]
+            TRACES_OUT["Traces<br/>OpenTelemetry"]
+            LOGS_OUT["Logs<br/>Structured JSON"]
+        end
+    end
+
+    %% ========================================================================
+    %% DATA FLOW CONNECTIONS
+    %% ========================================================================
+
+    %% Inputs to Ingress
+    CLI_INPUT --> SCHEMA_VAL
+    API_REQUEST --> SCHEMA_VAL
+    WEBHOOK_DATA --> SCHEMA_VAL
+    UPLOAD --> SIZE_CHECK
+    SCHEDULED --> TYPE_CHECK
+    EVENTS --> TYPE_CHECK
+    INTEGRATIONS_IN --> SCHEMA_VAL
+    HISTORY --> SANITIZE
+    AGENT_MEMORY --> SANITIZE
+    ENV_CONFIG --> SANITIZE
+
+    %% Validation Flow
+    SCHEMA_VAL --> SIZE_CHECK
+    SIZE_CHECK --> TYPE_CHECK
+    TYPE_CHECK --> SANITIZE
+    SANITIZE --> API_KEY_VAL
+
+    %% Auth Flow
+    API_KEY_VAL --> JWT_DECODE
+    JWT_DECODE --> RBAC_CHECK
+    RBAC_CHECK --> EMAIL_DETECT
+
+    %% PII Detection Chain
+    EMAIL_DETECT --> PHONE_DETECT
+    PHONE_DETECT --> SSN_DETECT
+    SSN_DETECT --> CC_DETECT
+    CC_DETECT --> IP_DETECT
+    IP_DETECT --> API_KEY_DETECT
+    API_KEY_DETECT --> JWT_DETECT
+    JWT_DETECT --> CUSTOM_PII
+
+    %% Redaction Flow
+    CUSTOM_PII --> REDACT_ENGINE
+    REDACT_ENGINE --> TOKENIZE
+    REDACT_ENGINE --> HASH_PII
+    REDACT_ENGINE --> MASK
+    TOKENIZE --> REDACT_META
+    HASH_PII --> REDACT_META
+    MASK --> REDACT_META
+    REDACT_META --> REDACT_COUNT
+
+    %% To Encryption Boundary
+    REDACT_COUNT --> TLS
+
+    %% Transit Encryption
+    TLS --> MTLS
+    MTLS --> E2E
+    E2E --> NORMALIZE
+
+    %% Processing Flow
+    NORMALIZE --> ENRICH
+    ENRICH --> AGGREGATE
+    AGGREGATE --> FILTER
+    FILTER --> PROMPT_BUILD
+
+    %% LLM Processing
+    PROMPT_BUILD --> LLM_CALL
+    LLM_CALL --> RESPONSE_PARSE
+    LLM_CALL --> STREAM_HANDLE
+    RESPONSE_PARSE --> TOOL_INPUT
+    STREAM_HANDLE --> TOOL_INPUT
+
+    %% Tool Processing
+    TOOL_INPUT --> TOOL_EXEC
+    TOOL_EXEC --> TOOL_OUTPUT
+    TOOL_OUTPUT --> NOT_EMPTY
+
+    %% Quality Gates
+    NOT_EMPTY --> LENGTH_CHECK
+    LENGTH_CHECK --> FORMAT_CHECK
+    FORMAT_CHECK --> JSON_VALID
+    JSON_VALID --> OUTPUT_PII
+
+    %% Security Gates
+    OUTPUT_PII --> SECRET_SCAN
+    SECRET_SCAN --> INJECTION_CHECK
+    INJECTION_CHECK --> TCPA_CHECK
+
+    %% Compliance Gates
+    TCPA_CHECK --> GDPR_CHECK
+    GDPR_CHECK --> HIPAA_CHECK
+    HIPAA_CHECK --> KMS
+
+    %% Encryption at Rest
+    KMS --> KEY_ROTATION
+    KEY_ROTATION --> KEY_HIERARCHY
+    KEY_HIERARCHY --> AES256
+    AES256 --> ENVELOPE
+    ENVELOPE --> FIELD_LEVEL
+
+    %% Storage Writes
+    FIELD_LEVEL --> POSTGRES
+    FIELD_LEVEL --> REDIS_CACHE
+    FIELD_LEVEL --> S3_BUCKET
+    FIELD_LEVEL --> AUDIT_JSONL
+
+    %% Database Tables
+    POSTGRES --> TASK_TABLE
+    POSTGRES --> AGENT_TABLE
+    POSTGRES --> AUDIT_TABLE
+
+    %% Cache Types
+    REDIS_CACHE --> IDEM_CACHE
+    REDIS_CACHE --> SESSION_CACHE
+    REDIS_CACHE --> RESULT_CACHE
+
+    %% Object Storage
+    S3_BUCKET --> ARTIFACTS
+    S3_BUCKET --> LOGS_BUCKET
+    S3_BUCKET --> BACKUPS
+
+    %% Audit Storage
+    AUDIT_JSONL --> CHECKSUM
+    CHECKSUM --> RETENTION
+
+    %% Output Flows
+    RESULT_CACHE --> API_RESPONSE
+    RESULT_CACHE --> CLI_OUTPUT
+    RESULT_CACHE --> STREAM_OUTPUT
+
+    TASK_TABLE --> WEBHOOK_OUT
+    TASK_TABLE --> EMAIL_OUT
+    TASK_TABLE --> SMS_OUT
+    TASK_TABLE --> PUSH_OUT
+
+    AGENT_TABLE --> GITHUB_OUT
+    AGENT_TABLE --> SLACK_OUT
+    AGENT_TABLE --> JIRA_OUT
+    AGENT_TABLE --> NOTION_OUT
+
+    AUDIT_TABLE --> METRICS_OUT
+    AUDIT_TABLE --> TRACES_OUT
+    AUDIT_TABLE --> LOGS_OUT
+
+    %% ========================================================================
+    %% STYLING
+    %% ========================================================================
+
+    classDef input fill:#1e40af,stroke:#3b82f6,stroke-width:2px,color:#ffffff
+    classDef validation fill:#7c3aed,stroke:#8b5cf6,stroke-width:2px,color:#ffffff
+    classDef pii fill:#be123c,stroke:#f43f5e,stroke-width:2px,color:#ffffff
+    classDef encrypt fill:#0f766e,stroke:#14b8a6,stroke-width:2px,color:#ffffff
+    classDef process fill:#0369a1,stroke:#0ea5e9,stroke-width:2px,color:#ffffff
+    classDef gate fill:#c2410c,stroke:#f97316,stroke-width:2px,color:#ffffff
+    classDef storage fill:#4338ca,stroke:#818cf8,stroke-width:2px,color:#ffffff
+    classDef output fill:#047857,stroke:#10b981,stroke-width:2px,color:#ffffff
+
+    class CLI_INPUT,API_REQUEST,WEBHOOK_DATA,UPLOAD,SCHEDULED,EVENTS,INTEGRATIONS_IN,HISTORY,AGENT_MEMORY,ENV_CONFIG input
+    class SCHEMA_VAL,SIZE_CHECK,TYPE_CHECK,SANITIZE,API_KEY_VAL,JWT_DECODE,RBAC_CHECK validation
+    class EMAIL_DETECT,PHONE_DETECT,SSN_DETECT,CC_DETECT,IP_DETECT,API_KEY_DETECT,JWT_DETECT,CUSTOM_PII,REDACT_ENGINE,TOKENIZE,HASH_PII,MASK,REDACT_META,REDACT_COUNT pii
+    class TLS,MTLS,E2E,KMS,KEY_ROTATION,KEY_HIERARCHY,AES256,ENVELOPE,FIELD_LEVEL encrypt
+    class NORMALIZE,ENRICH,AGGREGATE,FILTER,PROMPT_BUILD,LLM_CALL,RESPONSE_PARSE,STREAM_HANDLE,TOOL_INPUT,TOOL_EXEC,TOOL_OUTPUT process
+    class NOT_EMPTY,LENGTH_CHECK,FORMAT_CHECK,JSON_VALID,OUTPUT_PII,SECRET_SCAN,INJECTION_CHECK,TCPA_CHECK,GDPR_CHECK,HIPAA_CHECK gate
+    class POSTGRES,TASK_TABLE,AGENT_TABLE,AUDIT_TABLE,REDIS_CACHE,IDEM_CACHE,SESSION_CACHE,RESULT_CACHE,S3_BUCKET,ARTIFACTS,LOGS_BUCKET,BACKUPS,AUDIT_JSONL,CHECKSUM,RETENTION storage
+    class API_RESPONSE,CLI_OUTPUT,STREAM_OUTPUT,WEBHOOK_OUT,EMAIL_OUT,SMS_OUT,PUSH_OUT,GITHUB_OUT,SLACK_OUT,JIRA_OUT,NOTION_OUT,METRICS_OUT,TRACES_OUT,LOGS_OUT output

@@ -1,0 +1,252 @@
+{
+  "pack": "mobile",
+  "version": "1.0.0",
+  "description": "Golden tasks for mobile agents - iOS, Android, API integration, build pipelines, and app store submissions",
+  "tasks": [
+    {
+      "id": "mobile_001",
+      "agent": "agent.mobile.ios_swift.v1",
+      "name": "Implement Biometric Authentication",
+      "input": {
+        "features": ["face_id", "touch_id", "pin_fallback"],
+        "keychain_storage": true,
+        "session_timeout": 900,
+        "architecture": "mvvm"
+      },
+      "expected_output": {
+        "type": "swift_implementation",
+        "includes_view": true,
+        "includes_view_model": true,
+        "includes_keychain_helper": true,
+        "includes_tests": true
+      },
+      "evaluation_criteria": [
+        "biometric_api_correct",
+        "keychain_secure",
+        "fallback_works",
+        "error_handling_complete",
+        "ui_follows_hig"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 90000,
+      "tags": ["ios", "swift", "biometric", "security"]
+    },
+    {
+      "id": "mobile_002",
+      "agent": "agent.mobile.android_kotlin.v1",
+      "name": "Build Offline-First Data Layer",
+      "input": {
+        "entities": ["products", "orders", "user_preferences"],
+        "sync_strategy": "pull_with_conflict_resolution",
+        "database": "room",
+        "api_client": "retrofit"
+      },
+      "expected_output": {
+        "type": "kotlin_implementation",
+        "includes_repository": true,
+        "includes_dao": true,
+        "includes_sync_manager": true,
+        "includes_tests": true
+      },
+      "evaluation_criteria": [
+        "offline_access_works",
+        "sync_handles_conflicts",
+        "room_migrations_correct",
+        "coroutines_used_properly",
+        "error_handling_robust"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 120000,
+      "tags": ["android", "kotlin", "offline", "room"]
+    },
+    {
+      "id": "mobile_003",
+      "agent": "agent.mobile.api_integration.v1",
+      "name": "Implement GraphQL Client",
+      "input": {
+        "schema": "schema.graphql",
+        "operations": ["queries", "mutations", "subscriptions"],
+        "caching": "normalized",
+        "platforms": ["ios", "android"]
+      },
+      "expected_output": {
+        "type": "graphql_client",
+        "includes_code_gen": true,
+        "includes_cache_config": true,
+        "includes_error_handling": true,
+        "includes_interceptors": true
+      },
+      "evaluation_criteria": [
+        "code_gen_configured",
+        "cache_normalized",
+        "subscriptions_work",
+        "error_types_handled",
+        "auth_interceptor_present"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 90000,
+      "tags": ["graphql", "api", "cross_platform"]
+    },
+    {
+      "id": "mobile_004",
+      "agent": "agent.mobile.build_pipeline.v1",
+      "name": "Configure Fastlane for CI/CD",
+      "input": {
+        "platforms": ["ios", "android"],
+        "environments": ["dev", "staging", "production"],
+        "features": [
+          "code_signing",
+          "version_bumping",
+          "changelog_generation",
+          "beta_distribution",
+          "store_upload"
+        ]
+      },
+      "expected_output": {
+        "type": "fastlane_config",
+        "includes_fastfile": true,
+        "includes_matchfile": true,
+        "includes_appfile": true,
+        "includes_ci_config": true
+      },
+      "evaluation_criteria": [
+        "lanes_per_environment",
+        "code_signing_automated",
+        "version_management_correct",
+        "distribution_configured",
+        "ci_integration_works"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 120000,
+      "tags": ["fastlane", "cicd", "automation"]
+    },
+    {
+      "id": "mobile_005",
+      "agent": "agent.mobile.qa_testing.v1",
+      "name": "Create UI Test Suite",
+      "input": {
+        "platform": "ios",
+        "framework": "xctest",
+        "flows": [
+          "onboarding",
+          "login",
+          "product_browse",
+          "checkout",
+          "profile_management"
+        ],
+        "accessibility_testing": true
+      },
+      "expected_output": {
+        "type": "ui_test_suite",
+        "includes_page_objects": true,
+        "includes_test_data": true,
+        "includes_accessibility_checks": true,
+        "includes_screenshots": true
+      },
+      "evaluation_criteria": [
+        "all_flows_covered",
+        "page_objects_maintainable",
+        "accessibility_verified",
+        "screenshots_captured",
+        "tests_are_stable"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 90000,
+      "tags": ["testing", "xctest", "ui_automation"]
+    },
+    {
+      "id": "mobile_006",
+      "agent": "agent.mobile.security.v1",
+      "name": "Implement Certificate Pinning",
+      "input": {
+        "platforms": ["ios", "android"],
+        "pinning_strategy": "public_key",
+        "backup_pins": 2,
+        "failure_mode": "fail_closed",
+        "pin_rotation_plan": true
+      },
+      "expected_output": {
+        "type": "security_implementation",
+        "includes_ios_implementation": true,
+        "includes_android_implementation": true,
+        "includes_pin_management": true,
+        "includes_testing": true
+      },
+      "evaluation_criteria": [
+        "pinning_correctly_implemented",
+        "backup_pins_configured",
+        "rotation_plan_documented",
+        "testing_covers_attacks",
+        "no_bypass_possible"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 90000,
+      "tags": ["security", "ssl_pinning", "cross_platform"]
+    },
+    {
+      "id": "mobile_007",
+      "agent": "agent.mobile.appstore.v1",
+      "name": "Prepare App Store Submission",
+      "input": {
+        "app_name": "FinanceTracker Pro",
+        "version": "2.0.0",
+        "features_to_highlight": [
+          "ai_insights",
+          "multi_account_sync",
+          "widget_support"
+        ],
+        "locales": ["en-US", "es-ES", "fr-FR", "de-DE", "ja-JP"]
+      },
+      "expected_output": {
+        "type": "app_store_assets",
+        "includes_description": true,
+        "includes_keywords": true,
+        "includes_whats_new": true,
+        "includes_privacy_labels": true,
+        "includes_screenshot_specs": true
+      },
+      "evaluation_criteria": [
+        "description_compelling",
+        "keywords_optimized",
+        "localization_quality",
+        "privacy_labels_accurate",
+        "guideline_compliant"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["app_store", "aso", "submission"]
+    },
+    {
+      "id": "mobile_008",
+      "agent": "agent.mobile.android_kotlin.v1",
+      "name": "Implement Push Notifications",
+      "input": {
+        "provider": "firebase_cloud_messaging",
+        "notification_types": ["transactional", "promotional", "silent"],
+        "features": [
+          "deep_linking",
+          "rich_media",
+          "action_buttons",
+          "notification_channels"
+        ]
+      },
+      "expected_output": {
+        "type": "kotlin_implementation",
+        "includes_service": true,
+        "includes_channel_config": true,
+        "includes_deep_link_handler": true,
+        "includes_analytics": true
+      },
+      "evaluation_criteria": [
+        "fcm_integration_correct",
+        "channels_properly_configured",
+        "deep_links_work",
+        "rich_notifications_display",
+        "background_handling_correct"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 90000,
+      "tags": ["android", "push_notifications", "fcm"]
+    }
+  ]
+}

@@ -1,0 +1,467 @@
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#1a1a2e',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#4a4a6a',
+    'lineColor': '#6366f1',
+    'secondaryColor': '#2d2d44',
+    'tertiaryColor': '#0f0f23'
+  }
+}}%%
+
+%% ============================================================================
+%% AGENTOS PACK HIERARCHY
+%% 16 Packs with Manager-Specialist Relationships and Cross-Pack Collaboration
+%% C-Suite Presentation Ready
+%% ============================================================================
+
+flowchart TB
+    %% ========================================================================
+    %% ORCHESTRATION LAYER
+    %% ========================================================================
+
+    subgraph ORCHESTRATION["Central Orchestration"]
+        MASTER_ORCH["Master Orchestrator<br/>Task Routing & Coordination"]
+        PACK_REGISTRY["Pack Registry<br/>Discovery & Health"]
+        COLLAB_ENGINE["Collaboration Engine<br/>Cross-Pack Workflows"]
+    end
+
+    %% ========================================================================
+    %% CORE BUSINESS PACKS
+    %% ========================================================================
+
+    subgraph CORE_PACKS["Core Business Domain"]
+        direction TB
+
+        subgraph PRODUCT_PACK["Product Pack"]
+            direction TB
+            PM_MANAGER["Pack Manager<br/>agent.product.pack_manager.v1"]
+
+            PM_PRD["PRD Writer<br/>Creates PRDs & Feature Specs"]
+            PM_STORY["User Story Generator<br/>Stories & Acceptance Criteria"]
+            PM_ROADMAP["Roadmap Planner<br/>Quarterly Plans & Milestones"]
+            PM_ANALYTICS["Product Analytics<br/>Metrics & KPI Analysis"]
+            PM_STAKEHOLDER["Stakeholder Liaison<br/>Communications & Updates"]
+
+            PM_MANAGER --> PM_PRD
+            PM_MANAGER --> PM_STORY
+            PM_MANAGER --> PM_ROADMAP
+            PM_MANAGER --> PM_ANALYTICS
+            PM_MANAGER --> PM_STAKEHOLDER
+        end
+
+        subgraph ENGINEERING_PACK["Engineering Pack"]
+            direction TB
+            ENG_MANAGER["Pack Manager<br/>agent.engineering.pack_manager.v1"]
+
+            ENG_DEV["Product Developer<br/>Full-Stack Implementation"]
+            ENG_ARCH["Architecture<br/>System Design & ADRs"]
+            ENG_ANALYSIS["Code Analysis<br/>Reviews & Security Audits"]
+            ENG_PERF["Performance<br/>Optimization & Profiling"]
+            ENG_PLUMBER["Plumber<br/>Integrations & Webhooks"]
+            ENG_REFACTOR["Refactor<br/>Code Quality & Tech Debt"]
+            ENG_DEBUG["Debugger<br/>Bug Diagnosis & Fixes"]
+
+            ENG_MANAGER --> ENG_DEV
+            ENG_MANAGER --> ENG_ARCH
+            ENG_MANAGER --> ENG_ANALYSIS
+            ENG_MANAGER --> ENG_PERF
+            ENG_MANAGER --> ENG_PLUMBER
+            ENG_MANAGER --> ENG_REFACTOR
+            ENG_MANAGER --> ENG_DEBUG
+        end
+
+        subgraph DESIGN_PACK["Design Pack"]
+            direction TB
+            DES_MANAGER["Pack Manager<br/>agent.design.pack_manager.v1"]
+
+            DES_UX["UX Researcher<br/>User Research & Testing"]
+            DES_UI["UI Designer<br/>Visual Design & Systems"]
+            DES_COMP["Component Designer<br/>Design System & Tokens"]
+            DES_PROTO["Prototyper<br/>Interactive Mockups"]
+            DES_ACCESS["Accessibility<br/>WCAG Compliance"]
+
+            DES_MANAGER --> DES_UX
+            DES_MANAGER --> DES_UI
+            DES_MANAGER --> DES_COMP
+            DES_MANAGER --> DES_PROTO
+            DES_MANAGER --> DES_ACCESS
+        end
+    end
+
+    %% ========================================================================
+    %% GROWTH & REVENUE PACKS
+    %% ========================================================================
+
+    subgraph GROWTH_PACKS["Growth & Revenue Domain"]
+        direction TB
+
+        subgraph MARKETING_PACK["Marketing Pack"]
+            direction TB
+            MKT_MANAGER["Pack Manager<br/>agent.marketing.pack_manager.v1"]
+
+            MKT_CAMPAIGN["Campaign Manager<br/>Multi-Channel Campaigns"]
+            MKT_SMS["SMS/MMS Agent<br/>TCPA Compliant Messaging"]
+            MKT_EMAIL["Email Marketer<br/>Drip Campaigns & Templates"]
+            MKT_CONTENT["Content Creator<br/>Copy & Creative Assets"]
+            MKT_SEO["SEO Specialist<br/>Optimization & Keywords"]
+            MKT_SOCIAL["Social Media<br/>Platform Management"]
+
+            MKT_MANAGER --> MKT_CAMPAIGN
+            MKT_MANAGER --> MKT_SMS
+            MKT_MANAGER --> MKT_EMAIL
+            MKT_MANAGER --> MKT_CONTENT
+            MKT_MANAGER --> MKT_SEO
+            MKT_MANAGER --> MKT_SOCIAL
+        end
+
+        subgraph LEAD_PACK["Lead Faucet Pack"]
+            direction TB
+            LEAD_MANAGER["Pack Manager<br/>agent.lead_faucet.pack_manager.v1"]
+
+            LEAD_GEN["Lead Generator<br/>Prospect Identification"]
+            LEAD_QUAL["Lead Qualifier<br/>Scoring & Prioritization"]
+            LEAD_ENRICH["Lead Enricher<br/>Data Augmentation"]
+            LEAD_OUTREACH["Outreach Agent<br/>Initial Contact Sequences"]
+            LEAD_NURTURE["Nurture Agent<br/>Long-Term Engagement"]
+
+            LEAD_MANAGER --> LEAD_GEN
+            LEAD_MANAGER --> LEAD_QUAL
+            LEAD_MANAGER --> LEAD_ENRICH
+            LEAD_MANAGER --> LEAD_OUTREACH
+            LEAD_MANAGER --> LEAD_NURTURE
+        end
+
+        subgraph ANALYTICS_PACK["Analytics Pack"]
+            direction TB
+            ANA_MANAGER["Pack Manager<br/>agent.analytics.pack_manager.v1"]
+
+            ANA_DASHBOARD["Dashboard Builder<br/>KPI Visualization"]
+            ANA_REPORT["Report Generator<br/>Automated Reports"]
+            ANA_INSIGHT["Insight Engine<br/>Trend Analysis"]
+            ANA_FORECAST["Forecaster<br/>Predictive Models"]
+            ANA_ALERT["Alert Manager<br/>Anomaly Detection"]
+
+            ANA_MANAGER --> ANA_DASHBOARD
+            ANA_MANAGER --> ANA_REPORT
+            ANA_MANAGER --> ANA_INSIGHT
+            ANA_MANAGER --> ANA_FORECAST
+            ANA_MANAGER --> ANA_ALERT
+        end
+    end
+
+    %% ========================================================================
+    %% PLATFORM PACKS
+    %% ========================================================================
+
+    subgraph PLATFORM_PACKS["Platform & Infrastructure Domain"]
+        direction TB
+
+        subgraph SUPABASE_PACK["Supabase Pack"]
+            direction TB
+            SUP_MANAGER["Pack Manager<br/>agent.supabase.pack_manager.v1"]
+
+            SUP_SCHEMA["Schema Designer<br/>Database Modeling"]
+            SUP_RLS["RLS Architect<br/>Row-Level Security"]
+            SUP_EDGE["Edge Functions<br/>Serverless Logic"]
+            SUP_REALTIME["Realtime Config<br/>Subscriptions"]
+            SUP_STORAGE["Storage Manager<br/>Buckets & Policies"]
+            SUP_AUTH["Auth Config<br/>Providers & Policies"]
+
+            SUP_MANAGER --> SUP_SCHEMA
+            SUP_MANAGER --> SUP_RLS
+            SUP_MANAGER --> SUP_EDGE
+            SUP_MANAGER --> SUP_REALTIME
+            SUP_MANAGER --> SUP_STORAGE
+            SUP_MANAGER --> SUP_AUTH
+        end
+
+        subgraph DEVOPS_PACK["DevOps Pack"]
+            direction TB
+            DEV_MANAGER["Pack Manager<br/>agent.devops.pack_manager.v1"]
+
+            DEV_CICD["CI/CD Engineer<br/>Pipeline Automation"]
+            DEV_INFRA["Infrastructure<br/>Terraform & CloudFormation"]
+            DEV_K8S["Kubernetes<br/>Container Orchestration"]
+            DEV_MONITOR["Monitoring<br/>Observability Stack"]
+            DEV_SECURITY["Security Ops<br/>Hardening & Scanning"]
+            DEV_BACKUP["Backup & Recovery<br/>Disaster Recovery"]
+
+            DEV_MANAGER --> DEV_CICD
+            DEV_MANAGER --> DEV_INFRA
+            DEV_MANAGER --> DEV_K8S
+            DEV_MANAGER --> DEV_MONITOR
+            DEV_MANAGER --> DEV_SECURITY
+            DEV_MANAGER --> DEV_BACKUP
+        end
+
+        subgraph MOBILE_PACK["Mobile Pack"]
+            direction TB
+            MOB_MANAGER["Pack Manager<br/>agent.mobile.pack_manager.v1"]
+
+            MOB_IOS["iOS Swift<br/>SwiftUI Development"]
+            MOB_ANDROID["Android Kotlin<br/>Jetpack Compose"]
+            MOB_API["API Integration<br/>Offline-First Patterns"]
+            MOB_BUILD["Build Pipeline<br/>Fastlane Automation"]
+            MOB_QA["QA Testing<br/>XCTest & Espresso"]
+            MOB_SECURITY["Mobile Security<br/>OWASP MASVS"]
+            MOB_APPSTORE["App Store<br/>iOS Submissions"]
+            MOB_PLAYSTORE["Play Store<br/>Android Submissions"]
+
+            MOB_MANAGER --> MOB_IOS
+            MOB_MANAGER --> MOB_ANDROID
+            MOB_MANAGER --> MOB_API
+            MOB_MANAGER --> MOB_BUILD
+            MOB_MANAGER --> MOB_QA
+            MOB_MANAGER --> MOB_SECURITY
+            MOB_MANAGER --> MOB_APPSTORE
+            MOB_MANAGER --> MOB_PLAYSTORE
+        end
+    end
+
+    %% ========================================================================
+    %% SUPPORT PACKS
+    %% ========================================================================
+
+    subgraph SUPPORT_PACKS["Support & Compliance Domain"]
+        direction TB
+
+        subgraph LEGAL_PACK["Legal Pack"]
+            direction TB
+            LEG_MANAGER["Pack Manager<br/>agent.legal.pack_manager.v1"]
+
+            LEG_CONTRACT["Contract Analyst<br/>Review & Drafting"]
+            LEG_COMPLIANCE["Compliance Officer<br/>Regulatory Adherence"]
+            LEG_PRIVACY["Privacy Counsel<br/>GDPR/CCPA"]
+            LEG_IP["IP Specialist<br/>Patents & Trademarks"]
+            LEG_RISK["Risk Assessor<br/>Legal Risk Analysis"]
+
+            LEG_MANAGER --> LEG_CONTRACT
+            LEG_MANAGER --> LEG_COMPLIANCE
+            LEG_MANAGER --> LEG_PRIVACY
+            LEG_MANAGER --> LEG_IP
+            LEG_MANAGER --> LEG_RISK
+        end
+
+        subgraph FINANCE_PACK["Finance Pack"]
+            direction TB
+            FIN_MANAGER["Pack Manager<br/>agent.finance.pack_manager.v1"]
+
+            FIN_BUDGET["Budget Analyst<br/>Budget Planning"]
+            FIN_INVOICE["Invoice Processor<br/>AP/AR Automation"]
+            FIN_REPORT["Financial Reporting<br/>Statements & Analysis"]
+            FIN_FORECAST["Financial Forecasting<br/>Cash Flow Models"]
+            FIN_AUDIT["Audit Support<br/>Documentation"]
+
+            FIN_MANAGER --> FIN_BUDGET
+            FIN_MANAGER --> FIN_INVOICE
+            FIN_MANAGER --> FIN_REPORT
+            FIN_MANAGER --> FIN_FORECAST
+            FIN_MANAGER --> FIN_AUDIT
+        end
+
+        subgraph QA_PACK["QA Pack"]
+            direction TB
+            QA_MANAGER["Pack Manager<br/>agent.qa.pack_manager.v1"]
+
+            QA_TEST["Test Generator<br/>Unit & Integration Tests"]
+            QA_E2E["E2E Tester<br/>Playwright & Cypress"]
+            QA_PERF["Performance Tester<br/>Load & Stress Tests"]
+            QA_SECURITY["Security Tester<br/>Penetration Testing"]
+            QA_ACCESS["Accessibility Tester<br/>WCAG Verification"]
+            QA_REGRESSION["Regression Tester<br/>Change Impact Analysis"]
+
+            QA_MANAGER --> QA_TEST
+            QA_MANAGER --> QA_E2E
+            QA_MANAGER --> QA_PERF
+            QA_MANAGER --> QA_SECURITY
+            QA_MANAGER --> QA_ACCESS
+            QA_MANAGER --> QA_REGRESSION
+        end
+    end
+
+    %% ========================================================================
+    %% INTELLIGENCE PACKS
+    %% ========================================================================
+
+    subgraph INTELLIGENCE_PACKS["Intelligence & Strategy Domain"]
+        direction TB
+
+        subgraph RESEARCH_PACK["Research Pack"]
+            direction TB
+            RES_MANAGER["Pack Manager<br/>agent.research.pack_manager.v1"]
+
+            RES_MARKET["Market Analyst<br/>Market Research"]
+            RES_COMPETE["Competitive Intel<br/>Competitor Analysis"]
+            RES_TRENDS["Trend Spotter<br/>Industry Trends"]
+            RES_CUSTOMER["Customer Research<br/>Voice of Customer"]
+            RES_TECH["Tech Scout<br/>Technology Assessment"]
+
+            RES_MANAGER --> RES_MARKET
+            RES_MANAGER --> RES_COMPETE
+            RES_MANAGER --> RES_TRENDS
+            RES_MANAGER --> RES_CUSTOMER
+            RES_MANAGER --> RES_TECH
+        end
+
+        subgraph PLANNING_PACK["Planning Pack"]
+            direction TB
+            PLN_MANAGER["Pack Manager<br/>agent.planning.pack_manager.v1"]
+
+            PLN_STRATEGIC["Strategic Planner<br/>Long-Term Vision"]
+            PLN_SPRINT["Sprint Planner<br/>Agile Ceremonies"]
+            PLN_RESOURCE["Resource Planner<br/>Capacity Planning"]
+            PLN_DEPENDENCY["Dependency Mapper<br/>Cross-Team Alignment"]
+            PLN_OKR["OKR Tracker<br/>Goals & Key Results"]
+
+            PLN_MANAGER --> PLN_STRATEGIC
+            PLN_MANAGER --> PLN_SPRINT
+            PLN_MANAGER --> PLN_RESOURCE
+            PLN_MANAGER --> PLN_DEPENDENCY
+            PLN_MANAGER --> PLN_OKR
+        end
+
+        subgraph ERROR_PACK["Error Predictor Pack"]
+            direction TB
+            ERR_MANAGER["Pack Manager<br/>agent.error_predictor.pack_manager.v1"]
+
+            ERR_DETECT["Error Detector<br/>Pattern Recognition"]
+            ERR_PREDICT["Failure Predictor<br/>ML-Based Prediction"]
+            ERR_PREVENT["Prevention Agent<br/>Proactive Fixes"]
+            ERR_ROOT["Root Cause Analyzer<br/>Incident Analysis"]
+            ERR_LEARN["Learning Agent<br/>Model Improvement"]
+
+            ERR_MANAGER --> ERR_DETECT
+            ERR_MANAGER --> ERR_PREDICT
+            ERR_MANAGER --> ERR_PREVENT
+            ERR_MANAGER --> ERR_ROOT
+            ERR_MANAGER --> ERR_LEARN
+        end
+
+        subgraph ORCH_PACK["Orchestration Pack"]
+            direction TB
+            ORCH_PACK_MANAGER["Pack Manager<br/>agent.orchestration.pack_manager.v1"]
+
+            ORCH_WORKFLOW["Workflow Designer<br/>Multi-Agent Flows"]
+            ORCH_SCHEDULER["Task Scheduler<br/>Priority & Timing"]
+            ORCH_MEDIATOR["Cross-Pack Mediator<br/>Collaboration"]
+            ORCH_MONITOR["Execution Monitor<br/>Progress Tracking"]
+            ORCH_RECOVERY["Recovery Agent<br/>Failure Handling"]
+
+            ORCH_PACK_MANAGER --> ORCH_WORKFLOW
+            ORCH_PACK_MANAGER --> ORCH_SCHEDULER
+            ORCH_PACK_MANAGER --> ORCH_MEDIATOR
+            ORCH_PACK_MANAGER --> ORCH_MONITOR
+            ORCH_PACK_MANAGER --> ORCH_RECOVERY
+        end
+    end
+
+    %% ========================================================================
+    %% ORCHESTRATION CONNECTIONS
+    %% ========================================================================
+
+    MASTER_ORCH --> PM_MANAGER
+    MASTER_ORCH --> ENG_MANAGER
+    MASTER_ORCH --> DES_MANAGER
+    MASTER_ORCH --> MKT_MANAGER
+    MASTER_ORCH --> LEAD_MANAGER
+    MASTER_ORCH --> ANA_MANAGER
+    MASTER_ORCH --> SUP_MANAGER
+    MASTER_ORCH --> DEV_MANAGER
+    MASTER_ORCH --> MOB_MANAGER
+    MASTER_ORCH --> LEG_MANAGER
+    MASTER_ORCH --> FIN_MANAGER
+    MASTER_ORCH --> QA_MANAGER
+    MASTER_ORCH --> RES_MANAGER
+    MASTER_ORCH --> PLN_MANAGER
+    MASTER_ORCH --> ERR_MANAGER
+    MASTER_ORCH --> ORCH_PACK_MANAGER
+
+    PACK_REGISTRY --> PM_MANAGER
+    PACK_REGISTRY --> ENG_MANAGER
+    PACK_REGISTRY --> DES_MANAGER
+    PACK_REGISTRY --> MKT_MANAGER
+    PACK_REGISTRY --> SUP_MANAGER
+    PACK_REGISTRY --> DEV_MANAGER
+    PACK_REGISTRY --> MOB_MANAGER
+
+    %% ========================================================================
+    %% CROSS-PACK COLLABORATION FLOWS
+    %% ========================================================================
+
+    %% Product -> Engineering Flow
+    PM_PRD -.->|"Specs"| ENG_ARCH
+    PM_STORY -.->|"Stories"| ENG_DEV
+    PM_ROADMAP -.->|"Timeline"| PLN_SPRINT
+
+    %% Design -> Engineering Flow
+    DES_UI -.->|"Designs"| ENG_DEV
+    DES_COMP -.->|"Components"| ENG_DEV
+    DES_PROTO -.->|"Mockups"| MOB_IOS
+    DES_PROTO -.->|"Mockups"| MOB_ANDROID
+
+    %% Engineering -> QA Flow
+    ENG_DEV -.->|"Code"| QA_TEST
+    ENG_DEV -.->|"Features"| QA_E2E
+    ENG_ANALYSIS -.->|"Reviews"| QA_SECURITY
+
+    %% Marketing -> Lead Flow
+    MKT_CAMPAIGN -.->|"Campaigns"| LEAD_OUTREACH
+    MKT_CONTENT -.->|"Content"| LEAD_NURTURE
+
+    %% Research -> Product Flow
+    RES_MARKET -.->|"Insights"| PM_PRD
+    RES_CUSTOMER -.->|"Feedback"| DES_UX
+
+    %% Supabase -> Engineering Flow
+    SUP_SCHEMA -.->|"Schema"| ENG_DEV
+    SUP_RLS -.->|"Policies"| ENG_ANALYSIS
+
+    %% DevOps -> Mobile Flow
+    DEV_CICD -.->|"Pipelines"| MOB_BUILD
+    DEV_SECURITY -.->|"Scans"| MOB_SECURITY
+
+    %% Legal -> Compliance Flows
+    LEG_COMPLIANCE -.->|"Policies"| MKT_SMS
+    LEG_PRIVACY -.->|"GDPR"| SUP_RLS
+
+    %% Error Predictor -> All Packs
+    ERR_PREDICT -.->|"Warnings"| ENG_DEBUG
+    ERR_PREVENT -.->|"Fixes"| DEV_MONITOR
+
+    %% Orchestration -> Cross-Pack
+    ORCH_MEDIATOR -.->|"Coordinates"| COLLAB_ENGINE
+    COLLAB_ENGINE -.->|"Workflows"| ORCH_WORKFLOW
+
+    %% ========================================================================
+    %% STYLING
+    %% ========================================================================
+
+    classDef orchestration fill:#7c3aed,stroke:#8b5cf6,stroke-width:3px,color:#ffffff
+    classDef manager fill:#0f766e,stroke:#14b8a6,stroke-width:2px,color:#ffffff
+    classDef specialist fill:#1e40af,stroke:#3b82f6,stroke-width:1px,color:#ffffff
+    classDef core fill:#c2410c,stroke:#f97316,stroke-width:2px,color:#ffffff
+    classDef growth fill:#047857,stroke:#10b981,stroke-width:2px,color:#ffffff
+    classDef platform fill:#4338ca,stroke:#818cf8,stroke-width:2px,color:#ffffff
+    classDef support fill:#be123c,stroke:#f43f5e,stroke-width:2px,color:#ffffff
+    classDef intelligence fill:#0369a1,stroke:#0ea5e9,stroke-width:2px,color:#ffffff
+
+    class MASTER_ORCH,PACK_REGISTRY,COLLAB_ENGINE orchestration
+    class PM_MANAGER,ENG_MANAGER,DES_MANAGER,MKT_MANAGER,LEAD_MANAGER,ANA_MANAGER,SUP_MANAGER,DEV_MANAGER,MOB_MANAGER,LEG_MANAGER,FIN_MANAGER,QA_MANAGER,RES_MANAGER,PLN_MANAGER,ERR_MANAGER,ORCH_PACK_MANAGER manager
+    class PM_PRD,PM_STORY,PM_ROADMAP,PM_ANALYTICS,PM_STAKEHOLDER specialist
+    class ENG_DEV,ENG_ARCH,ENG_ANALYSIS,ENG_PERF,ENG_PLUMBER,ENG_REFACTOR,ENG_DEBUG specialist
+    class DES_UX,DES_UI,DES_COMP,DES_PROTO,DES_ACCESS specialist
+    class MKT_CAMPAIGN,MKT_SMS,MKT_EMAIL,MKT_CONTENT,MKT_SEO,MKT_SOCIAL specialist
+    class LEAD_GEN,LEAD_QUAL,LEAD_ENRICH,LEAD_OUTREACH,LEAD_NURTURE specialist
+    class ANA_DASHBOARD,ANA_REPORT,ANA_INSIGHT,ANA_FORECAST,ANA_ALERT specialist
+    class SUP_SCHEMA,SUP_RLS,SUP_EDGE,SUP_REALTIME,SUP_STORAGE,SUP_AUTH specialist
+    class DEV_CICD,DEV_INFRA,DEV_K8S,DEV_MONITOR,DEV_SECURITY,DEV_BACKUP specialist
+    class MOB_IOS,MOB_ANDROID,MOB_API,MOB_BUILD,MOB_QA,MOB_SECURITY,MOB_APPSTORE,MOB_PLAYSTORE specialist
+    class LEG_CONTRACT,LEG_COMPLIANCE,LEG_PRIVACY,LEG_IP,LEG_RISK specialist
+    class FIN_BUDGET,FIN_INVOICE,FIN_REPORT,FIN_FORECAST,FIN_AUDIT specialist
+    class QA_TEST,QA_E2E,QA_PERF,QA_SECURITY,QA_ACCESS,QA_REGRESSION specialist
+    class RES_MARKET,RES_COMPETE,RES_TRENDS,RES_CUSTOMER,RES_TECH specialist
+    class PLN_STRATEGIC,PLN_SPRINT,PLN_RESOURCE,PLN_DEPENDENCY,PLN_OKR specialist
+    class ERR_DETECT,ERR_PREDICT,ERR_PREVENT,ERR_ROOT,ERR_LEARN specialist
+    class ORCH_WORKFLOW,ORCH_SCHEDULER,ORCH_MEDIATOR,ORCH_MONITOR,ORCH_RECOVERY specialist

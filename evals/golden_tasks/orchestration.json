@@ -1,0 +1,239 @@
+{
+  "pack": "orchestration",
+  "version": "1.0.0",
+  "description": "Golden tasks for orchestration agents - task routing, workflow management, and multi-agent coordination",
+  "tasks": [
+    {
+      "id": "orchestration_001",
+      "agent": "agent.orchestration.task_coordinator.v1",
+      "name": "Route Complex Feature Request",
+      "input": {
+        "request": "Build a real-time collaborative document editor with AI suggestions",
+        "requirements": [
+          "rich text editing",
+          "real-time sync",
+          "ai suggestions",
+          "version history",
+          "permissions"
+        ],
+        "constraints": {
+          "deadline": "6 weeks",
+          "team_size": 4
+        }
+      },
+      "expected_output": {
+        "type": "routing_plan",
+        "includes_agent_assignments": true,
+        "includes_task_breakdown": true,
+        "includes_dependencies": true,
+        "includes_timeline": true
+      },
+      "evaluation_criteria": [
+        "agents_appropriately_selected",
+        "tasks_well_decomposed",
+        "dependencies_correct",
+        "timeline_realistic",
+        "no_bottlenecks"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 60000,
+      "tags": ["routing", "decomposition", "planning"]
+    },
+    {
+      "id": "orchestration_002",
+      "agent": "agent.orchestration.workflow_engine.v1",
+      "name": "Execute Multi-Pack Workflow",
+      "input": {
+        "workflow": "feature_development",
+        "packs_involved": ["product", "design", "engineering", "qa"],
+        "feature": "User onboarding wizard",
+        "parallel_execution": true,
+        "checkpoints": ["design_approval", "code_review", "qa_signoff"]
+      },
+      "expected_output": {
+        "type": "workflow_execution_plan",
+        "includes_state_machine": true,
+        "includes_parallel_branches": true,
+        "includes_error_handling": true,
+        "includes_checkpoints": true
+      },
+      "evaluation_criteria": [
+        "state_machine_correct",
+        "parallelism_optimized",
+        "checkpoints_enforced",
+        "error_recovery_defined",
+        "handoffs_clear"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 90000,
+      "tags": ["workflow", "multi_pack", "execution"]
+    },
+    {
+      "id": "orchestration_003",
+      "agent": "agent.orchestration.task_coordinator.v1",
+      "name": "Handle Incident Response",
+      "input": {
+        "incident": {
+          "type": "production_outage",
+          "severity": "sev1",
+          "affected_services": ["api-gateway", "order-service"],
+          "started_at": "2024-12-28T10:30:00Z"
+        },
+        "required_actions": [
+          "diagnose",
+          "mitigate",
+          "communicate",
+          "document"
+        ]
+      },
+      "expected_output": {
+        "type": "incident_coordination",
+        "includes_agent_roles": true,
+        "includes_action_sequence": true,
+        "includes_communication_plan": true,
+        "includes_escalation": true
+      },
+      "evaluation_criteria": [
+        "roles_correctly_assigned",
+        "sequence_optimized_for_mttr",
+        "communication_timely",
+        "escalation_appropriate",
+        "documentation_complete"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 45000,
+      "tags": ["incident", "coordination", "sev1"]
+    },
+    {
+      "id": "orchestration_004",
+      "agent": "agent.orchestration.workflow_engine.v1",
+      "name": "Design CI/CD Pipeline Workflow",
+      "input": {
+        "stages": ["build", "test", "security_scan", "deploy_staging", "integration_test", "deploy_prod"],
+        "gates": ["test_coverage_80", "security_passed", "manual_approval"],
+        "rollback_triggers": ["error_rate_spike", "latency_increase"],
+        "notifications": ["slack", "pagerduty"]
+      },
+      "expected_output": {
+        "type": "pipeline_workflow",
+        "includes_dag": true,
+        "includes_gates": true,
+        "includes_rollback_logic": true,
+        "includes_notification_rules": true
+      },
+      "evaluation_criteria": [
+        "dag_correct",
+        "gates_enforced",
+        "rollback_automated",
+        "notifications_targeted",
+        "parallel_where_possible"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["cicd", "pipeline", "automation"]
+    },
+    {
+      "id": "orchestration_005",
+      "agent": "agent.orchestration.pack_manager.v1",
+      "name": "Optimize Agent Load Balancing",
+      "input": {
+        "agent_pool": [
+          {"agent": "engineering_1", "capacity": 0.8, "queue_depth": 3},
+          {"agent": "engineering_2", "capacity": 1.0, "queue_depth": 5},
+          {"agent": "engineering_3", "capacity": 0.5, "queue_depth": 1}
+        ],
+        "incoming_tasks": [
+          {"id": "T1", "complexity": "high", "deadline": "urgent"},
+          {"id": "T2", "complexity": "medium", "deadline": "normal"},
+          {"id": "T3", "complexity": "low", "deadline": "normal"}
+        ]
+      },
+      "expected_output": {
+        "type": "load_balancing_decision",
+        "includes_assignments": true,
+        "includes_rationale": true,
+        "includes_predictions": true,
+        "includes_rebalancing_triggers": true
+      },
+      "evaluation_criteria": [
+        "assignments_balanced",
+        "urgency_respected",
+        "capacity_not_exceeded",
+        "predictions_reasonable",
+        "rebalancing_defined"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 30000,
+      "tags": ["load_balancing", "capacity", "optimization"]
+    },
+    {
+      "id": "orchestration_006",
+      "agent": "agent.orchestration.task_coordinator.v1",
+      "name": "Coordinate Cross-Team Initiative",
+      "input": {
+        "initiative": "Platform Modernization",
+        "teams": ["backend", "frontend", "devops", "data"],
+        "workstreams": [
+          {"name": "API v3", "team": "backend", "duration": "8 weeks"},
+          {"name": "UI Refresh", "team": "frontend", "duration": "6 weeks"},
+          {"name": "K8s Migration", "team": "devops", "duration": "4 weeks"},
+          {"name": "Data Pipeline", "team": "data", "duration": "5 weeks"}
+        ],
+        "dependencies": [
+          {"from": "API v3", "to": "UI Refresh"},
+          {"from": "K8s Migration", "to": "API v3"}
+        ]
+      },
+      "expected_output": {
+        "type": "coordination_plan",
+        "includes_gantt": true,
+        "includes_milestones": true,
+        "includes_sync_cadence": true,
+        "includes_risk_tracking": true
+      },
+      "evaluation_criteria": [
+        "dependencies_respected",
+        "critical_path_identified",
+        "milestones_aligned",
+        "sync_points_defined",
+        "risks_monitored"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 90000,
+      "tags": ["cross_team", "coordination", "initiative"]
+    },
+    {
+      "id": "orchestration_007",
+      "agent": "agent.orchestration.workflow_engine.v1",
+      "name": "Implement Saga Pattern",
+      "input": {
+        "transaction": "Order Processing",
+        "steps": [
+          {"name": "reserve_inventory", "service": "inventory"},
+          {"name": "charge_payment", "service": "payment"},
+          {"name": "create_shipment", "service": "shipping"},
+          {"name": "send_confirmation", "service": "notification"}
+        ],
+        "compensation_required": true,
+        "timeout_per_step": 30000
+      },
+      "expected_output": {
+        "type": "saga_definition",
+        "includes_forward_steps": true,
+        "includes_compensation_steps": true,
+        "includes_timeout_handling": true,
+        "includes_idempotency": true
+      },
+      "evaluation_criteria": [
+        "compensation_complete",
+        "ordering_correct",
+        "timeouts_handled",
+        "idempotency_ensured",
+        "observability_included"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 90000,
+      "tags": ["saga", "distributed_transactions", "compensation"]
+    }
+  ]
+}

@@ -1,0 +1,336 @@
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#1a1a2e',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#4a4a6a',
+    'lineColor': '#6366f1',
+    'secondaryColor': '#2d2d44',
+    'tertiaryColor': '#0f0f23'
+  }
+}}%%
+
+%% ============================================================================
+%% AGENTOS AGENT LIFECYCLE
+%% Complete Task Execution Flow with Gates, Approvals, and Error Handling
+%% C-Suite Presentation Ready
+%% ============================================================================
+
+stateDiagram-v2
+    [*] --> TaskReceived: New Task Request
+
+    %% ========================================================================
+    %% INGESTION PHASE
+    %% ========================================================================
+
+    state "Task Ingestion" as INGESTION {
+        TaskReceived --> IdempotencyCheck: Check Idempotency Key
+        IdempotencyCheck --> DuplicateDetected: Key Exists
+        IdempotencyCheck --> Validation: New Request
+
+        DuplicateDetected --> ReturnCached: Return Cached Result
+        ReturnCached --> [*]
+
+        Validation --> ValidationFailed: Invalid Schema
+        Validation --> RateLimitCheck: Schema Valid
+
+        ValidationFailed --> ErrorResponse: Return 400
+        ErrorResponse --> [*]
+
+        RateLimitCheck --> RateLimited: Quota Exceeded
+        RateLimitCheck --> Enqueue: Within Limits
+
+        RateLimited --> RetryLater: Return 429
+        RetryLater --> [*]
+    }
+
+    %% ========================================================================
+    %% ROUTING PHASE
+    %% ========================================================================
+
+    state "Task Routing" as ROUTING {
+        Enqueue --> PriorityAssignment: Assign Priority
+        PriorityAssignment --> PackSelection: Analyze Task Type
+
+        PackSelection --> ProductPack: Product Task
+        PackSelection --> EngineeringPack: Engineering Task
+        PackSelection --> MarketingPack: Marketing Task
+        PackSelection --> OtherPack: Other Domain
+
+        ProductPack --> AgentSelection
+        EngineeringPack --> AgentSelection
+        MarketingPack --> AgentSelection
+        OtherPack --> AgentSelection
+
+        AgentSelection --> LoadBalancing: Select Best Agent
+        LoadBalancing --> ContextHydration: Balance Load
+    }
+
+    %% ========================================================================
+    %% PRE-EXECUTION PHASE
+    %% ========================================================================
+
+    state "Pre-Execution" as PREEXEC {
+        ContextHydration --> ZoneClassification: Load Task Context
+
+        ZoneClassification --> RedZone: High Risk Operation
+        ZoneClassification --> YellowZone: Medium Risk
+        ZoneClassification --> GreenZone: Low Risk
+
+        state "Zone Processing" as ZONE_PROC {
+            RedZone --> MandatoryApproval: Requires Human Approval
+            YellowZone --> ConditionalApproval: May Require Approval
+            GreenZone --> AutoApprove: Auto-Approved
+
+            MandatoryApproval --> AwaitingApproval: Create Approval Request
+            ConditionalApproval --> PolicyCheck: Check Policies
+            AutoApprove --> ReadyForExecution
+
+            PolicyCheck --> AwaitingApproval: Policy Requires Approval
+            PolicyCheck --> ReadyForExecution: Policy Allows
+
+            AwaitingApproval --> ApprovalReceived: Human Approves
+            AwaitingApproval --> ApprovalRejected: Human Rejects
+            AwaitingApproval --> ApprovalTimeout: Timeout (1hr)
+
+            ApprovalReceived --> TokenIssued: Issue Approval Token
+            TokenIssued --> ReadyForExecution
+
+            ApprovalRejected --> TaskRejected: Mark Rejected
+            ApprovalTimeout --> TaskExpired: Mark Expired
+
+            TaskRejected --> [*]
+            TaskExpired --> [*]
+        }
+    }
+
+    %% ========================================================================
+    %% EXECUTION PHASE
+    %% ========================================================================
+
+    state "Execution" as EXECUTION {
+        ReadyForExecution --> ModelSelection: Select LLM Provider
+
+        state "Model Routing" as MODEL_ROUTE {
+            ModelSelection --> PrimaryProvider: First Choice
+            PrimaryProvider --> ProviderSuccess: Success
+            PrimaryProvider --> FallbackProvider: Rate Limited/Error
+
+            FallbackProvider --> ProviderSuccess: Success
+            FallbackProvider --> SecondFallback: Failed
+
+            SecondFallback --> ProviderSuccess: Success
+            SecondFallback --> AllProvidersFailed: No Providers Available
+        }
+
+        ProviderSuccess --> AgentExecution: Begin Agent Work
+
+        state "Agent Work" as AGENT_WORK {
+            AgentExecution --> ToolSelection: Plan Actions
+            ToolSelection --> ToolExecution: Execute Tool
+
+            state "Tool Sandbox" as SANDBOX {
+                ToolExecution --> SandboxCheck: Check Permissions
+                SandboxCheck --> SandboxDenied: Denied
+                SandboxCheck --> SandboxAllowed: Allowed
+
+                SandboxDenied --> ToolError: Log Violation
+                SandboxAllowed --> ToolRun: Execute in Sandbox
+                ToolRun --> ToolResult: Capture Output
+            }
+
+            ToolResult --> MoreTools: More Actions Needed
+            ToolResult --> GenerateOutput: All Tools Complete
+
+            MoreTools --> ToolSelection: Next Tool
+            ToolError --> ErrorHandling: Handle Error
+
+            GenerateOutput --> OutputReady: Agent Output Ready
+        }
+
+        AllProvidersFailed --> CircuitBreaker: Open Circuit
+        CircuitBreaker --> RetryQueue: Queue for Retry
+        RetryQueue --> ROUTING: After Backoff
+    }
+
+    %% ========================================================================
+    %% POST-EXECUTION GATES
+    %% ========================================================================
+
+    state "Quality Gates" as GATES {
+        OutputReady --> QualityGate: Run Quality Checks
+
+        state "Gate Evaluation" as GATE_EVAL {
+            QualityGate --> OutputNotEmpty: Check 1
+            OutputNotEmpty --> PiiScan: Check 2
+            PiiScan --> LengthCheck: Check 3
+            LengthCheck --> FormatCheck: Check 4
+            FormatCheck --> CostCheck: Check 5
+
+            OutputNotEmpty --> GateFailed: Empty Output
+            PiiScan --> PiiDetected: PII Found
+            LengthCheck --> GateFailed: Length Invalid
+            FormatCheck --> GateFailed: Format Invalid
+            CostCheck --> GateFailed: Over Budget
+
+            PiiDetected --> PiiRedaction: Auto-Redact
+            PiiRedaction --> CostCheck: Continue
+
+            CostCheck --> GatePassed: All Checks Pass
+        }
+
+        GateFailed --> BlockingFailure: Is Blocking?
+        BlockingFailure --> ErrorHandling: Yes - Block
+        BlockingFailure --> LogWarning: No - Log Only
+        LogWarning --> GatePassed: Continue
+
+        GatePassed --> FinalApprovalCheck: Check Zone
+    }
+
+    %% ========================================================================
+    %% FINAL APPROVAL (RED ZONE)
+    %% ========================================================================
+
+    state "Final Approval" as FINAL {
+        FinalApprovalCheck --> RequiresFinal: Red Zone Output
+        FinalApprovalCheck --> SkipFinal: Yellow/Green Zone
+
+        RequiresFinal --> FinalReview: Submit for Review
+        FinalReview --> FinalApproved: Human Approves
+        FinalReview --> FinalRejected: Human Rejects
+        FinalReview --> FinalModified: Human Modifies
+
+        FinalApproved --> ReadyToCommit
+        FinalRejected --> TaskFailed: Mark Failed
+        FinalModified --> ReadyToCommit: Use Modified Output
+
+        SkipFinal --> ReadyToCommit
+    }
+
+    %% ========================================================================
+    %% COMMIT & SIDE EFFECTS
+    %% ========================================================================
+
+    state "Commit Phase" as COMMIT {
+        ReadyToCommit --> ValidateToken: Verify Approval Token
+
+        ValidateToken --> TokenInvalid: Invalid/Expired
+        ValidateToken --> TokenValid: Valid Token
+
+        TokenInvalid --> ErrorHandling: Cannot Proceed
+        TokenValid --> ExecuteSideEffects: Apply Changes
+
+        state "Side Effects" as SIDE_EFFECTS {
+            ExecuteSideEffects --> DBWrites: Database Updates
+            ExecuteSideEffects --> APIcalls: External API Calls
+            ExecuteSideEffects --> FileWrites: File System Changes
+            ExecuteSideEffects --> Notifications: Send Notifications
+
+            DBWrites --> SideEffectComplete
+            APIcalls --> SideEffectComplete
+            FileWrites --> SideEffectComplete
+            Notifications --> SideEffectComplete
+
+            DBWrites --> SideEffectFailed: Write Failed
+            APIcalls --> SideEffectFailed: API Error
+            FileWrites --> SideEffectFailed: IO Error
+        }
+
+        SideEffectFailed --> RollbackRequired: Check Rollback
+    }
+
+    %% ========================================================================
+    %% ERROR HANDLING & ROLLBACK
+    %% ========================================================================
+
+    state "Error Handling" as ERROR_HANDLING {
+        ErrorHandling --> ClassifyError: Determine Error Type
+
+        ClassifyError --> RetryableError: Transient Error
+        ClassifyError --> NonRetryableError: Permanent Error
+        ClassifyError --> CriticalError: System Failure
+
+        RetryableError --> RetryLogic: Apply Retry Policy
+
+        state "Retry Logic" as RETRY {
+            RetryLogic --> ExponentialBackoff: Calculate Delay
+            ExponentialBackoff --> RetryAttempt: Wait Period
+
+            RetryAttempt --> MaxRetriesReached: Retry Count > Max
+            RetryAttempt --> RetryExecution: Retry Count OK
+
+            RetryExecution --> EXECUTION: Retry Task
+            MaxRetriesReached --> MarkFailed: Exhaust Retries
+        }
+
+        NonRetryableError --> MarkFailed: Cannot Retry
+        CriticalError --> AlertOps: Page On-Call
+
+        AlertOps --> MarkFailed: Log & Alert
+
+        RollbackRequired --> RollbackPossible: Check Rollback State
+        RollbackPossible --> ExecuteRollback: Has Rollback Data
+        RollbackPossible --> ManualIntervention: No Rollback Possible
+
+        ExecuteRollback --> RollbackSuccess: Rollback Complete
+        ExecuteRollback --> RollbackFailed: Rollback Error
+
+        RollbackSuccess --> MarkFailed: Clean Failure
+        RollbackFailed --> ManualIntervention: Escalate
+        ManualIntervention --> AlertOps: Page Human
+    }
+
+    %% ========================================================================
+    %% COMPLETION PHASE
+    %% ========================================================================
+
+    state "Completion" as COMPLETION {
+        SideEffectComplete --> AuditLog: Log Completion
+        MarkFailed --> AuditLog: Log Failure
+        TaskFailed --> AuditLog: Log Rejection
+
+        AuditLog --> UpdateState: Update Task State
+        UpdateState --> CacheResult: Cache for Idempotency
+        CacheResult --> EmitEvents: Emit Completion Event
+
+        EmitEvents --> WebhookDelivery: Deliver Webhooks
+        WebhookDelivery --> MetricsUpdate: Update Metrics
+        MetricsUpdate --> CleanupContext: Cleanup
+        CleanupContext --> TaskComplete: Done
+    }
+
+    TaskComplete --> [*]
+
+    %% ========================================================================
+    %% NOTES
+    %% ========================================================================
+
+    note right of INGESTION
+        Idempotency ensures
+        exactly-once semantics
+        for all operations
+    end note
+
+    note right of ZONE_PROC
+        RED Zone: Legal, Billing, Evidence
+        YELLOW Zone: APIs, Core Services
+        GREEN Zone: Features, Documentation
+    end note
+
+    note right of GATE_EVAL
+        Gates run sequentially
+        with fail-fast behavior
+        for blocking checks
+    end note
+
+    note right of RETRY
+        Exponential backoff:
+        1s, 2s, 4s, 8s, 16s
+        Max 5 retries
+    end note
+
+    note right of SIDE_EFFECTS
+        All side effects are
+        logged with before/after
+        state for rollback
+    end note

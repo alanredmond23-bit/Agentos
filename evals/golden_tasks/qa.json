@@ -1,0 +1,261 @@
+{
+  "pack": "qa",
+  "version": "1.0.0",
+  "description": "Golden tasks for QA agents - test generation, automation, regression, and performance testing",
+  "tasks": [
+    {
+      "id": "qa_001",
+      "agent": "agent.qa.test.v1",
+      "name": "Generate Unit Tests for Auth Module",
+      "input": {
+        "module": "src/auth",
+        "framework": "jest",
+        "coverage_target": 90,
+        "test_types": ["unit", "integration"],
+        "mock_strategy": "jest.mock"
+      },
+      "expected_output": {
+        "type": "test_suite",
+        "includes_happy_path": true,
+        "includes_edge_cases": true,
+        "includes_error_scenarios": true,
+        "coverage_report": true
+      },
+      "evaluation_criteria": [
+        "coverage_target_met",
+        "tests_are_isolated",
+        "mocks_properly_configured",
+        "assertions_meaningful",
+        "tests_are_deterministic"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 90000,
+      "tags": ["unit_testing", "jest", "auth"]
+    },
+    {
+      "id": "qa_002",
+      "agent": "agent.qa.automation.v1",
+      "name": "Create E2E Test Suite for Checkout",
+      "input": {
+        "flow": "checkout",
+        "framework": "playwright",
+        "scenarios": [
+          "guest_checkout",
+          "logged_in_checkout",
+          "payment_failure",
+          "coupon_application",
+          "multi_item_cart"
+        ],
+        "browsers": ["chromium", "firefox", "webkit"]
+      },
+      "expected_output": {
+        "type": "e2e_test_suite",
+        "includes_page_objects": true,
+        "includes_fixtures": true,
+        "includes_config": true,
+        "parallel_execution": true
+      },
+      "evaluation_criteria": [
+        "all_scenarios_covered",
+        "page_objects_well_structured",
+        "tests_are_flake_free",
+        "cross_browser_compatible",
+        "assertions_verify_outcomes"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 120000,
+      "tags": ["e2e", "playwright", "checkout"]
+    },
+    {
+      "id": "qa_003",
+      "agent": "agent.qa.regression.v1",
+      "name": "Analyze Test Impact for PR",
+      "input": {
+        "pr_number": 456,
+        "changed_files": [
+          "src/components/Button.tsx",
+          "src/hooks/useAuth.ts",
+          "src/api/orders.ts"
+        ],
+        "test_suite_size": 2500,
+        "time_budget_minutes": 10
+      },
+      "expected_output": {
+        "type": "test_selection",
+        "includes_affected_tests": true,
+        "includes_priority_ranking": true,
+        "includes_risk_assessment": true,
+        "estimated_runtime": true
+      },
+      "evaluation_criteria": [
+        "critical_tests_included",
+        "no_missing_dependencies",
+        "runtime_within_budget",
+        "risk_coverage_optimized",
+        "selection_rationale_clear"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["regression", "test_selection", "ci"]
+    },
+    {
+      "id": "qa_004",
+      "agent": "agent.qa.performance.v1",
+      "name": "Design Load Test Plan",
+      "input": {
+        "application": "e-commerce api",
+        "endpoints": [
+          "GET /products",
+          "GET /product/:id",
+          "POST /cart/add",
+          "POST /checkout"
+        ],
+        "load_profile": {
+          "normal": "100 rps",
+          "peak": "500 rps",
+          "stress": "1000 rps"
+        },
+        "duration": "30 minutes"
+      },
+      "expected_output": {
+        "type": "load_test_plan",
+        "tool": "k6",
+        "includes_scenarios": true,
+        "includes_thresholds": true,
+        "includes_data_generation": true
+      },
+      "evaluation_criteria": [
+        "scenarios_realistic",
+        "thresholds_aligned_with_slos",
+        "data_generation_sufficient",
+        "ramp_up_gradual",
+        "metrics_collection_complete"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["performance", "load_testing", "k6"]
+    },
+    {
+      "id": "qa_005",
+      "agent": "agent.qa.test.v1",
+      "name": "Generate API Contract Tests",
+      "input": {
+        "api_spec": "openapi.yaml",
+        "endpoints": 25,
+        "test_types": ["schema_validation", "status_codes", "headers", "error_responses"],
+        "framework": "jest_with_supertest"
+      },
+      "expected_output": {
+        "type": "contract_test_suite",
+        "includes_schema_tests": true,
+        "includes_error_tests": true,
+        "includes_auth_tests": true,
+        "generates_from_spec": true
+      },
+      "evaluation_criteria": [
+        "all_endpoints_covered",
+        "schema_validation_strict",
+        "error_codes_verified",
+        "auth_scenarios_tested",
+        "tests_maintainable"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 90000,
+      "tags": ["api_testing", "contract", "openapi"]
+    },
+    {
+      "id": "qa_006",
+      "agent": "agent.qa.automation.v1",
+      "name": "Set Up Visual Regression Testing",
+      "input": {
+        "tool": "playwright_screenshots",
+        "components": ["buttons", "forms", "cards", "modals", "tables"],
+        "viewports": ["mobile", "tablet", "desktop"],
+        "threshold": 0.1
+      },
+      "expected_output": {
+        "type": "visual_testing_config",
+        "includes_baseline_capture": true,
+        "includes_comparison_logic": true,
+        "includes_ci_integration": true,
+        "includes_diff_reporting": true
+      },
+      "evaluation_criteria": [
+        "baselines_captured_correctly",
+        "threshold_appropriate",
+        "ci_integration_works",
+        "diffs_easy_to_review",
+        "false_positives_minimized"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["visual_testing", "regression", "playwright"]
+    },
+    {
+      "id": "qa_007",
+      "agent": "agent.qa.performance.v1",
+      "name": "Analyze Performance Bottlenecks",
+      "input": {
+        "test_results": "load_test_results.json",
+        "issues_detected": [
+          "p99_latency_exceeded",
+          "error_rate_spike",
+          "throughput_degradation"
+        ],
+        "apm_data_available": true
+      },
+      "expected_output": {
+        "type": "performance_analysis",
+        "includes_root_cause": true,
+        "includes_recommendations": true,
+        "includes_code_changes": true,
+        "includes_retest_plan": true
+      },
+      "evaluation_criteria": [
+        "root_cause_identified",
+        "recommendations_actionable",
+        "code_changes_effective",
+        "retest_plan_validates_fix",
+        "regression_prevention_addressed"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 90000,
+      "tags": ["performance", "analysis", "optimization"]
+    },
+    {
+      "id": "qa_008",
+      "agent": "agent.qa.pack_manager.v1",
+      "name": "Create Test Strategy Document",
+      "input": {
+        "project": "New Mobile App Launch",
+        "timeline": "8 weeks",
+        "features": [
+          "user_authentication",
+          "product_catalog",
+          "shopping_cart",
+          "payment_processing",
+          "order_tracking"
+        ],
+        "risk_areas": ["payment", "authentication"]
+      },
+      "expected_output": {
+        "type": "test_strategy",
+        "includes_scope": true,
+        "includes_approach": true,
+        "includes_resources": true,
+        "includes_schedule": true,
+        "includes_risks": true
+      },
+      "evaluation_criteria": [
+        "scope_clearly_defined",
+        "approach_fits_timeline",
+        "resources_realistic",
+        "risk_coverage_adequate",
+        "exit_criteria_measurable"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["strategy", "planning", "test_management"]
+    }
+  ]
+}

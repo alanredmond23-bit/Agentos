@@ -1,0 +1,271 @@
+{
+  "pack": "product",
+  "version": "1.0.0",
+  "description": "Golden tasks for product management agents - PRDs, user stories, roadmaps, analytics, and stakeholder management",
+  "tasks": [
+    {
+      "id": "product_001",
+      "agent": "agent.product.prd_writer.v1",
+      "name": "Write PRD for User Authentication Feature",
+      "input": {
+        "feature_name": "SSO Authentication",
+        "description": "Implement Single Sign-On authentication with support for Google, Microsoft, and SAML providers",
+        "target_users": ["enterprise_customers", "admin_users"],
+        "priority": "high",
+        "quarter": "Q1 2025"
+      },
+      "expected_output": {
+        "type": "prd_document",
+        "required_sections": [
+          "executive_summary",
+          "problem_statement",
+          "goals_and_success_metrics",
+          "user_requirements",
+          "technical_requirements",
+          "acceptance_criteria",
+          "timeline",
+          "risks_and_mitigations"
+        ],
+        "min_word_count": 1500,
+        "includes_metrics": true
+      },
+      "evaluation_criteria": [
+        "contains_all_required_sections",
+        "acceptance_criteria_are_measurable",
+        "technical_requirements_are_specific",
+        "timeline_is_realistic",
+        "risks_identified_with_mitigations"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["prd", "authentication", "enterprise"]
+    },
+    {
+      "id": "product_002",
+      "agent": "agent.product.user_story.v1",
+      "name": "Generate User Stories for Checkout Flow",
+      "input": {
+        "feature_name": "Streamlined Checkout",
+        "epic": "E-commerce Conversion Optimization",
+        "context": "Reduce cart abandonment by simplifying the checkout process",
+        "personas": ["first_time_buyer", "returning_customer", "guest_user"]
+      },
+      "expected_output": {
+        "type": "user_story_collection",
+        "min_stories": 8,
+        "story_format": "As a [persona], I want [action], so that [benefit]",
+        "includes_acceptance_criteria": true,
+        "includes_story_points": true
+      },
+      "evaluation_criteria": [
+        "stories_follow_invest_criteria",
+        "acceptance_criteria_are_testable",
+        "covers_all_personas",
+        "stories_are_independent",
+        "story_points_are_reasonable"
+      ],
+      "difficulty": "easy",
+      "timeout_ms": 45000,
+      "tags": ["user_stories", "checkout", "conversion"]
+    },
+    {
+      "id": "product_003",
+      "agent": "agent.product.roadmap.v1",
+      "name": "Create Quarterly Product Roadmap",
+      "input": {
+        "timeframe": "Q2 2025",
+        "strategic_goals": [
+          "Increase user retention by 20%",
+          "Launch mobile app MVP",
+          "Achieve SOC2 Type II compliance"
+        ],
+        "constraints": {
+          "engineering_capacity": 12,
+          "budget": 500000
+        },
+        "dependencies": ["design_system_v2", "api_v3"]
+      },
+      "expected_output": {
+        "type": "roadmap_document",
+        "includes_milestones": true,
+        "includes_dependencies": true,
+        "includes_resource_allocation": true,
+        "format": "markdown_with_gantt"
+      },
+      "evaluation_criteria": [
+        "milestones_align_with_goals",
+        "dependencies_are_mapped",
+        "resource_allocation_within_constraints",
+        "timeline_is_achievable",
+        "risks_are_identified"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 90000,
+      "tags": ["roadmap", "planning", "quarterly"]
+    },
+    {
+      "id": "product_004",
+      "agent": "agent.product.analytics.v1",
+      "name": "Analyze Feature Adoption Metrics",
+      "input": {
+        "feature": "Dark Mode",
+        "launch_date": "2024-11-15",
+        "metrics_to_analyze": [
+          "adoption_rate",
+          "retention_impact",
+          "session_duration",
+          "user_satisfaction"
+        ],
+        "cohorts": ["new_users", "power_users", "enterprise_users"]
+      },
+      "expected_output": {
+        "type": "analytics_report",
+        "includes_charts": true,
+        "includes_recommendations": true,
+        "includes_statistical_significance": true
+      },
+      "evaluation_criteria": [
+        "metrics_are_accurate",
+        "cohort_analysis_is_complete",
+        "insights_are_actionable",
+        "statistical_methods_appropriate",
+        "recommendations_are_data_driven"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["analytics", "feature_adoption", "metrics"]
+    },
+    {
+      "id": "product_005",
+      "agent": "agent.product.stakeholder.v1",
+      "name": "Prepare Executive Status Update",
+      "input": {
+        "project": "Platform Modernization",
+        "reporting_period": "December 2024",
+        "audience": ["ceo", "cto", "vp_engineering"],
+        "key_updates": {
+          "milestones_completed": 3,
+          "milestones_remaining": 5,
+          "budget_status": "on_track",
+          "risks": ["vendor_delay", "scope_creep"]
+        }
+      },
+      "expected_output": {
+        "type": "executive_summary",
+        "max_length": 500,
+        "includes_rag_status": true,
+        "includes_key_decisions_needed": true,
+        "format": "slide_ready"
+      },
+      "evaluation_criteria": [
+        "concise_and_executive_friendly",
+        "rag_status_accurate",
+        "risks_clearly_communicated",
+        "action_items_defined",
+        "appropriate_level_of_detail"
+      ],
+      "difficulty": "easy",
+      "timeout_ms": 30000,
+      "tags": ["stakeholder", "executive", "status_update"]
+    },
+    {
+      "id": "product_006",
+      "agent": "agent.product.prd_writer.v1",
+      "name": "Write PRD for AI-Powered Search",
+      "input": {
+        "feature_name": "Semantic Search",
+        "description": "Replace keyword search with AI-powered semantic search using embeddings",
+        "target_users": ["all_users"],
+        "priority": "critical",
+        "technical_constraints": {
+          "latency_p99": "200ms",
+          "index_size": "10GB",
+          "accuracy_target": 0.95
+        }
+      },
+      "expected_output": {
+        "type": "prd_document",
+        "includes_technical_architecture": true,
+        "includes_ml_requirements": true,
+        "includes_performance_benchmarks": true
+      },
+      "evaluation_criteria": [
+        "ml_requirements_are_specific",
+        "performance_targets_defined",
+        "fallback_strategy_included",
+        "data_requirements_specified",
+        "integration_points_identified"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 90000,
+      "tags": ["prd", "ai", "search", "ml"]
+    },
+    {
+      "id": "product_007",
+      "agent": "agent.product.user_story.v1",
+      "name": "Generate Epic for Notification System",
+      "input": {
+        "epic_name": "Multi-Channel Notifications",
+        "scope": "email, push, in-app, sms",
+        "features": [
+          "preference_management",
+          "delivery_tracking",
+          "template_system",
+          "scheduling"
+        ]
+      },
+      "expected_output": {
+        "type": "epic_with_stories",
+        "includes_story_map": true,
+        "includes_dependencies": true,
+        "estimated_points": true
+      },
+      "evaluation_criteria": [
+        "epic_is_well_scoped",
+        "stories_are_properly_sized",
+        "dependencies_mapped",
+        "mvp_phase_identified",
+        "technical_stories_included"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["epic", "notifications", "user_stories"]
+    },
+    {
+      "id": "product_008",
+      "agent": "agent.product.roadmap.v1",
+      "name": "Create Annual Product Strategy",
+      "input": {
+        "year": 2025,
+        "vision": "Become the leading platform for AI-assisted workflows",
+        "themes": [
+          "AI Integration",
+          "Enterprise Scale",
+          "Developer Experience"
+        ],
+        "okrs": [
+          {
+            "objective": "10x AI feature adoption",
+            "key_results": ["50% users using AI features", "NPS > 60 for AI"]
+          }
+        ]
+      },
+      "expected_output": {
+        "type": "strategy_document",
+        "includes_quarterly_breakdown": true,
+        "includes_investment_areas": true,
+        "includes_success_metrics": true
+      },
+      "evaluation_criteria": [
+        "strategy_aligns_with_vision",
+        "okrs_are_measurable",
+        "quarterly_themes_build_logically",
+        "resource_implications_clear",
+        "competitive_positioning_addressed"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 120000,
+      "tags": ["strategy", "roadmap", "annual"]
+    }
+  ]
+}

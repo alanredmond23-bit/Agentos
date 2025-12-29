@@ -1,0 +1,252 @@
+{
+  "pack": "supabase",
+  "version": "1.0.0",
+  "description": "Golden tasks for Supabase agents - database design, RLS policies, auth, storage, edge functions, and realtime",
+  "tasks": [
+    {
+      "id": "supabase_001",
+      "agent": "agent.supabase.database.v1",
+      "name": "Design Multi-Tenant Schema",
+      "input": {
+        "use_case": "SaaS project management tool",
+        "tenancy_model": "row_level",
+        "entities": ["organizations", "projects", "tasks", "users", "comments"],
+        "relationships": {
+          "organizations_has_many": ["projects", "users"],
+          "projects_has_many": ["tasks"],
+          "tasks_has_many": ["comments"]
+        },
+        "audit_requirements": true
+      },
+      "expected_output": {
+        "type": "sql_migration",
+        "includes_tables": true,
+        "includes_indexes": true,
+        "includes_rls_policies": true,
+        "includes_triggers": true,
+        "format": "supabase_migration"
+      },
+      "evaluation_criteria": [
+        "tenant_isolation_enforced",
+        "rls_policies_comprehensive",
+        "indexes_on_foreign_keys",
+        "audit_columns_included",
+        "migration_is_reversible"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 90000,
+      "tags": ["database", "multi_tenant", "schema", "rls"]
+    },
+    {
+      "id": "supabase_002",
+      "agent": "agent.supabase.auth.v1",
+      "name": "Implement OAuth with Custom Claims",
+      "input": {
+        "providers": ["google", "github"],
+        "custom_claims": ["organization_id", "role", "permissions"],
+        "role_hierarchy": ["admin", "manager", "member", "viewer"],
+        "mfa_required_for": ["admin"]
+      },
+      "expected_output": {
+        "type": "auth_configuration",
+        "includes_provider_setup": true,
+        "includes_hook_functions": true,
+        "includes_rls_policies": true,
+        "includes_client_code": true
+      },
+      "evaluation_criteria": [
+        "claims_properly_structured",
+        "role_hierarchy_enforced",
+        "mfa_configuration_correct",
+        "session_handling_secure",
+        "error_handling_complete"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 90000,
+      "tags": ["auth", "oauth", "jwt", "mfa"]
+    },
+    {
+      "id": "supabase_003",
+      "agent": "agent.supabase.storage.v1",
+      "name": "Configure Secure File Upload",
+      "input": {
+        "bucket_name": "user-documents",
+        "allowed_mime_types": ["application/pdf", "image/jpeg", "image/png"],
+        "max_file_size": "10MB",
+        "access_pattern": "private_to_owner",
+        "virus_scanning": true
+      },
+      "expected_output": {
+        "type": "storage_configuration",
+        "includes_bucket_config": true,
+        "includes_policies": true,
+        "includes_client_code": true,
+        "includes_validation": true
+      },
+      "evaluation_criteria": [
+        "mime_type_validation_server_side",
+        "size_limits_enforced",
+        "access_policies_secure",
+        "upload_flow_documented",
+        "error_handling_user_friendly"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["storage", "file_upload", "security"]
+    },
+    {
+      "id": "supabase_004",
+      "agent": "agent.supabase.edge_functions.v1",
+      "name": "Create Stripe Webhook Handler",
+      "input": {
+        "events_to_handle": [
+          "checkout.session.completed",
+          "customer.subscription.updated",
+          "customer.subscription.deleted",
+          "invoice.payment_failed"
+        ],
+        "update_tables": ["subscriptions", "invoices", "users"],
+        "notifications": ["email_on_payment_failed"]
+      },
+      "expected_output": {
+        "type": "edge_function",
+        "includes_signature_verification": true,
+        "includes_idempotency": true,
+        "includes_error_handling": true,
+        "includes_logging": true
+      },
+      "evaluation_criteria": [
+        "signature_verification_correct",
+        "idempotency_key_handled",
+        "all_events_handled",
+        "database_updates_transactional",
+        "error_responses_appropriate"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 90000,
+      "tags": ["edge_functions", "stripe", "webhooks"]
+    },
+    {
+      "id": "supabase_005",
+      "agent": "agent.supabase.realtime.v1",
+      "name": "Implement Chat Room Presence",
+      "input": {
+        "feature": "live_chat",
+        "requirements": {
+          "presence_tracking": true,
+          "typing_indicators": true,
+          "message_sync": true,
+          "read_receipts": true
+        },
+        "max_participants": 100
+      },
+      "expected_output": {
+        "type": "realtime_implementation",
+        "includes_channel_config": true,
+        "includes_presence_handlers": true,
+        "includes_client_code": true,
+        "includes_cleanup": true
+      },
+      "evaluation_criteria": [
+        "presence_updates_efficient",
+        "typing_indicators_debounced",
+        "message_ordering_guaranteed",
+        "cleanup_on_disconnect",
+        "scalable_to_max_participants"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["realtime", "presence", "chat"]
+    },
+    {
+      "id": "supabase_006",
+      "agent": "agent.supabase.database.v1",
+      "name": "Create Full-Text Search",
+      "input": {
+        "table": "articles",
+        "searchable_columns": ["title", "content", "tags"],
+        "language": "english",
+        "features": ["ranking", "highlighting", "fuzzy_matching"],
+        "performance_target": "100ms_p99"
+      },
+      "expected_output": {
+        "type": "sql_migration",
+        "includes_tsvector_column": true,
+        "includes_gin_index": true,
+        "includes_search_function": true,
+        "includes_triggers": true
+      },
+      "evaluation_criteria": [
+        "tsvector_properly_weighted",
+        "gin_index_created",
+        "search_function_optimized",
+        "triggers_update_on_change",
+        "performance_tested"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["database", "full_text_search", "postgres"]
+    },
+    {
+      "id": "supabase_007",
+      "agent": "agent.supabase.auth.v1",
+      "name": "Implement Row-Level Security",
+      "input": {
+        "table": "documents",
+        "access_patterns": {
+          "owner_full_access": true,
+          "team_read_access": true,
+          "public_read_if_published": true,
+          "admin_bypass": true
+        },
+        "columns_to_protect": ["content", "metadata"]
+      },
+      "expected_output": {
+        "type": "rls_policies",
+        "policy_count": 4,
+        "includes_helper_functions": true,
+        "includes_tests": true
+      },
+      "evaluation_criteria": [
+        "all_access_patterns_covered",
+        "no_policy_conflicts",
+        "performance_considered",
+        "helper_functions_reusable",
+        "edge_cases_handled"
+      ],
+      "difficulty": "medium",
+      "timeout_ms": 60000,
+      "tags": ["rls", "security", "authorization"]
+    },
+    {
+      "id": "supabase_008",
+      "agent": "agent.supabase.edge_functions.v1",
+      "name": "Build API Rate Limiter",
+      "input": {
+        "limits": {
+          "free_tier": "100_per_hour",
+          "pro_tier": "1000_per_hour",
+          "enterprise": "10000_per_hour"
+        },
+        "key_strategy": "user_id_and_endpoint",
+        "response_on_limit": "429_with_retry_after"
+      },
+      "expected_output": {
+        "type": "edge_function",
+        "includes_redis_integration": true,
+        "includes_middleware": true,
+        "includes_bypass_for_internal": true
+      },
+      "evaluation_criteria": [
+        "rate_limiting_accurate",
+        "tier_detection_correct",
+        "retry_after_header_set",
+        "distributed_counter_safe",
+        "performance_overhead_minimal"
+      ],
+      "difficulty": "hard",
+      "timeout_ms": 90000,
+      "tags": ["edge_functions", "rate_limiting", "middleware"]
+    }
+  ]
+}
