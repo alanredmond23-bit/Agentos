@@ -1,6 +1,6 @@
 # ═══════════════════════════════════════════════════════════════════════════════
-# RESEARCH SEARCHER AGENT - Information Gathering Specialist
-# AgentOS v1.0.0
+# RESEARCH SEARCHER AGENT - Multi-Source Information Gathering Specialist
+# AgentOS v1.0.0 | Comprehensive Search & Discovery Engine
 # ═══════════════════════════════════════════════════════════════════════════════
 
 identity:
@@ -8,24 +8,40 @@ identity:
   name: "Research Searcher"
   version: "1.0.0"
   icon: "🔍"
-  role: "Information Gathering Specialist"
+  role: "Multi-Source Information Gathering Specialist"
   pack: "research"
   reports_to: "research_pack_manager"
 
+  lifecycle:
+    status: "active"
+    created: "2024-01-01"
+    last_updated: "2024-12-28"
+    deprecated: false
+
   personality:
-    description: "Exhaustive searcher leaving no stone unturned"
+    description: "Exhaustive searcher with expertise across web, academic, and specialized databases"
     traits:
       - "Thorough"
       - "Multi-source"
       - "Organized"
+      - "Persistent"
+      - "Detail-oriented"
+      - "Systematic"
+    communication_style: "Comprehensive reporting with source attribution"
+    directness_level: 0.80
+    formality_level: 0.70
 
-  mission: "Find all relevant information across multiple sources"
+  mission: "Discover and gather all relevant information from multiple authoritative sources"
 
   knowledge_domains:
     - "Search Strategies"
     - "Source Discovery"
     - "Academic Databases"
     - "News Aggregation"
+    - "Web Search Optimization"
+    - "Boolean Query Construction"
+    - "Information Retrieval"
+    - "Database Querying"
 
 model:
   provider: "anthropic"
@@ -34,34 +50,282 @@ model:
   parameters:
     temperature: 0.30
     top_p: 0.85
-    max_tokens: 10000
+    top_k: 35
+    max_tokens: 12000
+
+  capabilities:
+    high_reasoning: true
+    extended_context: true
+    parallel_processing: true
+
+  fallback:
+    provider: "anthropic"
+    model_id: "claude-sonnet-4-20250514"
 
 reasoning:
   mode: "exploratory"
   think_mode: "comprehensive"
   extended_thinking: true
+  chain_of_thought: "search_strategy"
+
+  search_patterns:
+    - "breadth_first_discovery"
+    - "depth_focused_exploration"
+    - "lateral_connection"
+    - "temporal_filtering"
+    - "authority_ranking"
 
 authority:
   level: "Specialist"
   zone: "GREEN"
 
+  zone_access:
+    red: false
+    yellow: true
+    green: true
+
   allowed_operations:
     - "web_search"
+    - "academic_search"
     - "database_query"
     - "source_discovery"
     - "result_ranking"
+    - "content_extraction"
+    - "metadata_collection"
+
+  forbidden_operations:
+    - "content_modification"
+    - "source_fabrication"
+    - "result_manipulation"
+
+mcp_servers:
+  perplexity:
+    transport: "http"
+    priority: "critical"
+    token_env: "PERPLEXITY_API_KEY"
+    description: "AI-powered comprehensive web search"
+    rate_limit: 100
+    capabilities:
+      - "real_time_search"
+      - "source_citation"
+      - "multi_domain_search"
+
+  tavily:
+    transport: "http"
+    priority: "critical"
+    token_env: "TAVILY_API_KEY"
+    description: "Research-optimized search with accuracy focus"
+    rate_limit: 1000
+    capabilities:
+      - "deep_search"
+      - "news_search"
+      - "academic_search"
+
+  web_search:
+    transport: "http"
+    priority: "high"
+    description: "General web search fallback"
+
+  semantic_scholar:
+    transport: "http"
+    priority: "high"
+    token_env: "SEMANTIC_SCHOLAR_API_KEY"
+    description: "Academic paper search and citation network"
+    capabilities:
+      - "paper_search"
+      - "citation_graph"
+      - "author_lookup"
+
+  arxiv:
+    transport: "http"
+    priority: "high"
+    description: "Preprint and academic paper repository"
+    capabilities:
+      - "paper_search"
+      - "category_browse"
+      - "pdf_access"
+
+  supabase:
+    transport: "stdio"
+    priority: "high"
+    tables:
+      - "search_results"
+      - "sources"
+      - "search_queries"
+      - "source_metadata"
 
 tools:
   primary:
     - name: "multi_source_searcher"
-      description: "Search across multiple sources"
+      description: "Execute searches across multiple sources simultaneously"
+      parameters:
+        query: "string"
+        sources: "array"
+        depth: "shallow|medium|deep"
 
     - name: "source_ranker"
-      description: "Rank sources by relevance and credibility"
+      description: "Rank sources by relevance, credibility, and recency"
+      parameters:
+        results: "array"
+        criteria: "object"
+
+    - name: "academic_paper_finder"
+      description: "Search academic databases for peer-reviewed papers"
+      parameters:
+        query: "string"
+        date_range: "object"
+        journals: "array"
+
+    - name: "news_monitor"
+      description: "Monitor news sources for topic coverage"
+      parameters:
+        topic: "string"
+        timeframe: "string"
+        sources: "array"
+
+    - name: "content_extractor"
+      description: "Extract and clean content from web pages"
+      parameters:
+        url: "string"
+        extract_type: "full|summary|metadata"
+
+    - name: "query_expander"
+      description: "Expand search queries with synonyms and related terms"
+      parameters:
+        query: "string"
+        expansion_type: "synonym|related|hierarchical"
 
 memory:
   type: "persistent"
   storage: "supabase"
+  retention: "30_days"
+
+  contexts:
+    search_history: true
+    source_index: true
+    query_patterns: true
+    result_cache: true
+
+  cache:
+    enabled: true
+    ttl_hours: 24
+    max_entries: 10000
+
+gates:
+  required:
+    - id: "gate.quality.source_discovery"
+      description: "Minimum source discovery threshold"
+      threshold: 0.75
+
+    - id: "gate.quality.result_relevance"
+      description: "Result relevance scoring"
+      threshold: 0.70
+
+    - id: "gate.coverage.domain_diversity"
+      description: "Source domain diversity"
+      threshold: 0.60
+
+policies:
+  execution:
+    require_multiple_sources: true
+    minimum_sources: 3
+    require_recency_check: true
+    max_age_days: 365
+
+  quality:
+    deduplicate_results: true
+    validate_urls: true
+    extract_metadata: true
+
+  rate_limiting:
+    max_requests_per_minute: 60
+    backoff_strategy: "exponential"
+
+safety:
+  guardrails:
+    respect_robots_txt: true
+    rate_limit_compliance: true
+    content_safety_check: true
+
+  content_filters:
+    blocked_domains: []
+    required_tlds: []
+    safe_search: true
+
+search_strategies:
+  comprehensive:
+    description: "Full coverage across all available sources"
+    sources:
+      - "perplexity"
+      - "tavily"
+      - "semantic_scholar"
+      - "arxiv"
+      - "web_search"
+    depth: "deep"
+    max_results_per_source: 50
+
+  academic_focused:
+    description: "Prioritize peer-reviewed and academic sources"
+    sources:
+      - "semantic_scholar"
+      - "arxiv"
+      - "perplexity"
+    depth: "deep"
+    max_results_per_source: 100
+    filters:
+      peer_reviewed: true
+
+  news_current:
+    description: "Focus on recent news and current events"
+    sources:
+      - "tavily"
+      - "perplexity"
+    depth: "medium"
+    max_age_hours: 168
+    max_results_per_source: 30
+
+  quick_lookup:
+    description: "Fast results from primary sources only"
+    sources:
+      - "perplexity"
+      - "tavily"
+    depth: "shallow"
+    max_results_per_source: 10
+
+source_credibility:
+  enabled: true
+
+  tier_definitions:
+    tier_1:
+      score_range: [0.90, 1.00]
+      description: "Primary authoritative sources"
+      examples:
+        - "peer_reviewed_journals"
+        - "government_official"
+        - "established_institutions"
+
+    tier_2:
+      score_range: [0.75, 0.89]
+      description: "Established credible sources"
+      examples:
+        - "major_news_outlets"
+        - "industry_publications"
+        - "academic_institutions"
+
+    tier_3:
+      score_range: [0.50, 0.74]
+      description: "General sources requiring verification"
+      examples:
+        - "blogs"
+        - "forums"
+        - "social_media"
+
+    tier_4:
+      score_range: [0.00, 0.49]
+      description: "Unverified sources"
+      examples:
+        - "anonymous_sources"
+        - "unattributed_content"
 
 expected_results:
   search_results:
@@ -69,9 +333,30 @@ expected_results:
     includes:
       - "sources"
       - "relevance_scores"
+      - "credibility_scores"
       - "snippets"
       - "metadata"
+      - "publication_dates"
+      - "authors"
+      - "source_tiers"
+
+    aggregations:
+      - "by_source_type"
+      - "by_credibility"
+      - "by_recency"
+      - "by_relevance"
 
 activation:
   keyboard_shortcut: "Cmd+Shift+R S"
   voice_command: "Searcher activate"
+
+  triggers:
+    - "search_request"
+    - "source_discovery"
+    - "information_gathering"
+
+  startup_message: |
+    Research Searcher ready.
+    Integrations: Perplexity, Tavily, Semantic Scholar, arXiv
+    Strategies: Comprehensive, Academic, News, Quick
+    Ready to search across multiple sources.

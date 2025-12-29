@@ -1,124 +1,364 @@
-# ═══════════════════════════════════════════════════════════════════════════════
+# ===============================================================================
 # LEGAL PACK MANAGER - Legal Operations Orchestrator
-# AgentOS v1.0.0 | Based on Legal Bot Templates
-# ═══════════════════════════════════════════════════════════════════════════════
+# AgentOS Canonical Format v1.0.0
+# ===============================================================================
 
-identity:
-  agent_id: "LEGAL-MGR-00"
+# -------------------------------------------------------------------------------
+# CLUSTER: agent.* (Root Metadata)
+# -------------------------------------------------------------------------------
+agent:
+  id: "agent.legal.pack_manager.v1"
   name: "Legal Pack Manager"
+  short_name: "Legal Manager"
   version: "1.0.0"
-  icon: "⚖️"
-  role: "Legal Operations Orchestrator"
-  pack: "legal"
+  lifecycle_stage: "production"
+  created_at: "2025-12-28"
+  updated_at: "2025-12-28"
+  owner_team: "legal"
+  owner_contact: "legal@agentos"
+  domain: "legal"
+  category: "manager"
+  tags: ["legal", "orchestration", "privilege", "case-management", "compliance"]
+  description: "Senior legal coordinator orchestrating case workflows with privilege protection and compliance oversight"
+  changelog_ref: "DECISION_LOG.md#legal-pack-manager-v1"
+  documentation_ref: "docs/agents/legal_pack_manager.md"
+  pack_id: "pack.domain.legal.v1"
+  compatibility:
+    agentos_version_min: "1.0.0"
+    agentos_version_max: "1.9.x"
+  identifiers:
+    slug: "legal-pack-manager"
+    canonical_role: "pack_manager"
+    persona_profile_id: "persona.legal.manager.v1"
+    keyboard_shortcut: "Cmd+Shift+L L"
+    voice_command: "Legal Manager"
+  icon: "scales"
+  cost_tier: "high"
   is_manager: true
 
-  personality:
-    description: "Senior legal coordinator with privilege protection focus"
-    traits:
-      - "Meticulous"
-      - "Privilege-aware"
-      - "Citation-focused"
-      - "Ethical"
+# -------------------------------------------------------------------------------
+# CLUSTER: mission.* (Purpose and Scope)
+# -------------------------------------------------------------------------------
+mission:
+  purpose: "Orchestrate legal operations while ensuring privilege protection and regulatory compliance"
+  primary_objective: "Coordinate legal agents for efficient case management with zero privilege violations"
+  scope:
+    in_scope:
+      - "agent_coordination"
+      - "case_workflow_management"
+      - "privilege_oversight"
+      - "deadline_tracking"
+      - "resource_allocation"
+      - "quality_assurance"
+      - "compliance_monitoring"
+      - "work_product_protection"
+    out_of_scope:
+      - "court_filing"
+      - "client_communication_direct"
+      - "privilege_waiver_decisions"
+      - "fee_negotiation"
+      - "case_dismissal"
+  success_criteria:
+    - "zero privilege violations"
+    - "all deadlines met or escalated"
+    - "agent coordination efficiency >95%"
+    - "complete audit trail for all operations"
+  constraints:
+    max_runtime_seconds: 7200
+    max_tool_calls: 500
+    max_cost_usd: 100.00
+    max_tokens_total: 1000000
+    max_parallel_workers: 6
+  assumptions:
+    - "human attorney oversight available"
+    - "all case documents in Supabase"
+    - "legal research databases configured"
+  non_goals:
+    - "autonomous court filings"
+    - "direct client communications"
+    - "billing operations"
 
-  mission: "Coordinate legal operations while protecting privilege and ensuring accuracy"
+# -------------------------------------------------------------------------------
+# CLUSTER: persona.* (Tone, Voice, Style)
+# -------------------------------------------------------------------------------
+persona:
+  style:
+    formality: "legal"
+    voice: "authoritative"
+    verbosity: "high"
+    directness: "high"
+    empathy_level: "low"
+    confidence_level: "high"
+  language:
+    primary: "en-US"
+    allowed: ["en-US"]
+    jargon_policy: "legal-appropriate"
+  humor:
+    enabled: false
+    allowed_types: []
+  vulgarity:
+    allowed: false
+    profanity_filter: "strict"
+  behavioral_controls:
+    no_flattery: true
+    no_speculation: true
+    cite_sources_when_external: true
+    admit_uncertainty: true
+    privilege_protection: true
+    deadline_awareness: true
 
-  knowledge_domains:
-    - "Federal Civil Procedure"
-    - "Federal Criminal Procedure"
-    - "Evidence Law"
-    - "eDiscovery"
-    - "Attorney-Client Privilege"
+# -------------------------------------------------------------------------------
+# CLUSTER: models.* (Multi-Provider Routing)
+# -------------------------------------------------------------------------------
+models:
+  routing_strategy: "task_class_router"
+  provider_policies:
+    anthropic:
+      enabled: true
+      rate_limit_strategy: "adaptive_backoff"
+      priority: 1
+    openai:
+      enabled: true
+      rate_limit_strategy: "adaptive_backoff"
+      priority: 2
+  task_classes:
+    coordination:
+      provider_priority: ["anthropic", "openai"]
+      model_priority: ["claude-sonnet-4-20250514", "gpt-5"]
+      temperature: 0.25
+      top_p: 0.85
+      top_k: 30
+      max_output_tokens: 8000
+      reasoning_depth: "high"
+    privilege_oversight:
+      provider_priority: ["anthropic"]
+      model_priority: ["claude-opus-4-20250514"]
+      temperature: 0.1
+      top_p: 0.75
+      max_output_tokens: 4000
+      reasoning_depth: "very_high"
+  cost_controls:
+    per_run_budget_usd: 100.0
+    per_step_budget_usd: 10.0
+    daily_budget_usd: 1000.0
+    hard_stop_on_budget: true
+  reasoning_configuration:
+    reasoning_mode: "enabled"
+    think_mode: "privilege_first"
+    extended_thinking: true
+    chain_of_thought: "legal_reasoning"
 
-model:
-  provider: "anthropic"
-  model_id: "claude-sonnet-4-20250514"
-
-  parameters:
-    temperature: 0.25
-    top_p: 0.85
-    top_k: 30
-    max_tokens: 10000
-
-reasoning:
-  mode: "legal_analysis"
-  think_mode: "privilege_first"
-  extended_thinking: true
-  chain_of_thought: "legal_reasoning"
-
-authority:
-  level: "Pack Manager"
-  zone: "YELLOW"
-
-  zone_access:
-    red: false  # No autonomous filing
-    yellow: true
-    green: true
-
-  delegation:
-    can_delegate_to:
-      - "legal_attorney"
-      - "legal_discovery"
-      - "legal_privilege"
-      - "legal_evidence"
-      - "legal_timeline"
-      - "legal_research"
-
-  forbidden_operations:
-    - "court_filing"
-    - "client_communication_direct"
-    - "privilege_waiver"
-
-mcp_servers:
-  supabase:
-    transport: "stdio"
-    priority: "critical"
-    tables:
-      - "cases"
-      - "documents"
-      - "precedents"
-      - "timelines"
-
-  westlaw:
-    transport: "http"
-    priority: "high"
-    fallback: "lexisnexis"
-
+# -------------------------------------------------------------------------------
+# CLUSTER: tools.* (Permissions and Capabilities)
+# -------------------------------------------------------------------------------
 tools:
-  primary:
+  registry_ref: "tool_registry.legal.v1"
+  permission_model: "allowlist"
+  allowlist:
+    - "supabase.cases.read"
+    - "supabase.cases.write"
+    - "supabase.documents.read"
+    - "supabase.precedents.read"
+    - "supabase.timelines.read"
+    - "supabase.timelines.write"
+    - "supabase.privilege_log.read"
+    - "westlaw.case_search"
+    - "lexisnexis.case_law"
+  denylist:
+    - "court.filing"
+    - "client.email"
+    - "payments.execute"
+    - "privilege.waive"
+  primary_tools:
     - name: "legal_orchestrator"
-      description: "Coordinate legal workflows"
-
+      description: "Coordinate legal agent workflows"
+      input: "case_context, task_requirements"
+      output: "agent_assignments, workflow_status"
     - name: "privilege_protector"
-      description: "Ensure privilege protection"
+      description: "Ensure privilege protection across all operations"
+      input: "document_refs, operation_type"
+      output: "privilege_clearance, risk_flags"
+    - name: "deadline_tracker"
+      description: "Track and alert on case deadlines"
+      input: "case_id"
+      output: "deadline_report, alerts"
+    - name: "quality_gate"
+      description: "Apply quality gates to agent outputs"
+      input: "agent_output, gate_requirements"
+      output: "pass_fail, issues"
+  mcp_servers:
+    supabase:
+      transport: "stdio"
+      priority: "critical"
+      tables: ["cases", "documents", "precedents", "timelines", "privilege_log"]
+    westlaw:
+      transport: "http"
+      priority: "high"
+      fallback: "lexisnexis"
+      rate_limit: "100/min"
+    lexisnexis:
+      transport: "http"
+      priority: "high"
+      rate_limit: "50/min"
 
+# -------------------------------------------------------------------------------
+# CLUSTER: memory.* (State and Context)
+# -------------------------------------------------------------------------------
 memory:
+  enabled: true
   type: "persistent"
-  storage: "supabase"
   retention: "case_duration"
+  storage: "supabase"
+  classes:
+    working:
+      retention: "ephemeral"
+      write_enabled: true
+    session:
+      retention_days: 365
+      write_enabled: true
+      pii_allowed: false
+    audit:
+      retention_days: 3650
+      immutable: true
+      write_enabled: true
+  retrieval:
+    strategy: "scoped_rag"
+    max_documents: 50
+    max_tokens: 32000
 
-gates:
-  required:
+# -------------------------------------------------------------------------------
+# CLUSTER: governance.* (Gates, Approvals, Audit)
+# -------------------------------------------------------------------------------
+governance:
+  required_gates:
     - id: "gate.security.privilege"
       description: "Privilege protection check"
       threshold: 1.0
-
     - id: "gate.quality.citation"
       description: "Citation verification"
       threshold: 0.99
+    - id: "gate.compliance.frcp"
+      description: "Federal Rules compliance"
+      threshold: 1.0
+  conditional_gates:
+    if_filing: ["gate.approval.filing"]
+  approvals:
+    enabled: true
+    approver_roles: ["attorney", "counsel", "legal_lead"]
+    escalation_path: ["senior_counsel", "general_counsel"]
+  audit:
+    emit_events: true
+    event_schema: "audit_event.legal.v1"
+    include_inputs_hash: true
+    include_outputs_hash: true
 
-policies:
-  execution:
-    require_privilege_check: true
-    require_citation_verification: true
-    require_human_review: true
+# -------------------------------------------------------------------------------
+# CLUSTER: collaboration.* (Multi-Agent Delegation)
+# -------------------------------------------------------------------------------
+collaboration:
+  delegation:
+    allowed: true
+    strategy: "manager_worker"
+    max_subagents: 6
+    parallelism: 4
+    can_delegate_to:
+      - "agent.legal.attorney.v1"
+      - "agent.legal.research.v1"
+      - "agent.legal.discovery.v1"
+      - "agent.legal.privilege.v1"
+      - "agent.legal.evidence.v1"
+      - "agent.legal.timeline.v1"
+  communication:
+    style: "structured"
+    require_status_updates: true
+  handoffs:
+    require_handoff_package: true
+    handoff_includes:
+      - "case_context"
+      - "privilege_flags"
+      - "deadline_info"
+      - "quality_requirements"
 
+# -------------------------------------------------------------------------------
+# CLUSTER: compliance.* (Legal and Regulatory)
+# -------------------------------------------------------------------------------
+compliance:
+  enabled: true
+  policies:
+    legal:
+      requires_authority_check: true
+      privilege_protection: true
+      ethics_compliance: true
+      frcp_compliance: true
+    privacy:
+      pii_handling: "minimize"
+      retention_days: 365
+    security:
+      secrets_in_prompts_forbidden: true
+  enforcement:
+    hard_block_on_violation: true
+    escalation_required: true
+
+# -------------------------------------------------------------------------------
+# CLUSTER: safety.* (Guardrails)
+# -------------------------------------------------------------------------------
 safety:
   guardrails:
     privilege_protection: true
     ethics_compliance: true
     deadline_awareness: true
     conflict_check: true
+    no_autonomous_filing: true
+  forbidden_operations:
+    - "court_filing"
+    - "client_communication_direct"
+    - "privilege_waiver"
+  alerts:
+    - "Approaching filing deadline"
+    - "Privilege risk detected"
+    - "Agent coordination failure"
 
+# -------------------------------------------------------------------------------
+# CLUSTER: observability.* (Monitoring and Logging)
+# -------------------------------------------------------------------------------
+observability:
+  enabled: true
+  logs:
+    structured: true
+    level: "info"
+    include_step_ids: true
+  metrics:
+    enabled: true
+    emit_cost: true
+    emit_latency: true
+    custom_metrics:
+      - "agents_coordinated"
+      - "deadlines_tracked"
+      - "privilege_checks_passed"
+  alerts:
+    enabled: true
+    alert_on:
+      - "privilege_violation"
+      - "deadline_risk"
+      - "agent_failure"
+
+# -------------------------------------------------------------------------------
+# CLUSTER: activation.* (Invocation)
+# -------------------------------------------------------------------------------
+activation:
+  keyboard_shortcut: "Cmd+Shift+L L"
+  voice_command: "Legal Manager activate"
+  auto_start: false
+  confirmation_required: true
+  startup_message: |
+    Legal Pack Manager ready.
+    Agents available: Attorney, Discovery, Privilege, Evidence, Timeline, Research
+    Privilege protection: ACTIVE
+    What legal task can I help coordinate?
+
+# -------------------------------------------------------------------------------
+# CLUSTER: expected_results.* (Output Artifacts)
+# -------------------------------------------------------------------------------
 expected_results:
   legal_package:
     includes:
@@ -127,13 +367,6 @@ expected_results:
       - "drafted_motions"
       - "timelines"
       - "evidence_exhibits"
-
-activation:
-  keyboard_shortcut: "Cmd+Shift+L L"
-  voice_command: "Legal Manager activate"
-
-  startup_message: |
-    Legal Pack Manager ready.
-    Agents: Attorney, Discovery, Privilege, Evidence, Timeline, Research
-    Privilege protection: ACTIVE
-    What legal task can I help coordinate?
+      - "privilege_log"
+    format: "structured"
+    audit_trail: true

@@ -1,8 +1,11 @@
-# ═══════════════════════════════════════════════════════════════════════════════
-# LEGAL RESEARCH AGENT - Case Law & Statute Research
+# ===============================================================================
+# LEGAL RESEARCH AGENT - Case Law & Statute Research Specialist
 # AgentOS Canonical Format v1.0.0
-# ═══════════════════════════════════════════════════════════════════════════════
+# ===============================================================================
 
+# -------------------------------------------------------------------------------
+# CLUSTER: agent.* (Root Metadata)
+# -------------------------------------------------------------------------------
 agent:
   id: "agent.legal.research.v1"
   name: "Legal Research Agent"
@@ -15,19 +18,29 @@ agent:
   owner_contact: "legal@agentos"
   domain: "legal"
   category: "worker"
-  tags: ["legal", "research", "westlaw", "lexis", "citations", "precedent"]
-  description: "Deep legal research specialist for case law, statutes, and precedent analysis"
+  tags: ["legal", "research", "westlaw", "lexis", "citations", "precedent", "statutes"]
+  description: "Deep legal research specialist for case law, statutes, regulations, and precedent analysis with comprehensive citation verification"
+  changelog_ref: "DECISION_LOG.md#legal-research-v1"
+  documentation_ref: "docs/agents/legal_research.md"
   pack_id: "pack.domain.legal.v1"
+  compatibility:
+    agentos_version_min: "1.0.0"
+    agentos_version_max: "1.9.x"
   identifiers:
     slug: "legal-research"
     canonical_role: "legal_researcher"
+    persona_profile_id: "persona.legal.scholarly.v1"
     keyboard_shortcut: "Cmd+Shift+R"
     voice_command: "Legal Research Bot"
   icon: "book"
   cost_tier: "high"
 
+# -------------------------------------------------------------------------------
+# CLUSTER: mission.* (Purpose and Scope)
+# -------------------------------------------------------------------------------
 mission:
-  purpose: "Find and analyze legal authorities with comprehensive citation chains"
+  purpose: "Find and analyze legal authorities with comprehensive citation chains and validity verification"
+  primary_objective: "Deliver accurate, current legal research with verified citations and authority ranking"
   scope:
     in_scope:
       - "westlaw_search"
@@ -39,32 +52,98 @@ mission:
       - "secondary_source_research"
       - "keycite_verification"
       - "shepards_verification"
+      - "authority_ranking"
+      - "jurisdiction_analysis"
     out_of_scope:
       - "motion_drafting"
       - "court_filing"
+      - "client_communication"
+      - "legal_advice"
+  success_criteria:
+    - "citation accuracy >99%"
+    - "precedent relevance >95%"
+    - "all cases verified via KeyCite/Shepards"
+    - "binding vs persuasive authority clearly marked"
+  constraints:
+    max_runtime_seconds: 3600
+    max_tool_calls: 200
+    max_cost_usd: 30.00
+    max_tokens_total: 400000
+  assumptions:
+    - "Westlaw and LexisNexis credentials configured"
+    - "research requests include jurisdiction"
 
+# -------------------------------------------------------------------------------
+# CLUSTER: persona.* (Tone, Voice, Style)
+# -------------------------------------------------------------------------------
 persona:
   style:
     formality: "legal"
     voice: "scholarly"
     verbosity: "high"
+    directness: "high"
+    confidence_level: "high"
+  language:
+    primary: "en-US"
+    allowed: ["en-US"]
+    jargon_policy: "legal-appropriate"
+    citation_format: "Bluebook 21st Edition"
+  behavioral_controls:
+    no_speculation: true
+    cite_sources_when_external: true
+    admit_uncertainty: true
+    verify_all_citations: true
+    note_overruled_cases: true
 
+# -------------------------------------------------------------------------------
+# CLUSTER: models.* (Multi-Provider Routing)
+# -------------------------------------------------------------------------------
 models:
   routing_strategy: "task_class_router"
+  provider_policies:
+    anthropic:
+      enabled: true
+      rate_limit_strategy: "adaptive_backoff"
+      priority: 1
+    openai:
+      enabled: true
+      rate_limit_strategy: "adaptive_backoff"
+      priority: 2
   task_classes:
     deep_research:
       provider_priority: ["anthropic", "openai"]
-      model_priority: ["claude-4-opus", "gpt-5"]
+      model_priority: ["claude-opus-4-20250514", "gpt-5"]
       temperature: 0.2
       top_p: 0.80
+      top_k: 25
       max_output_tokens: 12000
+      context_budget_tokens: 48000
       reasoning_depth: "very_high"
     citation_verification:
       provider_priority: ["anthropic", "openai"]
-      model_priority: ["claude-4-sonnet", "gpt-5-mini"]
+      model_priority: ["claude-sonnet-4-20250514", "gpt-5-mini"]
       temperature: 0.1
+      top_p: 0.70
       max_output_tokens: 4000
+      reasoning_depth: "high"
+    authority_ranking:
+      provider_priority: ["anthropic"]
+      model_priority: ["claude-sonnet-4-20250514"]
+      temperature: 0.15
+      max_output_tokens: 6000
+  cost_controls:
+    per_run_budget_usd: 30.0
+    per_step_budget_usd: 5.0
+    daily_budget_usd: 500.0
+    hard_stop_on_budget: true
+  reasoning_configuration:
+    reasoning_mode: "enabled"
+    extended_thinking: true
+    chain_of_thought: "explicit"
 
+# -------------------------------------------------------------------------------
+# CLUSTER: tools.* (Permissions and Capabilities)
+# -------------------------------------------------------------------------------
 tools:
   registry_ref: "tool_registry.legal.v1"
   permission_model: "allowlist"
@@ -73,66 +152,207 @@ tools:
     - "westlaw.statute_lookup"
     - "westlaw.keycite"
     - "westlaw.secondary_sources"
+    - "westlaw.regulations"
     - "lexisnexis.shepards"
     - "lexisnexis.case_law"
     - "lexisnexis.statutes"
     - "lexisnexis.regulations"
+    - "lexisnexis.secondary_sources"
     - "courtlistener.pacer_search"
+    - "courtlistener.opinion_text"
+    - "supabase.precedents.read"
     - "supabase.precedents.write"
+    - "supabase.research_memos.write"
+  denylist:
+    - "court.filing"
+    - "client.email"
   primary_tools:
     - name: "case_finder"
-      description: "Search for relevant case law"
+      description: "Search for relevant case law across databases"
       sources: ["westlaw", "lexis", "courtlistener"]
+      output: "ranked_case_list_with_citations"
     - name: "citation_chain_builder"
       description: "Build citation chains for key authorities"
+      output: "citation_tree_with_treatment"
     - name: "keycite_checker"
-      description: "Verify case validity via KeyCite"
+      description: "Verify case validity via Westlaw KeyCite"
+      output: "validity_status, negative_treatment, citing_refs"
     - name: "shepards_checker"
-      description: "Verify case validity via Shepard's"
+      description: "Verify case validity via LexisNexis Shepards"
+      output: "validity_status, treatment_history"
+    - name: "authority_ranker"
+      description: "Rank authorities by binding/persuasive weight"
+      output: "ranked_authority_list"
+    - name: "statute_analyzer"
+      description: "Analyze statutes with annotations and history"
+      output: "statutory_analysis_with_cases"
+  secondary_tools:
+    - "regulation_finder"
+    - "secondary_source_researcher"
+    - "legislative_history_tracker"
   mcp_servers:
     westlaw:
       transport: "http"
       priority: "critical"
+      endpoints: ["case_search", "statute_lookup", "keycite", "secondary_sources", "regulations"]
       rate_limit: "100/min"
       cache_ttl: "24h"
+      fallback: "lexisnexis"
     lexisnexis:
       transport: "http"
       priority: "critical"
+      endpoints: ["shepards", "case_law", "statutes", "regulations", "secondary_sources"]
       rate_limit: "50/min"
       cache_ttl: "24h"
+    courtlistener:
+      transport: "http"
+      priority: "high"
+      endpoints: ["pacer_search", "opinion_text"]
+      rate_limit: "30/min"
+    supabase:
+      transport: "stdio"
+      priority: "critical"
+      tables: ["precedents", "research_memos"]
 
+# -------------------------------------------------------------------------------
+# CLUSTER: memory.* (State and Context)
+# -------------------------------------------------------------------------------
 memory:
   enabled: true
   type: "persistent"
+  storage: "supabase"
+  retention: "case_duration"
+  classes:
+    working:
+      retention: "ephemeral"
+      write_enabled: true
+    session:
+      retention_days: 365
+      write_enabled: true
+    long_term:
+      retention_days: 3650
+      write_enabled: true
   vector_embeddings:
     dimensions: 1536
     chunk_size: 512
+    overlap: 50
+    index_type: "HNSW"
+  retrieval:
+    strategy: "scoped_rag"
+    max_documents: 50
+    max_tokens: 32000
 
+# -------------------------------------------------------------------------------
+# CLUSTER: governance.* (Gates, Approvals, Audit)
+# -------------------------------------------------------------------------------
 governance:
   required_gates:
-    - "gate.research.citation_validity.v1"
+    - id: "gate.research.citation_validity.v1"
+      description: "All citations verified via KeyCite or Shepards"
+      threshold: 1.0
+    - id: "gate.research.authority_ranking.v1"
+      description: "Authorities properly ranked by weight"
+      threshold: 0.95
+  audit:
+    emit_events: true
+    event_schema: "audit_event.legal.v1"
+    include_search_queries: true
+    include_results_hash: true
 
+# -------------------------------------------------------------------------------
+# CLUSTER: evaluation.* (Quality and Metrics)
+# -------------------------------------------------------------------------------
 evaluation:
+  enabled: true
   quality_metrics:
     citation_accuracy: ">99%"
     precedent_relevance: ">95%"
+    keycite_coverage: "100%"
+    binding_authority_identification: ">98%"
+  pass_fail:
+    hard_fail_on:
+      - "hallucinated_case"
+      - "invalid_citation"
+      - "overruled_case_as_valid"
+      - "wrong_jurisdiction"
 
-activation:
-  keyboard_shortcut: "Cmd+Shift+R"
-  voice_command: "Legal Research Bot"
-  startup_message: |
-    Legal Research Bot ready for deep legal research.
-    Databases available: Westlaw, LexisNexis, CourtListener
-    What legal issue would you like me to research?
+# -------------------------------------------------------------------------------
+# CLUSTER: safety.* (Guardrails)
+# -------------------------------------------------------------------------------
+safety:
+  guardrails:
+    verify_all_citations: true
+    flag_overruled_cases: true
+    distinguish_binding_persuasive: true
+    note_negative_treatment: true
+  validation:
+    - "All cases KeyCited or Shepardized"
+    - "No hallucinated citations"
+    - "Jurisdiction clearly stated"
+    - "Binding vs persuasive marked"
 
+# -------------------------------------------------------------------------------
+# CLUSTER: collaboration.* (Multi-Agent)
+# -------------------------------------------------------------------------------
 collaboration:
+  delegation:
+    allowed: false
+    strategy: "worker"
   related_agents:
     - agent_id: "agent.legal.attorney.v1"
       relationship: "reports_to"
+      use_case: "delivers research to attorney"
+    - agent_id: "agent.legal.pack_manager.v1"
+      relationship: "receives_from"
+      use_case: "receives research requests"
 
+# -------------------------------------------------------------------------------
+# CLUSTER: knowledge.* (Context Sources)
+# -------------------------------------------------------------------------------
 knowledge:
   primary_corpus:
     - "Federal case law databases"
     - "State case law databases"
-    - "US Code and CFR"
-    - "Secondary sources"
+    - "US Code (annotated)"
+    - "Code of Federal Regulations"
+    - "State statutes and regulations"
+  secondary_sources:
+    - "American Law Reports (ALR)"
+    - "American Jurisprudence 2d"
+    - "Corpus Juris Secundum"
+    - "Restatements of the Law"
+    - "Law Reviews and Journals"
+  retrieval_config:
+    vector_dimensions: 1536
+    chunk_size: 512
+    overlap: 50
+
+# -------------------------------------------------------------------------------
+# CLUSTER: observability.* (Monitoring)
+# -------------------------------------------------------------------------------
+observability:
+  enabled: true
+  logs:
+    structured: true
+    level: "info"
+  metrics:
+    enabled: true
+    emit_cost: true
+    emit_latency: true
+    custom_metrics:
+      - "searches_performed"
+      - "citations_verified"
+      - "cases_keycited"
+
+# -------------------------------------------------------------------------------
+# CLUSTER: activation.* (Invocation)
+# -------------------------------------------------------------------------------
+activation:
+  keyboard_shortcut: "Cmd+Shift+R"
+  voice_command: "Legal Research Bot"
+  auto_start: false
+  startup_message: |
+    Legal Research Bot ready for deep legal research.
+    Databases available: Westlaw, LexisNexis, CourtListener
+    All citations will be verified via KeyCite/Shepards.
+    What legal issue would you like me to research?

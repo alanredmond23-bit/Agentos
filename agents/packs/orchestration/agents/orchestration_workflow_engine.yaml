@@ -1,0 +1,588 @@
+# ===============================================================================
+# ORCHESTRATION WORKFLOW ENGINE - Durable Workflow Execution & State Management
+# AgentOS Canonical Format v1.0.0
+# ===============================================================================
+# PURPOSE: Executes complex multi-step workflows with durable state management,
+#          handles saga patterns, compensations, retries, and ensures reliable
+#          workflow completion across distributed agent systems.
+# ===============================================================================
+
+meta:
+  version: "1.0.0"
+  pack: "orchestration"
+  schema_version: "1.0"
+  created_at: "2025-12-28T00:00:00Z"
+  updated_at: "2025-12-28T00:00:00Z"
+  created_by: "platform-team"
+  environment: "production"
+  tags:
+    - "orchestration"
+    - "workflow-engine"
+    - "state-machine"
+    - "durable-execution"
+    - "saga-patterns"
+  labels:
+    tier: "core"
+    criticality: "critical"
+    domain: "orchestration"
+    sub_domain: "workflow_execution"
+
+identity:
+  name: "Workflow Engine Agent"
+  slug: "workflow-engine"
+  role: "Durable Workflow Executor & State Machine Manager"
+  personality: "Methodical, reliable, and resilient workflow orchestrator"
+  description: |
+    The Workflow Engine Agent is responsible for executing complex multi-step
+    workflows with guaranteed reliability. It manages workflow state machines,
+    handles distributed transactions using saga patterns, implements compensating
+    actions for rollbacks, manages retries with exponential backoff, and ensures
+    eventual consistency across the agent ecosystem.
+  mission: "Execute workflows reliably with guaranteed completion or graceful rollback"
+  values:
+    - "Reliability through durability"
+    - "Consistency through state management"
+    - "Resilience through compensation"
+    - "Visibility through observability"
+    - "Efficiency through optimization"
+  communication_style: "technical"
+  decision_framework: |
+    1. Parse workflow definition and validate
+    2. Initialize state machine with checkpoints
+    3. Execute steps with retry policies
+    4. Handle failures with compensating actions
+    5. Commit state on success, rollback on failure
+    6. Emit completion events
+  authority_level: "operator"
+  knowledge_domains:
+    - "Workflow orchestration"
+    - "State machine design"
+    - "Saga patterns"
+    - "Distributed transactions"
+    - "Retry strategies"
+    - "Event sourcing"
+    - "CQRS patterns"
+  timezone: "UTC"
+
+authority:
+  execution_model: "semi_autonomous"
+  approval_required: false
+  approval_timeout_seconds: 180
+  financial_limits:
+    auto_execute: 100.00
+    require_confirmation: 500.00
+    absolute_maximum: 2000.00
+    daily_limit: 10000.00
+    currency: "USD"
+  allowed_operations:
+    - "workflow_execution"
+    - "state_transition"
+    - "checkpoint_creation"
+    - "compensation_execution"
+    - "retry_management"
+    - "event_emission"
+    - "timeout_handling"
+    - "parallel_execution"
+  forbidden_operations:
+    - "workflow_definition_modification"
+    - "security_bypass"
+    - "audit_log_modification"
+    - "state_corruption"
+  resource_quotas:
+    api_calls_per_minute: 2000
+    api_calls_per_day: 200000
+    tokens_per_request: 32000
+    tokens_per_day: 10000000
+    concurrent_tasks: 200
+  emergency_powers:
+    shutdown_on_breach: true
+    rollback_on_error: true
+    alert_on_anomaly: true
+    escalation_contact: "platform-oncall@agentos.dev"
+  zone_access:
+    red: false
+    yellow: true
+    green: true
+
+business:
+  metrics:
+    primary_kpi: "workflow_completion_rate"
+    secondary_kpis:
+      - "average_execution_time"
+      - "retry_rate"
+      - "compensation_rate"
+      - "state_consistency"
+  decision_matrix:
+    revenue_weight: 0.20
+    cost_weight: 0.15
+    time_weight: 0.30
+    risk_weight: 0.25
+    customer_impact_weight: 0.10
+  time_blocks:
+    1_minute: "Simple sequential workflow"
+    5_minute: "Multi-step with checkpoints"
+    10_minute: "Parallel branches with joins"
+    30_minute: "Complex saga with compensations"
+    1_hour: "Long-running approval workflows"
+    2_hour_warning: "Requires workflow optimization review"
+  cost_center: "PLATFORM-ORCH-003"
+  department: "Platform Engineering"
+  team: "Orchestration"
+
+# Workflow Definition Language (WDL)
+workflow_definition:
+  version: "1.0"
+  supported_constructs:
+    step:
+      description: "Single executable action"
+      properties:
+        - "id"
+        - "action"
+        - "input"
+        - "output"
+        - "retry_policy"
+        - "timeout"
+        - "compensation"
+    sequence:
+      description: "Execute steps in order"
+      properties:
+        - "steps[]"
+        - "on_error"
+    parallel:
+      description: "Execute steps concurrently"
+      properties:
+        - "branches[]"
+        - "join_strategy"
+        - "max_concurrency"
+    conditional:
+      description: "Branch based on condition"
+      properties:
+        - "condition"
+        - "if_true"
+        - "if_false"
+    loop:
+      description: "Iterate over collection"
+      properties:
+        - "collection"
+        - "iterator"
+        - "body"
+        - "max_iterations"
+    wait:
+      description: "Wait for event or timeout"
+      properties:
+        - "event"
+        - "timeout"
+        - "on_timeout"
+    saga:
+      description: "Transaction with compensations"
+      properties:
+        - "steps[]"
+        - "compensations[]"
+        - "on_failure"
+
+# State Machine Configuration
+state_machine:
+  persistence:
+    storage: "supabase"
+    table: "workflow_states"
+    checkpoint_interval_ms: 5000
+    snapshot_frequency: 10
+  states:
+    pending:
+      description: "Workflow queued for execution"
+      transitions: ["running", "cancelled"]
+    running:
+      description: "Workflow actively executing"
+      transitions: ["paused", "completed", "failed", "compensating"]
+    paused:
+      description: "Workflow paused awaiting input"
+      transitions: ["running", "cancelled"]
+    compensating:
+      description: "Executing compensation actions"
+      transitions: ["rolled_back", "compensation_failed"]
+    completed:
+      description: "Workflow finished successfully"
+      terminal: true
+    failed:
+      description: "Workflow failed without recovery"
+      terminal: true
+    rolled_back:
+      description: "Workflow compensations completed"
+      terminal: true
+    cancelled:
+      description: "Workflow cancelled by user"
+      terminal: true
+  events:
+    - "workflow.started"
+    - "step.started"
+    - "step.completed"
+    - "step.failed"
+    - "step.retrying"
+    - "checkpoint.created"
+    - "compensation.started"
+    - "compensation.completed"
+    - "workflow.completed"
+    - "workflow.failed"
+
+# Retry Strategies
+retry_strategies:
+  exponential_backoff:
+    description: "Exponentially increasing delays"
+    base_delay_ms: 1000
+    max_delay_ms: 60000
+    multiplier: 2.0
+    jitter: true
+    max_attempts: 5
+  linear_backoff:
+    description: "Linearly increasing delays"
+    base_delay_ms: 2000
+    increment_ms: 2000
+    max_delay_ms: 30000
+    max_attempts: 10
+  fixed_delay:
+    description: "Constant delay between retries"
+    delay_ms: 5000
+    max_attempts: 3
+  immediate:
+    description: "Retry immediately"
+    max_attempts: 2
+  custom:
+    description: "Custom retry function"
+    function: "retry_function_name"
+
+# Saga Patterns
+saga_patterns:
+  choreography:
+    description: "Event-driven saga coordination"
+    use_when: "Loosely coupled services"
+    implementation:
+      - "Each step emits completion event"
+      - "Next step listens for predecessor event"
+      - "Compensation triggered by failure event"
+  orchestration:
+    description: "Centralized saga coordinator"
+    use_when: "Complex transaction logic"
+    default: true
+    implementation:
+      - "Coordinator manages all steps"
+      - "Explicit compensation order"
+      - "Full visibility and control"
+  compensation_strategies:
+    backward:
+      description: "Compensate in reverse order"
+      default: true
+    forward:
+      description: "Compensate in original order"
+    selective:
+      description: "Compensate only specific steps"
+    parallel:
+      description: "Compensate all steps concurrently"
+
+memory:
+  type: "persistent"
+  retention: "90_days"
+  storage: "supabase_workflows"
+  vector_dimensions: 1536
+  max_tokens: 32000
+  indexing: "hnsw"
+  retrieval_strategy: "hybrid"
+  chunking:
+    strategy: "semantic"
+    size: 512
+    overlap: 64
+  compression:
+    enabled: true
+    algorithm: "zstd"
+  encryption:
+    at_rest: true
+    in_transit: true
+    algorithm: "aes-256-gcm"
+  garbage_collection:
+    enabled: true
+    interval_hours: 168
+    strategy: "ttl"
+
+reasoning:
+  model: "workflow_executor"
+  depth: 4
+  multi_hop: true
+  confidence_threshold: 0.90
+  fallback_to_traditional: true
+  llm_settings:
+    temperature: 0.1
+    max_tokens: 16000
+    top_p: 0.9
+    frequency_penalty: 0.0
+  chain_of_thought:
+    enabled: true
+    format: "json"
+    visible_to_user: false
+  planning:
+    enabled: true
+    max_steps: 100
+    revision_allowed: false
+
+mcp_servers:
+  temporal:
+    transport: "http"
+    priority: "critical"
+    url: "${TEMPORAL_CLUSTER_URL}"
+    timeout_ms: 60000
+    retry_count: 5
+    capabilities:
+      - "workflow_execution"
+      - "activity_execution"
+      - "signal_handling"
+      - "query_handling"
+      - "timer_management"
+    health_check:
+      enabled: true
+      interval_seconds: 15
+      timeout_seconds: 5
+    token_env: "TEMPORAL_API_KEY"
+  inngest:
+    transport: "http"
+    priority: "high"
+    url: "${INNGEST_URL}"
+    timeout_ms: 30000
+    retry_count: 3
+    capabilities:
+      - "step_functions"
+      - "event_triggers"
+      - "scheduled_execution"
+      - "fanout"
+    key_env: "INNGEST_SIGNING_KEY"
+  redis:
+    transport: "stdio"
+    priority: "critical"
+    command: "npx"
+    args: ["@agentos/mcp-redis"]
+    capabilities:
+      - "distributed_locking"
+      - "state_caching"
+      - "pub_sub"
+    connection_env: "REDIS_URL"
+  supabase:
+    transport: "stdio"
+    priority: "critical"
+    command: "npx"
+    args: ["@agentos/mcp-supabase"]
+    capabilities:
+      - "workflow_state"
+      - "event_log"
+      - "audit_trail"
+    token_env: "SUPABASE_SERVICE_KEY"
+
+tools:
+  primary_tools:
+    - name: "workflow_executor"
+      description: "Execute workflow definitions"
+      input:
+        workflow_definition: "WDL object"
+        input_data: "object"
+        options: "execution options"
+      output:
+        execution_id: "unique ID"
+        status: "workflow state"
+        result: "output data"
+    - name: "state_manager"
+      description: "Manage workflow state transitions"
+      input:
+        execution_id: "string"
+        new_state: "state enum"
+        metadata: "object"
+      output:
+        success: "boolean"
+        previous_state: "state enum"
+        checkpoint_id: "string"
+    - name: "compensation_executor"
+      description: "Execute compensation actions"
+      input:
+        execution_id: "string"
+        failed_step: "step ID"
+        strategy: "compensation strategy"
+      output:
+        compensated_steps: "list of step IDs"
+        success: "boolean"
+        partial_failure: "list of failed compensations"
+    - name: "checkpoint_manager"
+      description: "Create and restore checkpoints"
+      input:
+        execution_id: "string"
+        operation: "create | restore | list"
+      output:
+        checkpoint_id: "string"
+        state_snapshot: "object"
+  secondary_tools:
+    - "event_emitter"
+    - "timeout_handler"
+    - "parallel_coordinator"
+    - "saga_coordinator"
+
+# Inter-Agent Communication Protocols
+communication_protocols:
+  request_response:
+    description: "Synchronous request-response"
+    timeout_ms: 30000
+    retry_policy: "exponential_backoff"
+  fire_and_forget:
+    description: "Async event emission"
+    acknowledgement: false
+    delivery_guarantee: "at_least_once"
+  publish_subscribe:
+    description: "Event-based pub/sub"
+    topics:
+      - "workflow.events"
+      - "step.events"
+      - "compensation.events"
+    delivery_guarantee: "at_least_once"
+  streaming:
+    description: "Bidirectional streaming"
+    buffer_size: 1000
+    backpressure: true
+
+safety:
+  guardrails:
+    financial_limit_enforcement: true
+    pii_protection: true
+    rate_limiting: true
+    idempotency_enforcement: true
+  emergency_controls:
+    abort_command: "ABORT_WORKFLOW"
+    rollback_command: "FORCE_ROLLBACK"
+    pause_command: "PAUSE_ALL_WORKFLOWS"
+    kill_switch_enabled: true
+  monitoring:
+    alert_threshold: "high"
+    audit_level: "everything"
+    retention_days: 365
+  circuit_breaker:
+    enabled: true
+    failure_threshold: 10
+    reset_timeout_seconds: 120
+  input_validation:
+    max_input_length: 1000000
+    block_injections: true
+
+observability:
+  logging:
+    level: "info"
+    format: "json"
+    destination: "cloud"
+    redact_pii: true
+  metrics:
+    enabled: true
+    provider: "prometheus"
+    push_interval_seconds: 10
+    custom_metrics:
+      - name: "workflows_started_total"
+        type: "counter"
+        labels: ["workflow_type", "initiator"]
+      - name: "workflows_completed_total"
+        type: "counter"
+        labels: ["workflow_type", "status"]
+      - name: "workflow_duration_seconds"
+        type: "histogram"
+        labels: ["workflow_type"]
+      - name: "active_workflows"
+        type: "gauge"
+        labels: ["workflow_type", "state"]
+      - name: "compensation_triggered_total"
+        type: "counter"
+        labels: ["workflow_type", "step"]
+      - name: "retry_attempts_total"
+        type: "counter"
+        labels: ["workflow_type", "step"]
+  tracing:
+    enabled: true
+    provider: "otel"
+    sample_rate: 0.5
+    propagation: "w3c"
+  alerting:
+    enabled: true
+    channels:
+      - "slack"
+      - "pagerduty"
+    rules:
+      - name: "workflow_failure_spike"
+        condition: "failure_rate > 0.10"
+        severity: "critical"
+        channels: ["pagerduty"]
+      - name: "long_running_workflow"
+        condition: "duration > 3600"
+        severity: "high"
+        channels: ["slack"]
+      - name: "compensation_failure"
+        condition: "compensation_failed"
+        severity: "critical"
+        channels: ["pagerduty", "slack"]
+
+context:
+  system_prompt: |
+    You are the Workflow Engine Agent, responsible for executing complex multi-step
+    workflows with guaranteed reliability and consistency.
+
+    CORE RESPONSIBILITIES:
+    1. WORKFLOW EXECUTION: Parse and execute workflow definitions step by step
+    2. STATE MANAGEMENT: Maintain durable workflow state with checkpoints
+    3. FAILURE HANDLING: Implement retries with appropriate backoff strategies
+    4. COMPENSATION: Execute compensating actions for saga rollbacks
+    5. PARALLELIZATION: Manage concurrent branch execution and joins
+    6. OBSERVABILITY: Emit events and metrics for monitoring
+
+    EXECUTION PRINCIPLES:
+    - Always create checkpoints before critical operations
+    - Use appropriate retry strategies based on failure type
+    - Ensure idempotency of all operations
+    - Log all state transitions for audit
+    - Emit events for observability
+    - Handle timeouts gracefully
+    - Compensate in correct order on failure
+
+    SAGA PATTERN GUIDELINES:
+    - Use orchestration for complex workflows
+    - Define compensating actions for each step
+    - Ensure compensations are idempotent
+    - Handle partial compensation failures
+  instructions:
+    - "Execute workflows with checkpoint-based durability"
+    - "Handle failures with configured retry strategies"
+    - "Implement saga compensations on workflow failure"
+    - "Emit events for all state transitions"
+    - "Ensure idempotent execution of all steps"
+    - "Log comprehensive audit trail"
+
+evals:
+  enabled: true
+  suites:
+    - "workflow_execution"
+    - "saga_compensation"
+    - "state_consistency"
+    - "failure_recovery"
+  golden_tasks_path: "/evals/golden_tasks/orchestration"
+  adversarial_path: "/evals/adversarial/orchestration"
+  metrics:
+    accuracy_threshold: 0.99
+    latency_p99_ms: 1000
+    cost_per_task_max: 0.50
+    safety_score_min: 0.999
+  regression:
+    enabled: true
+    max_regression_percent: 1
+
+activation:
+  keyboard_shortcut: "Cmd+Shift+W"
+  voice_command: "Workflow Engine"
+  auto_start: false
+  startup_message: |
+    Workflow Engine ready for durable execution.
+
+    Capabilities:
+    - Sequential, parallel, and hybrid workflows
+    - Saga patterns with compensation
+    - Checkpoint-based durability
+    - Retry with exponential backoff
+
+    Integrations: Temporal, Inngest, Redis, Supabase
+
+    Submit a workflow definition to begin.

@@ -1,37 +1,54 @@
-# ═══════════════════════════════════════════════════════════════════════════════
+# ===============================================================================
 # DEVOPS ALERTING AGENT - Alert Management Specialist
-# AgentOS v1.0.0 | 250+ Parameter Exhaustive Schema
-# ═══════════════════════════════════════════════════════════════════════════════
+# AgentOS v1.0.0 | Full 250+ Parameter Schema Implementation
+# ===============================================================================
 
-identity:
-  agent_id: "DEVOPS-ALERT-05"
-  name: "Alerting Agent"
+# -----------------------------------------------------------------------------
+# CLUSTER 1: META - Versioning and Configuration Metadata
+# -----------------------------------------------------------------------------
+meta:
   version: "1.0.0"
-  icon: "🚨"
-  role: "Alert Management Specialist"
   pack: "devops"
-  is_manager: false
-  reports_to: "devops_pack_manager"
+  schema_version: "1.0"
+  created_at: "2025-12-28T00:00:00Z"
+  updated_at: "2025-12-28T00:00:00Z"
+  created_by: "agentos"
+  environment: "production"
+  tags:
+    - "devops"
+    - "alerting"
+    - "slo"
+    - "pagerduty"
+    - "escalation"
+  labels:
+    team: "devops"
+    tier: "specialist"
+    domain: "alerting"
+  deprecated: false
 
-  personality:
-    description: "Alerting expert focused on actionable, non-fatiguing alerts"
-    traits:
-      - "Signal-focused"
-      - "Fatigue-aware"
-      - "Escalation-minded"
-      - "SLO-driven"
-    communication_style: "Precise and actionable"
-    directness_level: 0.90
-    profanity_allowed: false
-
+# -----------------------------------------------------------------------------
+# CLUSTER 2: IDENTITY - Agent Persona and Role Definition
+# -----------------------------------------------------------------------------
+identity:
+  name: "Alerting Agent"
+  slug: "devops-alerting"
+  role: "Alert Management Specialist"
+  personality: "Signal-focused alerting expert preventing alert fatigue"
+  description: |
+    Specialized alerting agent for all alert management tasks. Expert in
+    alert rule design, SLO/SLI definition, escalation policies, PagerDuty,
+    and alert fatigue prevention. Focuses on creating actionable alerts
+    that detect real problems without causing fatigue.
   mission: "Create actionable alerts that detect real problems without causing fatigue"
-
   values:
     - "Signal over Noise"
     - "Actionability"
     - "Proper Escalation"
     - "SLO Alignment"
-
+    - "Alert Fatigue Prevention"
+  communication_style: "technical"
+  decision_framework: "signal-to-noise optimization with SLO alignment"
+  authority_level: "contributor"
   knowledge_domains:
     - "Alert Design"
     - "PagerDuty"
@@ -39,97 +56,376 @@ identity:
     - "SLO/SLI"
     - "Escalation Policies"
     - "Alert Fatigue Prevention"
+    - "Error Budgets"
+    - "Burn Rate Alerts"
+  languages:
+    - code: "en"
+      fluency: "native"
+  timezone: "UTC"
+  pronouns: "it"
+  contact_info:
+    slack_channel: "#devops-alerting"
 
-model:
-  provider: "anthropic"
-  model_id: "claude-sonnet-4-20250514"
+# -----------------------------------------------------------------------------
+# CLUSTER 3: VOICE - Voice Interface Configuration
+# -----------------------------------------------------------------------------
+voice:
+  enabled: false
+  response_time_target: 3000
+  emotion_range: "none"
 
-  parameters:
-    temperature: 0.15
-    top_p: 0.78
-    top_k: 20
-    max_tokens: 8000
-
-reasoning:
-  mode: "analytical"
-  think_mode: "signal_detection"
-  extended_thinking: true
-
+# -----------------------------------------------------------------------------
+# CLUSTER 4: AUTHORITY - Permissions and Access Control
+# -----------------------------------------------------------------------------
 authority:
-  level: "Specialist"
-  zone: "GREEN"
-
+  execution_model: "supervised"
+  approval_required: false
+  approval_timeout_seconds: 300
+  financial_limits:
+    auto_execute: 5.00
+    require_confirmation: 50.00
+    absolute_maximum: 200.00
+    daily_limit: 50.00
+    monthly_limit: 500.00
+    currency: "USD"
   allowed_operations:
     - "alert_rule_creation"
     - "escalation_policy_design"
     - "slo_definition"
     - "runbook_linking"
+    - "maintenance_window_planning"
+    - "alert_correlation"
+  forbidden_operations:
+    - "alert_silence_production"
+    - "escalation_disable"
+    - "slo_deletion"
+  resource_quotas:
+    api_calls_per_minute: 50
+    api_calls_per_day: 4000
+    tokens_per_request: 8000
+    tokens_per_day: 150000
+    storage_mb: 64
+    concurrent_tasks: 2
+  zone_access:
+    red: false
+    yellow: false
+    green: true
+  data_classification_access:
+    - "public"
+    - "internal"
 
-tools:
-  primary:
-    - name: "alert_rule_builder"
-      description: "Create alert rules"
-      input_schema:
-        metric: "string"
-        threshold: "number"
-        severity: "string"
-      output: "alert_rule"
+# -----------------------------------------------------------------------------
+# CLUSTER 5: BUSINESS - Metrics, KPIs, and Decision Framework
+# -----------------------------------------------------------------------------
+business:
+  metrics:
+    primary_kpi: "alert_actionability_rate"
+    secondary_kpis:
+      - "false_positive_rate"
+      - "slo_breach_detection_time"
+    nps_target: 75
+  decision_matrix:
+    cost_weight: 0.15
+    time_weight: 0.20
+    risk_weight: 0.35
+    customer_impact_weight: 0.30
+  time_blocks:
+    5_minute: "alert_rule"
+    10_minute: "escalation_policy"
+    30_minute: "slo_definition"
+    1_hour: "full_alerting_setup"
+  cost_center: "DEVOPS-ALERT"
+  department: "Engineering"
+  team: "Platform"
+  budget_code: "ENG-DEVOPS-ALERT-2025"
 
-    - name: "escalation_designer"
-      description: "Design escalation policies"
-      input_schema:
-        team: "string"
-        severity_levels: "array"
-      output: "escalation_policy"
+# -----------------------------------------------------------------------------
+# CLUSTER 6: TECHNICAL - Infrastructure and Tech Stack
+# -----------------------------------------------------------------------------
+technical:
+  infrastructure:
+    alerting:
+      - "PagerDuty"
+      - "Opsgenie"
+      - "Alertmanager"
+  stack:
+    backend:
+      - "Prometheus"
+      - "Alertmanager"
+    ai_models:
+      - "claude-sonnet-4-20250514"
 
-    - name: "slo_definer"
-      description: "Define SLOs and error budgets"
-      input_schema:
-        service: "string"
-        objectives: "array"
-      output: "slo_config"
+# -----------------------------------------------------------------------------
+# CLUSTER 7: MCP SERVERS - Model Context Protocol Integrations
+# -----------------------------------------------------------------------------
+mcp_servers:
+  pagerduty:
+    transport: "http"
+    priority: "critical"
+    token_env: "PAGERDUTY_API_KEY"
+    capabilities:
+      - "service_read"
+      - "escalation_read"
+      - "incident_read"
 
-  secondary:
-    - "noise_reducer"
-    - "correlation_builder"
-    - "maintenance_scheduler"
+  monitoring:
+    transport: "http"
+    priority: "high"
+    token_env: "MONITORING_KEY"
+    capabilities:
+      - "alert_rules_write"
+      - "slo_write"
 
+# -----------------------------------------------------------------------------
+# CLUSTER 8: AGENTS - Multi-Agent Orchestration
+# -----------------------------------------------------------------------------
+agents:
+  orchestration:
+    mode: "sequential"
+    max_parallel: 1
+    timeout_seconds: 300
+    failure_strategy: "continue"
+  delegation:
+    devops_monitoring:
+      role: "Metrics Provider"
+      allocation: 0.25
+      priority: 1
+      capabilities: ["metric_queries"]
+  communication:
+    protocol: "direct"
+    message_format: "json"
+    encryption: true
+
+# -----------------------------------------------------------------------------
+# CLUSTER 9: MEMORY - Context and State Management
+# -----------------------------------------------------------------------------
 memory:
   type: "persistent"
+  retention: "90_days"
   storage: "supabase"
+  vector_dimensions: 1536
+  max_tokens: 12000
+  indexing: "hnsw"
+  retrieval_strategy: "similarity"
+  encryption:
+    at_rest: true
+    in_transit: true
+    algorithm: "aes-256-gcm"
 
-voice:
-  response_time_target: 3000
-  output_format: "alert_config"
+# -----------------------------------------------------------------------------
+# CLUSTER 10: REASONING - Inference and Decision Making
+# -----------------------------------------------------------------------------
+reasoning:
+  model: "claude-sonnet-4-20250514"
+  depth: 4
+  multi_hop: true
+  confidence_threshold: 0.85
+  llm_settings:
+    temperature: 0.15
+    max_tokens: 8000
+    top_p: 0.78
+    top_k: 20
+  chain_of_thought:
+    enabled: true
+    format: "xml"
+    visible_to_user: false
+  planning:
+    enabled: true
+    max_steps: 8
+    revision_allowed: true
 
-business:
-  time_estimates:
-    alert_rule: "30min"
-    full_policy: "2hr"
+# -----------------------------------------------------------------------------
+# CLUSTER 11: TOOLS - Tool Capabilities and Access
+# -----------------------------------------------------------------------------
+tools:
+  terminal:
+    enabled: true
+    shell: "bash"
+    sudo: false
+    allowed_commands:
+      - "amtool"
+      - "curl"
+    blocked_commands:
+      - "rm -rf"
+  filesystem:
+    read: "limited"
+    write: "limited"
+    allowed_paths:
+      - "/workspace/alerting"
+      - "/tmp/alerts"
+  apis:
+    rest: true
+    graphql: false
+  code_execution:
+    enabled: true
+    languages:
+      - "yaml"
+      - "json"
+    sandbox: true
+    timeout_seconds: 120
 
-  quality_metrics:
-    alert_precision: ">95%"
-    false_positive_rate: "<5%"
-
+# -----------------------------------------------------------------------------
+# CLUSTER 12: SAFETY - Guardrails and Controls
+# -----------------------------------------------------------------------------
 safety:
   guardrails:
-    prevent_alert_spam: true
-    require_runbook: true
+    pii_protection: true
+    rate_limiting: true
+  emergency_controls:
+    abort_command: "ABORT ALERTING"
+    kill_switch_enabled: true
+  monitoring:
+    alert_threshold: "low"
+    audit_level: "important"
+    retention_days: 90
+  circuit_breaker:
+    enabled: true
+    failure_threshold: 5
+    reset_timeout_seconds: 120
+  input_validation:
+    max_input_length: 20000
+    sanitize_html: true
+  output_validation:
+    max_output_length: 40000
+    pii_redaction: true
 
-expected_results:
-  alert_configuration:
-    includes:
-      - "alert_rules"
-      - "escalation_policies"
-      - "slo_definitions"
-      - "maintenance_windows"
+# -----------------------------------------------------------------------------
+# CLUSTER 13: POLICIES - Policy Definitions and Enforcement
+# -----------------------------------------------------------------------------
+policies:
+  default_policy: "alerting_standard"
+  policies:
+    - name: "alerting_standard"
+      description: "Standard alerting operations"
+      priority: 1
+      enabled: true
+      rules:
+        - condition: "alert.missing_runbook == true"
+          action: "warn"
+          message: "Alert should have runbook"
+        - condition: "alert.threshold_too_sensitive == true"
+          action: "warn"
+          message: "Alert threshold may cause fatigue"
+  enforcement_mode: "enforce"
+  violation_handling:
+    log: true
+    notify:
+      - "#devops-alerting"
 
-activation:
-  keyboard_shortcut: "Cmd+Shift+O A"
-  voice_command: "Alerting Agent activate"
-  auto_start: false
+# -----------------------------------------------------------------------------
+# CLUSTER 14: TRIGGERS - Event Triggers and Schedules
+# -----------------------------------------------------------------------------
+triggers:
+  events:
+    - name: "alerting_request"
+      source: "devops_pack_manager"
+      event_type: "alerting_task"
+      action: "handle_alerting_request"
 
-  startup_message: |
-    Alerting Agent ready for alert management.
-    Focus: Actionable alerts, fatigue prevention
-    What alerting challenge can I help with?
+# -----------------------------------------------------------------------------
+# CLUSTER 15: INTEGRATIONS - Third-Party Services
+# -----------------------------------------------------------------------------
+integrations:
+  api_keys:
+    pagerduty:
+      env_var: "PAGERDUTY_API_KEY"
+      header_name: "Authorization"
+      prefix: "Token token="
+    opsgenie:
+      env_var: "OPSGENIE_API_KEY"
+      header_name: "Authorization"
+      prefix: "GenieKey"
+  notifications:
+    slack:
+      webhook_url_env: "SLACK_WEBHOOK_URL"
+      default_channel: "#devops-alerting"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 16: OBSERVABILITY - Logging, Metrics, Tracing
+# -----------------------------------------------------------------------------
+observability:
+  logging:
+    level: "info"
+    format: "json"
+    destination: "cloud"
+    redact_pii: true
+  metrics:
+    enabled: true
+    provider: "prometheus"
+    custom_metrics:
+      - name: "alerting_rules_created"
+        type: "counter"
+        description: "Alert rules created"
+        labels: ["severity"]
+      - name: "alerting_slos_defined"
+        type: "counter"
+        description: "SLOs defined"
+        labels: ["service"]
+  tracing:
+    enabled: true
+    provider: "otel"
+    sample_rate: 0.1
+
+# -----------------------------------------------------------------------------
+# CLUSTER 17: CONTEXT - Prompt Context and Instructions
+# -----------------------------------------------------------------------------
+context:
+  system_prompt: |
+    You are the Alerting Agent, a specialized alert management expert.
+    You design alert rules, define SLOs, configure escalation policies,
+    and prevent alert fatigue.
+
+    CORE PRINCIPLES:
+    1. Signal over Noise - Only alert on actionable issues
+    2. SLO-Driven - Align alerts with service level objectives
+    3. Proper Escalation - Right person, right time, right channel
+    4. Runbook Required - Every alert should have remediation steps
+    5. Fatigue Prevention - Avoid alert storms and duplicates
+
+    CAPABILITIES:
+    - Create Prometheus/Alertmanager alert rules
+    - Define SLOs with error budgets and burn rates
+    - Design PagerDuty/Opsgenie escalation policies
+    - Configure alert correlation and grouping
+    - Plan maintenance windows
+
+    RESTRICTIONS:
+    - NEVER disable production escalations
+    - NEVER silence critical alerts without approval
+    - NEVER create alerts without runbooks
+
+    OUTPUT FORMAT:
+    - Provide complete alert rule YAML
+    - Include SLO definitions with burn rates
+    - Add escalation policy configurations
+  instructions:
+    - "Always include runbook links"
+    - "Use multi-burn-rate for SLO alerts"
+    - "Configure proper alert grouping"
+    - "Add meaningful labels and annotations"
+  context_window:
+    max_tokens: 60000
+    reserved_for_output: 8000
+    prioritization: "relevance"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 18: EVALS - Evaluation and Testing Configuration
+# -----------------------------------------------------------------------------
+evals:
+  enabled: true
+  suites:
+    - "alerting_core"
+    - "slo_design"
+  golden_tasks_path: "/evals/devops/alerting_golden_tasks.yaml"
+  metrics:
+    accuracy_threshold: 0.88
+    latency_p99_ms: 12000
+    cost_per_task_max: 0.15
+    safety_score_min: 0.92
+  regression:
+    enabled: true
+    max_regression_percent: 5
+  schedule: "0 5 * * *"
+  notifications:
+    on_failure:
+      - "#devops-alerting"

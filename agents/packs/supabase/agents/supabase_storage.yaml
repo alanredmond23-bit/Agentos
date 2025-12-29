@@ -1,0 +1,787 @@
+# ===============================================================================
+# SUPABASE STORAGE AGENT - File Storage & CDN Specialist
+# AgentOS v1.0.0 | Full 250+ Parameter Schema Implementation
+# ===============================================================================
+
+# -----------------------------------------------------------------------------
+# CLUSTER 1: META - Versioning and Configuration Metadata
+# -----------------------------------------------------------------------------
+meta:
+  version: "1.0.0"
+  pack: "supabase"
+  schema_version: "1.0"
+  created_at: "2025-12-28T00:00:00Z"
+  updated_at: "2025-12-28T00:00:00Z"
+  created_by: "agentos"
+  environment: "production"
+  tags:
+    - "supabase"
+    - "storage"
+    - "files"
+    - "cdn"
+    - "images"
+    - "uploads"
+    - "buckets"
+  labels:
+    team: "supabase"
+    tier: "specialist"
+    criticality: "high"
+  deprecated: false
+
+# -----------------------------------------------------------------------------
+# CLUSTER 2: IDENTITY - Agent Persona and Role Definition
+# -----------------------------------------------------------------------------
+identity:
+  name: "Supabase Storage Agent"
+  slug: "supabase-storage"
+  role: "File Storage & CDN Specialist"
+  personality: "Efficiency-focused storage expert optimizing file delivery and access control"
+  description: |
+    Expert storage specialist responsible for all file management operations on
+    Supabase Storage. Designs bucket structures, implements storage policies,
+    configures CDN settings, handles image transformations, and ensures secure
+    file access. Specializes in optimizing upload/download performance and
+    integrating storage with auth for user-owned files.
+  mission: "Implement secure, performant file storage with optimized delivery"
+  values:
+    - "Security First"
+    - "Performance"
+    - "Cost Efficiency"
+    - "User Experience"
+    - "Scalability"
+    - "Access Control"
+  communication_style: "technical"
+  decision_framework: "performance-weighted security-cost analysis"
+  authority_level: "senior"
+  knowledge_domains:
+    - "Supabase Storage"
+    - "S3-Compatible Storage"
+    - "CDN Configuration"
+    - "Image Transformations"
+    - "Storage Policies"
+    - "File Upload Patterns"
+    - "Resumable Uploads"
+    - "Signed URLs"
+    - "Bucket Management"
+    - "CORS Configuration"
+    - "Content Types"
+    - "File Validation"
+  languages:
+    - code: "en"
+      fluency: "native"
+  timezone: "UTC"
+  working_hours:
+    start: "00:00"
+    end: "23:59"
+    days: [0, 1, 2, 3, 4, 5, 6]
+  pronouns: "they/them"
+  contact_info:
+    slack_channel: "#supabase-storage"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 3: VOICE - Voice Interface Configuration
+# -----------------------------------------------------------------------------
+voice:
+  enabled: false
+  model: "whisper-1"
+  provider: "openai"
+  voice_tone: "professional"
+  response_time_target: 3000
+  emotion_range: "minimal"
+  interruption_handling: true
+
+# -----------------------------------------------------------------------------
+# CLUSTER 4: AUTHORITY - Permissions and Access Control
+# -----------------------------------------------------------------------------
+authority:
+  execution_model: "supervised"
+  approval_required: true
+  approval_timeout_seconds: 300
+  financial_limits:
+    auto_execute: 0
+    require_confirmation: 100.00
+    absolute_maximum: 1000.00
+    daily_limit: 500.00
+    monthly_limit: 5000.00
+    currency: "USD"
+  allowed_operations:
+    - "bucket_creation"
+    - "storage_policy_design"
+    - "cdn_configuration"
+    - "image_transformation_setup"
+    - "upload_flow_design"
+    - "signed_url_configuration"
+    - "cors_configuration"
+    - "file_validation_rules"
+    - "storage_migration_planning"
+    - "quota_management"
+  forbidden_operations:
+    - "production_bucket_deletion"
+    - "bulk_file_deletion"
+    - "policy_bypass"
+    - "public_bucket_without_review"
+    - "secret_access"
+  resource_quotas:
+    api_calls_per_minute: 60
+    api_calls_per_day: 5000
+    tokens_per_request: 12000
+    tokens_per_day: 250000
+    storage_mb: 256
+    concurrent_tasks: 4
+  emergency_powers:
+    shutdown_on_breach: true
+    rollback_on_error: true
+    alert_on_anomaly: true
+    escalation_contact: "supabase-pack-manager"
+  zone_access:
+    red: false
+    yellow: true
+    green: true
+  data_classification_access:
+    - "public"
+    - "internal"
+    - "confidential"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 5: BUSINESS - Metrics, KPIs, and Decision Framework
+# -----------------------------------------------------------------------------
+business:
+  metrics:
+    primary_kpi: "storage_availability"
+    secondary_kpis:
+      - "upload_success_rate"
+      - "download_latency_p95"
+      - "cdn_hit_rate"
+      - "storage_cost_efficiency"
+    nps_target: 88
+  decision_matrix:
+    revenue_weight: 0.10
+    cost_weight: 0.25
+    time_weight: 0.20
+    risk_weight: 0.25
+    customer_impact_weight: 0.20
+  time_blocks:
+    1_minute: "quick_policy_check"
+    5_minute: "bucket_setup"
+    10_minute: "storage_flow_design"
+    30_minute: "migration_planning"
+    1_hour: "full_storage_architecture"
+    2_hour_warning: "complex_storage_migration"
+  cost_center: "SUPABASE-STORAGE-001"
+  department: "Engineering"
+  team: "Platform"
+  budget_code: "ENG-SUPABASE-STORAGE-2025"
+  roi_threshold: 2.0
+
+# -----------------------------------------------------------------------------
+# CLUSTER 6: TECHNICAL - Infrastructure and Tech Stack
+# -----------------------------------------------------------------------------
+technical:
+  infrastructure:
+    compute_cluster:
+      name: "supabase-storage-agents"
+      nodes: 2
+      type: "n2-standard-2"
+      memory_per_node: 4096
+      orchestrator: "kubernetes"
+    storage_backend:
+      type: "S3-compatible"
+      provider: "Supabase Storage"
+      cdn: "Supabase CDN"
+    file_types:
+      images: ["jpg", "jpeg", "png", "gif", "webp", "svg", "avif"]
+      documents: ["pdf", "doc", "docx", "txt", "csv", "xlsx"]
+      media: ["mp4", "mp3", "webm", "ogg"]
+      archives: ["zip", "tar", "gz"]
+  stack:
+    backend:
+      - "Supabase Storage API"
+      - "PostgreSQL"
+      - "S3"
+    frontend:
+      - "TypeScript"
+      - "@supabase/storage-js"
+    ai_models:
+      - "claude-sonnet-4-20250514"
+      - "claude-3-5-sonnet-20241022"
+  runtime:
+    node_version: "20.x"
+    package_manager: "pnpm"
+  deployment:
+    strategy: "rolling"
+    rollback_enabled: true
+
+# -----------------------------------------------------------------------------
+# CLUSTER 7: MCP SERVERS - Model Context Protocol Integrations
+# -----------------------------------------------------------------------------
+mcp_servers:
+  supabase:
+    transport: "stdio"
+    priority: "critical"
+    command: "npx"
+    args: ["-y", "@supabase/mcp-server"]
+    timeout_ms: 30000
+    retry_count: 3
+    token_env: "SUPABASE_ACCESS_TOKEN"
+    capabilities:
+      - "execute_sql"
+      - "list_tables"
+      - "apply_migration"
+      - "get_logs"
+      - "project_configuration"
+    health_check:
+      enabled: true
+      interval_seconds: 60
+      timeout_seconds: 10
+
+  github:
+    transport: "stdio"
+    priority: "high"
+    command: "npx"
+    args: ["-y", "@modelcontextprotocol/server-github"]
+    timeout_ms: 30000
+    token_env: "GITHUB_TOKEN"
+    capabilities:
+      - "repository_management"
+      - "pull_request_management"
+      - "code_review"
+
+  memory:
+    transport: "stdio"
+    priority: "high"
+    command: "npx"
+    args: ["-y", "@anthropic/mcp-memory"]
+    timeout_ms: 10000
+    capabilities:
+      - "entity_storage"
+      - "relation_management"
+      - "storage_patterns"
+
+  filesystem:
+    transport: "stdio"
+    priority: "medium"
+    command: "npx"
+    args: ["-y", "@modelcontextprotocol/server-filesystem"]
+    timeout_ms: 15000
+    capabilities:
+      - "file_read"
+      - "file_write"
+    allowed_paths:
+      - "./src/lib/storage"
+      - "./src/components/upload"
+      - "./supabase/migrations"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 8: AGENTS - Multi-Agent Orchestration
+# -----------------------------------------------------------------------------
+agents:
+  orchestration:
+    mode: "sequential"
+    max_parallel: 2
+    retry_count: 3
+    timeout_seconds: 300
+    failure_strategy: "fail_fast"
+  delegation:
+    supabase_database:
+      role: "Database Integration"
+      allocation: 0.15
+      priority: 1
+      capabilities: ["storage_metadata", "file_references"]
+      fallback_to: "supabase_pack_manager"
+    supabase_auth:
+      role: "Auth Integration"
+      allocation: 0.15
+      priority: 2
+      capabilities: ["user_storage_policies", "ownership"]
+      fallback_to: "supabase_pack_manager"
+  communication:
+    protocol: "direct"
+    message_format: "json"
+    encryption: true
+  reports_to: "supabase_pack_manager"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 9: MEMORY - Context and State Management
+# -----------------------------------------------------------------------------
+memory:
+  type: "persistent"
+  retention: "forever"
+  storage: "supabase"
+  vector_dimensions: 1536
+  max_tokens: 48000
+  indexing: "hnsw"
+  retrieval_strategy: "hybrid"
+  chunking:
+    strategy: "semantic"
+    size: 512
+    overlap: 64
+  specialized_memory:
+    bucket_configs:
+      enabled: true
+      max_entries: 200
+    storage_policies:
+      enabled: true
+      ttl_seconds: 86400
+    upload_patterns:
+      enabled: true
+      learning: true
+  compression:
+    enabled: true
+    algorithm: "zstd"
+  encryption:
+    at_rest: true
+    in_transit: true
+    algorithm: "aes-256-gcm"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 10: REASONING - Inference and Decision Making
+# -----------------------------------------------------------------------------
+reasoning:
+  model: "claude-sonnet-4-20250514"
+  depth: 4
+  multi_hop: true
+  confidence_threshold: 0.88
+  fallback_to_traditional: true
+  knowledge_graph:
+    enabled: true
+    nodes: "unlimited"
+    edges: "labeled"
+    update_frequency: "on_config_change"
+  llm_settings:
+    temperature: 0.12
+    max_tokens: 12000
+    top_p: 0.75
+    top_k: 25
+    frequency_penalty: 0.05
+    presence_penalty: 0.05
+    stop_sequences:
+      - "---END POLICY---"
+      - "---END CONFIG---"
+      - "---END STORAGE---"
+  chain_of_thought:
+    enabled: true
+    format: "xml"
+    visible_to_user: false
+  planning:
+    enabled: true
+    max_steps: 12
+    revision_allowed: true
+  storage_analysis:
+    enabled: true
+    cost_optimization: true
+    performance_tuning: true
+
+# -----------------------------------------------------------------------------
+# CLUSTER 11: TOOLS - Tool Capabilities and Access
+# -----------------------------------------------------------------------------
+tools:
+  browser:
+    type: "none"
+    enabled: false
+  terminal:
+    enabled: true
+    shell: "bash"
+    sudo: false
+    ssh_enabled: false
+    allowed_commands:
+      - "supabase"
+      - "git"
+      - "npm"
+      - "pnpm"
+      - "npx"
+    blocked_commands:
+      - "rm -rf"
+      - "curl"
+      - "wget"
+  filesystem:
+    read: "limited"
+    write: "limited"
+    execute: false
+    allowed_paths:
+      - "./src/lib/storage"
+      - "./src/components/upload"
+      - "./supabase/migrations"
+      - "./public"
+    blocked_paths:
+      - ".env"
+      - ".env.local"
+      - "secrets"
+  apis:
+    rest: true
+    graphql: false
+    websocket: false
+    grpc: false
+  databases:
+    postgresql: true
+    redis: false
+    mongodb: false
+  code_execution:
+    enabled: true
+    languages:
+      - "typescript"
+      - "sql"
+    sandbox: true
+    timeout_seconds: 60
+
+# -----------------------------------------------------------------------------
+# CLUSTER 12: SAFETY - Guardrails and Controls
+# -----------------------------------------------------------------------------
+safety:
+  guardrails:
+    financial_limit_enforcement: true
+    pii_protection: true
+    legal_compliance: true
+    rate_limiting: true
+    content_moderation: true
+    file_validation: true
+    size_limits: true
+  emergency_controls:
+    abort_command: "ABORT STORAGE"
+    rollback_command: "ROLLBACK STORAGE"
+    pause_command: "PAUSE STORAGE"
+    kill_switch_enabled: true
+  monitoring:
+    alert_threshold: "medium"
+    audit_level: "everything"
+    retention_days: 365
+  circuit_breaker:
+    enabled: true
+    failure_threshold: 5
+    reset_timeout_seconds: 180
+  input_validation:
+    max_input_length: 20000
+    sanitize_html: true
+    block_injections: true
+    validate_file_types: true
+    max_file_size_mb: 50
+  output_validation:
+    max_output_length: 50000
+    pii_redaction: true
+    hallucination_check: true
+  storage_safety:
+    require_auth_for_private: true
+    validate_content_type: true
+    scan_uploads: true
+    block_executable_files: true
+
+# -----------------------------------------------------------------------------
+# CLUSTER 13: POLICIES - Policy Definitions and Enforcement
+# -----------------------------------------------------------------------------
+policies:
+  default_policy: "storage_security"
+  policies:
+    - name: "storage_security"
+      description: "Storage security policy"
+      priority: 1
+      enabled: true
+      rules:
+        - condition: "bucket.public && bucket.has_sensitive_data"
+          action: "deny"
+          message: "Public buckets cannot contain sensitive data"
+        - condition: "file.size > max_size"
+          action: "deny"
+          message: "File exceeds maximum allowed size"
+        - condition: "file.type.executable"
+          action: "deny"
+          message: "Executable files not allowed"
+        - condition: "policy.allows_anonymous_upload"
+          action: "warn"
+          message: "Anonymous uploads should be reviewed"
+    - name: "bucket_configuration"
+      description: "Bucket configuration policy"
+      priority: 2
+      enabled: true
+      rules:
+        - condition: "bucket.public && !bucket.has_policy"
+          action: "warn"
+          message: "Public buckets should have explicit policies"
+        - condition: "bucket.cors.allows_all_origins"
+          action: "warn"
+          message: "CORS should not allow all origins"
+    - name: "upload_validation"
+      description: "Upload validation policy"
+      priority: 3
+      enabled: true
+      rules:
+        - condition: "upload.missing_content_type"
+          action: "deny"
+          message: "Uploads must include content type"
+        - condition: "upload.content_type_mismatch"
+          action: "deny"
+          message: "Content type must match file extension"
+  enforcement_mode: "enforce"
+  violation_handling:
+    log: true
+    notify:
+      - "#supabase-storage-alerts"
+    block: true
+    escalate_after: 2
+
+# -----------------------------------------------------------------------------
+# CLUSTER 14: TRIGGERS - Event Triggers and Schedules
+# -----------------------------------------------------------------------------
+triggers:
+  scheduled:
+    - name: "daily_storage_audit"
+      schedule: "0 4 * * *"
+      action: "run_storage_audit"
+      enabled: true
+      timezone: "UTC"
+      timeout_seconds: 1800
+    - name: "weekly_cleanup"
+      schedule: "0 3 * * 0"
+      action: "cleanup_orphaned_files"
+      enabled: true
+      timezone: "UTC"
+  webhooks:
+    - name: "storage_event_hook"
+      path: "/webhooks/storage/event"
+      method: "POST"
+      action: "handle_storage_event"
+      authentication: "hmac"
+      rate_limit: 100
+  events:
+    - name: "large_upload_detected"
+      source: "supabase_storage"
+      event_type: "storage.object_created"
+      action: "log_large_upload"
+      threshold_mb: 10
+    - name: "bucket_created"
+      source: "supabase_storage"
+      event_type: "storage.bucket_created"
+      action: "validate_bucket_config"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 15: INTEGRATIONS - Third-Party Services
+# -----------------------------------------------------------------------------
+integrations:
+  api_keys:
+    supabase:
+      env_var: "SUPABASE_ACCESS_TOKEN"
+      header_name: "Authorization"
+      prefix: "Bearer"
+    supabase_storage:
+      env_var: "SUPABASE_ANON_KEY"
+      type: "anon_key"
+  notifications:
+    slack:
+      webhook_url_env: "SLACK_WEBHOOK_URL"
+      default_channel: "#supabase-storage"
+  cdn_providers:
+    - name: "supabase_cdn"
+      enabled: true
+      cache_control: "max-age=31536000"
+    - name: "cloudflare"
+      enabled: false
+      cache_control: "max-age=86400"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 16: OBSERVABILITY - Logging, Metrics, Tracing
+# -----------------------------------------------------------------------------
+observability:
+  logging:
+    level: "info"
+    format: "json"
+    destination: "cloud"
+    redact_pii: true
+  metrics:
+    enabled: true
+    provider: "prometheus"
+    push_interval_seconds: 30
+    custom_metrics:
+      - name: "supabase_storage_uploads_total"
+        type: "counter"
+        description: "Total uploads"
+        labels: ["bucket", "content_type", "status"]
+      - name: "supabase_storage_downloads_total"
+        type: "counter"
+        description: "Total downloads"
+        labels: ["bucket", "content_type"]
+      - name: "supabase_storage_upload_size_bytes"
+        type: "histogram"
+        description: "Upload file sizes"
+        labels: ["bucket", "content_type"]
+      - name: "supabase_storage_bucket_size_bytes"
+        type: "gauge"
+        description: "Total bucket size"
+        labels: ["bucket"]
+      - name: "supabase_storage_cdn_hit_rate"
+        type: "gauge"
+        description: "CDN cache hit rate"
+        labels: ["bucket"]
+  tracing:
+    enabled: true
+    provider: "otel"
+    sample_rate: 0.1
+    propagation: "w3c"
+  alerting:
+    enabled: true
+    channels:
+      - "slack"
+    rules:
+      - name: "upload_failure_spike"
+        condition: "upload_failure_rate > 0.10"
+        severity: "high"
+        channels: ["slack"]
+      - name: "storage_quota_warning"
+        condition: "storage_usage > 0.80"
+        severity: "warning"
+        channels: ["slack"]
+      - name: "large_file_upload"
+        condition: "file_size > 100MB"
+        severity: "info"
+        channels: ["slack"]
+
+# -----------------------------------------------------------------------------
+# CLUSTER 17: CONTEXT - Prompt Context and Instructions
+# -----------------------------------------------------------------------------
+context:
+  system_prompt: |
+    You are the Supabase Storage Agent, a file storage and CDN specialist
+    responsible for all file management using Supabase Storage.
+
+    CORE PRINCIPLES:
+    1. Security First - Protect files with proper policies
+    2. Performance - Optimize upload/download speed
+    3. Cost Efficiency - Minimize storage costs
+    4. User Experience - Fast, reliable file access
+    5. Scalability - Design for growth
+
+    STORAGE CAPABILITIES:
+    - Bucket creation and configuration
+    - Storage policies (RLS-style for files)
+    - Image transformations (resize, crop, format)
+    - Signed URLs for temporary access
+    - Resumable uploads for large files
+    - CDN caching and cache control
+
+    INTEGRATION PATTERNS:
+    - Client uploads: @supabase/storage-js
+    - Server uploads: Service role key
+    - Auth integration: auth.uid() in policies
+    - Direct public access: Public buckets
+
+    BEST PRACTICES:
+    - Use private buckets by default
+    - Validate file types and sizes
+    - Set appropriate cache headers
+    - Use image transformations for thumbnails
+    - Implement resumable uploads for large files
+
+    OUTPUT FORMAT:
+    - Provide complete TypeScript code
+    - Include storage policies
+    - Add performance considerations
+    - Document configuration steps
+  instructions:
+    - "Create private buckets by default"
+    - "Implement storage policies for auth integration"
+    - "Use signed URLs for temporary file access"
+    - "Configure appropriate cache headers"
+    - "Validate file types before upload"
+    - "Use image transformations for optimization"
+  examples:
+    - user: "Set up an avatar upload system"
+      assistant: |
+        I'll create a secure avatar upload system:
+
+        1. Create avatars bucket:
+        ```sql
+        -- Create storage bucket
+        INSERT INTO storage.buckets (id, name, public)
+        VALUES ('avatars', 'avatars', true);
+
+        -- Storage policy: Users can upload own avatar
+        CREATE POLICY "Users can upload own avatar"
+        ON storage.objects FOR INSERT
+        WITH CHECK (
+          bucket_id = 'avatars' AND
+          auth.uid()::text = (storage.foldername(name))[1]
+        );
+
+        -- Storage policy: Users can update own avatar
+        CREATE POLICY "Users can update own avatar"
+        ON storage.objects FOR UPDATE
+        USING (
+          bucket_id = 'avatars' AND
+          auth.uid()::text = (storage.foldername(name))[1]
+        );
+
+        -- Storage policy: Anyone can view avatars
+        CREATE POLICY "Public avatar access"
+        ON storage.objects FOR SELECT
+        USING (bucket_id = 'avatars');
+        ```
+
+        2. Client upload implementation:
+        ```typescript
+        import { createClient } from '@supabase/supabase-js'
+
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+
+        async function uploadAvatar(file: File, userId: string) {
+          const fileExt = file.name.split('.').pop()
+          const filePath = `${userId}/avatar.${fileExt}`
+
+          const { data, error } = await supabase.storage
+            .from('avatars')
+            .upload(filePath, file, {
+              cacheControl: '3600',
+              upsert: true,
+              contentType: file.type,
+            })
+
+          if (error) throw error
+
+          // Get public URL with transformation
+          const { data: { publicUrl } } = supabase.storage
+            .from('avatars')
+            .getPublicUrl(filePath, {
+              transform: {
+                width: 200,
+                height: 200,
+                resize: 'cover',
+              },
+            })
+
+          return publicUrl
+        }
+        ```
+  context_window:
+    max_tokens: 96000
+    reserved_for_output: 12000
+    prioritization: "relevance"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 18: EVALS - Evaluation and Testing Configuration
+# -----------------------------------------------------------------------------
+evals:
+  enabled: true
+  suites:
+    - "bucket_configuration"
+    - "storage_policies"
+    - "upload_flows"
+    - "image_transformations"
+    - "cdn_optimization"
+  golden_tasks_path: "/evals/supabase/storage/golden_tasks.yaml"
+  adversarial_path: "/evals/supabase/storage/adversarial.yaml"
+  metrics:
+    accuracy_threshold: 0.92
+    latency_p99_ms: 12000
+    cost_per_task_max: 0.15
+    safety_score_min: 0.97
+  comparison:
+    baseline_agent: "supabase_storage_v0.9"
+    metrics_to_compare:
+      - "policy_correctness"
+      - "upload_flow_completeness"
+      - "performance_optimization"
+  regression:
+    enabled: true
+    max_regression_percent: 3
+  schedule: "0 3 * * *"
+  notifications:
+    on_failure:
+      - "#supabase-storage-evals"
+    on_regression:
+      - "#supabase-alerts"

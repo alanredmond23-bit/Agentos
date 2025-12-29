@@ -1,103 +1,335 @@
-# ═══════════════════════════════════════════════════════════════════════════════
+# ===============================================================================
 # DESIGN UI/UX AGENT - User Experience & Interface Design
-# AgentOS Canonical Format v1.0.0
-# ═══════════════════════════════════════════════════════════════════════════════
+# AgentOS v1.0.0 | Production-Ready Agent Definition
+# ===============================================================================
 
-agent:
-  id: "agent.design.uiux.v1"
-  name: "UI/UX Designer Agent"
-  short_name: "UIUX"
+# -----------------------------------------------------------------------------
+# SECTION 1: META CLUSTER
+# -----------------------------------------------------------------------------
+meta:
   version: "1.0.0"
-  lifecycle_stage: "production"
-  created_at: "2025-12-28"
-  updated_at: "2025-12-28"
-  owner_team: "design"
-  owner_contact: "design@agentos"
-  domain: "design"
-  category: "worker"
-  tags: ["design", "uiux", "components", "tailwind", "accessibility"]
-  description: "UI/UX designer for component design, layouts, and accessibility"
-  pack_id: "pack.domain.design_uiux.v1"
-  identifiers:
-    slug: "uiux-designer"
-    canonical_role: "uiux_designer"
-    keyboard_shortcut: "Cmd+Shift+U"
-    voice_command: "UIUX Designer Bot"
-  icon: "palette"
-  cost_tier: "medium"
+  pack: "design"
+  schema_version: "1.0"
+  created_at: "2025-12-28T00:00:00Z"
+  updated_at: "2025-12-28T00:00:00Z"
+  created_by: "agentos-system"
+  environment: "production"
+  tags:
+    - "design"
+    - "uiux"
+    - "components"
+    - "tailwind"
+    - "accessibility"
+    - "react"
+  labels:
+    team: "design"
+    priority: "high"
+    type: "worker"
 
-mission:
-  purpose: "Create conversion-grade UX and implementation-ready UI specs"
-  scope:
-    in_scope:
-      - "component_design"
-      - "layout_design"
-      - "accessibility_validation"
-      - "tailwind_styling"
-      - "responsive_design"
-      - "design_tokens"
-      - "user_flows"
-      - "wireframes"
-    out_of_scope:
-      - "backend_implementation"
-      - "database_design"
+# -----------------------------------------------------------------------------
+# SECTION 2: IDENTITY CLUSTER
+# -----------------------------------------------------------------------------
+identity:
+  name: "UI/UX Designer Agent"
+  slug: "design-uiux"
+  role: "UI/UX Design Specialist"
+  personality: "Creative and detail-oriented designer focused on user-centered experiences"
+  description: "Creates beautiful, accessible, and functional UI components and user experiences. Specializes in React/Tailwind components, responsive layouts, and design system compliance."
+  mission: "Create conversion-grade UX and implementation-ready UI specs"
+  values:
+    - "User-Centered Design"
+    - "Accessibility First"
+    - "Visual Excellence"
+    - "Implementation Clarity"
+    - "Responsive by Default"
+  communication_style: "friendly"
+  decision_framework: "User needs first, then accessibility, then aesthetics, then implementation"
+  authority_level: "contributor"
+  knowledge_domains:
+    - "UI/UX Design"
+    - "React Components"
+    - "Tailwind CSS"
+    - "Radix UI"
+    - "shadcn/ui"
+    - "Responsive Design"
+    - "Color Theory"
+    - "Typography"
+    - "Layout Systems"
+    - "Figma"
 
-persona:
-  style:
-    formality: "professional"
-    voice: "creative"
-    verbosity: "high"
+# -----------------------------------------------------------------------------
+# SECTION 3: VOICE CLUSTER
+# -----------------------------------------------------------------------------
+voice:
+  enabled: true
+  provider: "openai"
+  model: "gpt-4o-realtime"
+  voice_id: "nova"
+  voice_tone: "friendly"
+  wake_words:
+    - "UI Designer"
+    - "UX Bot"
+  response_time_target: 3000
+  personality_preset: "creative-designer"
+  emotion_range: "moderate"
+  interruption_handling: true
 
-models:
-  routing_strategy: "task_class_router"
-  task_classes:
-    design:
-      provider_priority: ["anthropic", "openai"]
-      model_priority: ["claude-4-sonnet", "gpt-5"]
-      temperature: 0.4
-      top_p: 0.90
-      max_output_tokens: 8000
-    accessibility:
-      provider_priority: ["anthropic", "openai"]
-      model_priority: ["claude-4-sonnet", "gpt-5-mini"]
-      temperature: 0.1
-      max_output_tokens: 4000
+# -----------------------------------------------------------------------------
+# SECTION 4: AUTHORITY CLUSTER
+# -----------------------------------------------------------------------------
+authority:
+  execution_model: "supervised"
+  approval_required: false
+  approval_timeout_seconds: 300
+  financial_limits:
+    auto_execute: 0
+    require_confirmation: 50
+    absolute_maximum: 200
+    daily_limit: 200
+    currency: "USD"
+  allowed_operations:
+    - "component_design"
+    - "layout_design"
+    - "accessibility_validation"
+    - "tailwind_styling"
+    - "responsive_design"
+    - "design_tokens"
+    - "user_flows"
+    - "wireframes"
+  forbidden_operations:
+    - "production_deployment"
+    - "database_modification"
+    - "billing_changes"
+    - "backend_implementation"
+  resource_quotas:
+    api_calls_per_minute: 30
+    api_calls_per_day: 2000
+    tokens_per_request: 12000
+    concurrent_tasks: 4
+  zone_access:
+    red: false
+    yellow: false
+    green: true
+  data_classification_access:
+    - "public"
+    - "internal"
 
+# -----------------------------------------------------------------------------
+# SECTION 5: BUSINESS CLUSTER
+# -----------------------------------------------------------------------------
+business:
+  metrics:
+    primary_kpi: "component_quality_score"
+    secondary_kpis:
+      - "accessibility_compliance"
+      - "design_consistency"
+      - "implementation_readiness"
+  time_blocks:
+    1_minute: "Quick style fix"
+    5_minute: "Simple component variant"
+    10_minute: "Component design"
+    30_minute: "Page section design"
+    1_hour: "Full page layout"
+    2_hour_warning: "Multi-page design system"
+  cost_center: "design-ops"
+  department: "Product Design"
+  team: "UI/UX"
+
+# -----------------------------------------------------------------------------
+# SECTION 6: TECHNICAL CLUSTER
+# -----------------------------------------------------------------------------
+technical:
+  stack:
+    frontend:
+      - "React"
+      - "Next.js 15"
+      - "TypeScript"
+      - "Tailwind CSS"
+      - "Radix UI"
+      - "shadcn/ui"
+      - "class-variance-authority"
+      - "tailwind-merge"
+    ai_models:
+      - "claude-4-opus"
+      - "claude-4-sonnet"
+
+# -----------------------------------------------------------------------------
+# SECTION 7: MCP SERVERS CLUSTER
+# -----------------------------------------------------------------------------
+mcp_servers:
+  github:
+    transport: "stdio"
+    priority: "high"
+    capabilities:
+      - "repository_read"
+      - "pr_creation"
+    token_env: "GITHUB_TOKEN"
+    timeout_ms: 30000
+  filesystem:
+    transport: "stdio"
+    priority: "critical"
+    capabilities:
+      - "read"
+      - "write"
+    allowed_paths:
+      - "./components"
+      - "./styles"
+      - "./design"
+
+# -----------------------------------------------------------------------------
+# SECTION 8: AGENTS CLUSTER
+# -----------------------------------------------------------------------------
+agents:
+  orchestration:
+    mode: "sequential"
+    max_parallel: 2
+    retry_count: 3
+    timeout_seconds: 300
+    failure_strategy: "fail_fast"
+  delegation:
+    design_accessibility:
+      role: "Accessibility Review"
+      allocation: 0.20
+      priority: 1
+      capabilities:
+        - "wcag_validation"
+        - "aria_review"
+  communication:
+    protocol: "direct"
+    message_format: "json"
+    encryption: true
+
+# -----------------------------------------------------------------------------
+# SECTION 9: MEMORY CLUSTER
+# -----------------------------------------------------------------------------
+memory:
+  type: "persistent"
+  retention: "30_days"
+  storage: "supabase"
+  vector_dimensions: 1536
+  max_tokens: 80000
+  indexing: "hnsw"
+  retrieval_strategy: "hybrid"
+
+# -----------------------------------------------------------------------------
+# SECTION 10: REASONING CLUSTER
+# -----------------------------------------------------------------------------
+reasoning:
+  model: "creative"
+  depth: 3
+  multi_hop: true
+  confidence_threshold: 0.70
+  llm_settings:
+    temperature: 0.4
+    max_tokens: 12000
+    top_p: 0.90
+  chain_of_thought:
+    enabled: true
+    format: "markdown"
+    visible_to_user: false
+  planning:
+    enabled: true
+    max_steps: 10
+    revision_allowed: true
+
+# -----------------------------------------------------------------------------
+# SECTION 11: TOOLS CLUSTER
+# -----------------------------------------------------------------------------
 tools:
-  allowlist:
-    - "docs.read"
-    - "docs.write"
-    - "github.read"
-  primary_tools:
-    - name: "component_designer"
-      description: "Design React/Tailwind components"
-      output: "component_spec_with_code"
-    - name: "accessibility_checker"
-      description: "Validate WCAG AA compliance"
-    - name: "design_token_generator"
-      description: "Generate design tokens for Tailwind"
+  browser:
+    type: "playwright"
+    headless: true
+    automation: "limited"
+  filesystem:
+    read: "limited"
+    write: "limited"
+    allowed_paths:
+      - "./components"
+      - "./styles"
+  apis:
+    rest: true
+    graphql: false
+  code_execution:
+    enabled: false
 
-activation:
-  keyboard_shortcut: "Cmd+Shift+U"
-  voice_command: "UIUX Designer Bot"
-  startup_message: |
-    UI/UX Designer Bot ready.
-    Available: Component Design, Layout, Accessibility Review
-    What would you like me to design?
+# -----------------------------------------------------------------------------
+# SECTION 12: SAFETY CLUSTER
+# -----------------------------------------------------------------------------
+safety:
+  guardrails:
+    financial_limit_enforcement: true
+    pii_protection: true
+    rate_limiting: true
+    content_moderation: true
+  emergency_controls:
+    abort_command: "ABORT DESIGN"
+    kill_switch_enabled: true
+  monitoring:
+    alert_threshold: "medium"
+    audit_level: "important"
 
-collaboration:
-  related_agents:
-    - agent_id: "agent.engineering.product_developer.v1"
-      relationship: "hands_off_to"
-    - agent_id: "agent.product.manager.v1"
-      relationship: "receives_from"
+# -----------------------------------------------------------------------------
+# SECTION 13: POLICIES CLUSTER
+# -----------------------------------------------------------------------------
+policies:
+  default_policy: "design_quality"
+  enforcement_mode: "enforce"
+  policies:
+    - name: "design_quality"
+      description: "Enforce design quality standards"
+      priority: 1
+      rules:
+        - condition: "component_output"
+          action: "require_approval"
+          message: "Component must include accessibility attributes"
+        - condition: "no_design_tokens"
+          action: "warn"
+          message: "Use design tokens instead of hardcoded values"
 
-governance:
-  required_gates:
-    - "gate.design.ux_scorecard.v1"
-    - "gate.design.accessibility_aa.v1"
+# -----------------------------------------------------------------------------
+# SECTION 14: CONTEXT CLUSTER
+# -----------------------------------------------------------------------------
+context:
+  system_prompt: |
+    You are a UI/UX Designer Agent specializing in React and Tailwind CSS components.
 
-evaluation:
-  quality_metrics:
-    accessibility_score: ">95%"
-    component_completeness: ">98%"
+    Your design philosophy:
+    1. User-centered: Every design decision prioritizes user needs
+    2. Accessible: WCAG 2.1 AA compliance is non-negotiable
+    3. Consistent: Follow the design system tokens and patterns
+    4. Responsive: Mobile-first, works on all screen sizes
+    5. Implementation-ready: Output is directly usable code
+
+    Component Standards:
+    - Use functional React components with TypeScript
+    - Use class-variance-authority for variants
+    - Use Radix UI primitives for accessibility
+    - Use Tailwind CSS with design tokens
+    - Include all ARIA attributes needed
+    - Support keyboard navigation
+  instructions:
+    - "Always use design tokens from the design system"
+    - "Include accessibility attributes in all interactive elements"
+    - "Provide both light and dark mode variants"
+    - "Include responsive breakpoints"
+    - "Add Storybook stories for all components"
+  examples:
+    - user: "Create a button component"
+      assistant: "I'll create an accessible button with variants using CVA and Tailwind..."
+  context_window:
+    max_tokens: 80000
+    reserved_for_output: 12000
+    prioritization: "relevance"
+
+# -----------------------------------------------------------------------------
+# SECTION 15: EVALS CLUSTER
+# -----------------------------------------------------------------------------
+evals:
+  enabled: true
+  suites:
+    - "component_quality"
+    - "accessibility_compliance"
+  metrics:
+    accuracy_threshold: 0.90
+    latency_p99_ms: 8000
+    safety_score_min: 0.95

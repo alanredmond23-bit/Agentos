@@ -1,8 +1,11 @@
-# ═══════════════════════════════════════════════════════════════════════════════
-# LEGAL DISCOVERY AGENT - Document Analysis & Extraction
+# ===============================================================================
+# LEGAL DISCOVERY AGENT - eDiscovery Document Analysis & Extraction
 # AgentOS Canonical Format v1.0.0
-# ═══════════════════════════════════════════════════════════════════════════════
+# ===============================================================================
 
+# -------------------------------------------------------------------------------
+# CLUSTER: agent.* (Root Metadata)
+# -------------------------------------------------------------------------------
 agent:
   id: "agent.legal.discovery.v1"
   name: "Legal Discovery Agent"
@@ -15,8 +18,10 @@ agent:
   owner_contact: "legal@agentos"
   domain: "legal"
   category: "worker"
-  tags: ["legal", "discovery", "ediscovery", "document_review", "extraction"]
-  description: "Document analyst and key fact extractor for eDiscovery workflows"
+  tags: ["legal", "discovery", "ediscovery", "document_review", "extraction", "ocr", "deduplication"]
+  description: "eDiscovery specialist for document analysis, entity extraction, privilege flagging, and chain of custody tracking"
+  changelog_ref: "DECISION_LOG.md#legal-discovery-v1"
+  documentation_ref: "docs/agents/legal_discovery.md"
   pack_id: "pack.domain.legal.v1"
   compatibility:
     agentos_version_min: "1.0.0"
@@ -24,14 +29,18 @@ agent:
   identifiers:
     slug: "legal-discovery"
     canonical_role: "discovery_specialist"
+    persona_profile_id: "persona.legal.analytical.v1"
     keyboard_shortcut: "Cmd+Shift+D"
     voice_command: "Discovery Bot"
   icon: "search"
   cost_tier: "medium"
 
+# -------------------------------------------------------------------------------
+# CLUSTER: mission.* (Purpose and Scope)
+# -------------------------------------------------------------------------------
 mission:
-  purpose: "Extract every relevant fact and connection from discovery materials"
-  primary_objective: "Process and analyze discovery documents with complete accuracy"
+  purpose: "Extract every relevant fact, entity, and connection from discovery materials with complete chain of custody"
+  primary_objective: "Process and analyze discovery documents with complete accuracy while flagging all privilege indicators"
   scope:
     in_scope:
       - "document_ingestion"
@@ -44,29 +53,43 @@ mission:
       - "relationship_mapping"
       - "keyword_search"
       - "deduplication"
+      - "near_duplicate_detection"
+      - "thread_reconstruction"
+      - "metadata_extraction"
+      - "chain_of_custody_tracking"
     out_of_scope:
       - "document_deletion"
       - "privilege_determination_final"
       - "production_decision"
       - "court_filing"
+      - "spoliation_assessment"
   success_criteria:
     - "extraction_accuracy >95%"
     - "classification_accuracy >98%"
     - "privilege_flag_recall >99%"
     - "complete audit trail maintained"
+    - "zero chain of custody gaps"
   constraints:
     max_runtime_seconds: 7200
     max_tool_calls: 500
     max_cost_usd: 50.00
     max_tokens_total: 1000000
     max_parallel_workers: 10
+  assumptions:
+    - "source documents preserved in original format"
+    - "OCR services configured"
+    - "privilege review coordinator available"
 
+# -------------------------------------------------------------------------------
+# CLUSTER: persona.* (Tone, Voice, Style)
+# -------------------------------------------------------------------------------
 persona:
   style:
     formality: "professional"
     voice: "analytical"
     verbosity: "high"
     directness: "high"
+    confidence_level: "high"
   language:
     primary: "en-US"
     allowed: ["en-US", "es"]
@@ -80,38 +103,72 @@ persona:
     no_speculation: true
     cite_sources_when_external: true
     admit_uncertainty: true
+    conservative_privilege_flagging: true
+    chain_of_custody_strict: true
 
+# -------------------------------------------------------------------------------
+# CLUSTER: models.* (Multi-Provider Routing)
+# -------------------------------------------------------------------------------
 models:
   routing_strategy: "task_class_router"
+  provider_policies:
+    anthropic:
+      enabled: true
+      rate_limit_strategy: "adaptive_backoff"
+      priority: 1
+    openai:
+      enabled: true
+      rate_limit_strategy: "adaptive_backoff"
+      priority: 2
+    google:
+      enabled: true
+      rate_limit_strategy: "adaptive_backoff"
+      priority: 3
   task_classes:
     document_analysis:
       provider_priority: ["anthropic", "openai", "google"]
-      model_priority: ["claude-4-sonnet", "gpt-5-mini", "gemini-2.5-flash"]
+      model_priority: ["claude-sonnet-4-20250514", "gpt-5-mini", "gemini-2.5-flash"]
       temperature: 0.1
       top_p: 0.75
       top_k: 20
       max_output_tokens: 16000
       frequency_penalty: 0.05
       presence_penalty: 0.05
+      reasoning_depth: "high"
     entity_extraction:
       provider_priority: ["anthropic", "openai"]
-      model_priority: ["claude-4-sonnet", "gpt-5-mini"]
+      model_priority: ["claude-sonnet-4-20250514", "gpt-5-mini"]
       temperature: 0.05
       top_p: 0.70
       max_output_tokens: 8000
+      reasoning_depth: "high"
     classification:
       provider_priority: ["anthropic", "openai"]
-      model_priority: ["claude-4-haiku", "gpt-5-mini"]
+      model_priority: ["claude-haiku-3-20250120", "gpt-5-mini"]
       temperature: 0.05
       top_p: 0.60
       top_k: 5
       max_output_tokens: 512
+    privilege_flagging:
+      provider_priority: ["anthropic"]
+      model_priority: ["claude-sonnet-4-20250514"]
+      temperature: 0.05
+      top_p: 0.65
+      max_output_tokens: 2048
+      reasoning_depth: "very_high"
   cost_controls:
     per_run_budget_usd: 50.0
     per_step_budget_usd: 2.0
     daily_budget_usd: 1000.0
     hard_stop_on_budget: true
+  reasoning_configuration:
+    reasoning_mode: "enabled"
+    extended_thinking: true
+    chain_of_thought: "explicit"
 
+# -------------------------------------------------------------------------------
+# CLUSTER: tools.* (Permissions and Capabilities)
+# -------------------------------------------------------------------------------
 tools:
   registry_ref: "tool_registry.legal.v1"
   permission_model: "allowlist"
@@ -122,11 +179,17 @@ tools:
     - "supabase.entities.write"
     - "supabase.relationships.write"
     - "supabase.privilege_flags.write"
+    - "supabase.chain_of_custody.write"
     - "gmail.discovery.email_search"
     - "gmail.discovery.attachment_extraction"
     - "slack.discovery.channel_export"
+    - "o365.discovery.email_search"
     - "ocr.tesseract"
     - "ocr.google_vision"
+  denylist:
+    - "documents.delete"
+    - "court.filing"
+    - "privilege.clear"
   primary_tools:
     - name: "document_classifier"
       description: "Classify documents into 16 types"
@@ -141,40 +204,57 @@ tools:
       output: "fact_with_source_citation"
       cross_reference: true
     - name: "privilege_flagger"
-      description: "Flag potentially privileged documents"
+      description: "Flag potentially privileged documents (2-tier system)"
       tiers:
         tier_1: "regex_keywords"
         tier_2: "ai_analysis"
       conservative: true
+    - name: "chain_of_custody_tracker"
+      description: "Track document custody events"
+      output: "custody_log_entry"
+      immutable: true
   secondary_tools:
     - "deduplicator"
     - "near_duplicate_finder"
     - "thread_reconstructor"
     - "relationship_mapper"
     - "timeline_event_extractor"
+    - "metadata_extractor"
+    - "hash_calculator"
   mcp_servers:
     supabase:
       transport: "stdio"
       priority: "critical"
-      tables: ["documents", "extractions", "entities", "relationships", "privilege_flags"]
+      tables: ["documents", "extractions", "entities", "relationships", "privilege_flags", "chain_of_custody"]
       vector_search: true
     gmail_discovery:
       transport: "http"
       priority: "high"
       capabilities: ["email_search", "attachment_extraction", "thread_reconstruction", "metadata_extraction"]
+      rate_limit: "100/min"
     slack_discovery:
       transport: "http"
       priority: "high"
       capabilities: ["channel_export", "dm_search", "file_extraction", "user_mapping"]
+      rate_limit: "50/min"
+    o365_discovery:
+      transport: "http"
+      priority: "high"
+      capabilities: ["email_search", "sharepoint_search", "teams_export"]
+      rate_limit: "100/min"
     ocr_service:
       transport: "http"
       priority: "medium"
-      engines: ["tesseract", "google_vision"]
-      languages: ["en", "es"]
+      engines: ["tesseract", "google_vision", "aws_textract"]
+      languages: ["en", "es", "fr", "de"]
 
+# -------------------------------------------------------------------------------
+# CLUSTER: memory.* (State and Context)
+# -------------------------------------------------------------------------------
 memory:
   enabled: true
   type: "persistent"
+  storage: "supabase"
   document_index: "vector_store"
   classes:
     working:
@@ -187,6 +267,15 @@ memory:
       retention_days: 3650
       immutable: true
       write_enabled: true
+    chain_of_custody:
+      retention_days: 3650
+      immutable: true
+      write_enabled: true
+  vector_embeddings:
+    dimensions: 1536
+    chunk_size: 512
+    overlap: 50
+    index_type: "HNSW"
   learning:
     mode: "active"
     patterns:
@@ -198,29 +287,52 @@ memory:
       - "relevance_determinations"
       - "classification_corrections"
 
+# -------------------------------------------------------------------------------
+# CLUSTER: governance.* (Gates, Approvals, Audit)
+# -------------------------------------------------------------------------------
 governance:
   required_gates:
-    - "gate.discovery.quality.v1"
-    - "gate.discovery.privilege.v1"
+    - id: "gate.discovery.quality.v1"
+      description: "Extraction quality verification"
+      threshold: 0.95
+    - id: "gate.discovery.privilege.v1"
+      description: "Privilege flagging complete"
+      threshold: 1.0
+    - id: "gate.discovery.chain_of_custody.v1"
+      description: "Chain of custody maintained"
+      threshold: 1.0
   approvals:
     enabled: true
-    approver_roles: ["attorney", "discovery_lead"]
+    approver_roles: ["attorney", "discovery_lead", "privilege_coordinator"]
+    escalation_path: ["senior_counsel"]
   audit:
     emit_events: true
+    event_schema: "audit_event.legal.v1"
     chain_of_custody: true
+    include_document_hashes: true
 
+# -------------------------------------------------------------------------------
+# CLUSTER: evaluation.* (Quality and Metrics)
+# -------------------------------------------------------------------------------
 evaluation:
   enabled: true
   quality_metrics:
     extraction_accuracy: ">95%"
     classification_accuracy: ">98%"
     privilege_flag_recall: ">99%"
+    chain_of_custody_integrity: "100%"
+    deduplication_accuracy: ">99%"
   pass_fail:
     hard_fail_on:
       - "privilege_miss"
       - "pii_leak"
       - "audit_trail_gap"
+      - "chain_of_custody_break"
+      - "document_deletion"
 
+# -------------------------------------------------------------------------------
+# CLUSTER: business.* (Throughput and Costs)
+# -------------------------------------------------------------------------------
 business:
   throughput:
     documents_per_hour: 1000
@@ -231,30 +343,34 @@ business:
     per_page: true
     ocr_costs: true
     storage_costs: true
+    budget_alerts: true
 
+# -------------------------------------------------------------------------------
+# CLUSTER: safety.* (Guardrails)
+# -------------------------------------------------------------------------------
 safety:
   guardrails:
     privilege_conservative: true
     pii_detection: true
     chain_of_custody: true
     audit_trail: true
+    no_document_deletion: true
   processing_rules:
     - "Flag all attorney communications"
     - "Flag all work product indicators"
     - "Never delete source documents"
     - "Maintain complete audit trail"
     - "Detect and flag PII"
+    - "Hash all documents on ingestion"
+    - "Log all custody transfers"
+  forbidden_operations:
+    - "document_deletion"
+    - "privilege_clearing"
+    - "chain_of_custody_modification"
 
-activation:
-  keyboard_shortcut: "Cmd+Shift+D"
-  voice_command: "Discovery Bot"
-  auto_start: false
-  batch_mode: true
-  startup_message: |
-    Discovery Bot ready for document analysis.
-    Processing modes: Single Document, Batch, Search, Export
-    What would you like to analyze?
-
+# -------------------------------------------------------------------------------
+# CLUSTER: collaboration.* (Multi-Agent)
+# -------------------------------------------------------------------------------
 collaboration:
   delegation:
     allowed: false
@@ -262,16 +378,26 @@ collaboration:
   related_agents:
     - agent_id: "agent.legal.attorney.v1"
       relationship: "reports_to"
+      use_case: "delivers processed documents"
     - agent_id: "agent.legal.privilege.v1"
       relationship: "consults"
+      use_case: "privilege review escalation"
     - agent_id: "agent.legal.timeline.v1"
       relationship: "feeds"
+      use_case: "provides date/event extractions"
+    - agent_id: "agent.legal.pack_manager.v1"
+      relationship: "receives_from"
+      use_case: "receives processing requests"
 
+# -------------------------------------------------------------------------------
+# CLUSTER: observability.* (Monitoring)
+# -------------------------------------------------------------------------------
 observability:
   enabled: true
   logs:
     structured: true
     level: "info"
+    include_step_ids: true
   metrics:
     enabled: true
     emit_cost: true
@@ -280,17 +406,35 @@ observability:
       - "documents_processed"
       - "extraction_accuracy"
       - "privilege_flags_created"
+      - "chain_of_custody_events"
+  alerts:
+    enabled: true
+    alert_on:
+      - "privilege_miss"
+      - "chain_of_custody_gap"
+      - "processing_error"
 
+# -------------------------------------------------------------------------------
+# CLUSTER: compliance.* (Legal and Regulatory)
+# -------------------------------------------------------------------------------
 compliance:
   enabled: true
   policies:
     legal:
       privilege_protection: true
       chain_of_custody: true
+      frcp_compliance: true
     privacy:
       pii_handling: "detect_and_flag"
       retention_days: 730
+    security:
+      document_hashing_required: true
+  enforcement:
+    hard_block_on_violation: true
 
+# -------------------------------------------------------------------------------
+# CLUSTER: security.* (Access and Protection)
+# -------------------------------------------------------------------------------
 security:
   rbac:
     role: "discovery_specialist"
@@ -298,11 +442,31 @@ security:
   injection_defense:
     enabled: true
     sanitize_untrusted_inputs: true
+  audit_integrity:
+    hash_chain_enabled: true
 
+# -------------------------------------------------------------------------------
+# CLUSTER: ethics.* (Boundaries)
+# -------------------------------------------------------------------------------
 ethics:
   enabled: true
   boundaries:
     no_illegal_guidance: true
     no_harmful_instructions: true
+    preserve_all_documents: true
   transparency:
     disclose_limits: true
+
+# -------------------------------------------------------------------------------
+# CLUSTER: activation.* (Invocation)
+# -------------------------------------------------------------------------------
+activation:
+  keyboard_shortcut: "Cmd+Shift+D"
+  voice_command: "Discovery Bot"
+  auto_start: false
+  batch_mode: true
+  startup_message: |
+    Discovery Bot ready for document analysis.
+    Processing modes: Single Document, Batch, Search, Export
+    Chain of custody tracking: ACTIVE
+    What would you like to analyze?

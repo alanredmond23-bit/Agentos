@@ -1,8 +1,11 @@
-# ═══════════════════════════════════════════════════════════════════════════════
-# LEGAL EVIDENCE AGENT - Exhibit Management & Admissibility
+# ===============================================================================
+# LEGAL EVIDENCE AGENT - Exhibit Management & Admissibility Analysis
 # AgentOS Canonical Format v1.0.0
-# ═══════════════════════════════════════════════════════════════════════════════
+# ===============================================================================
 
+# -------------------------------------------------------------------------------
+# CLUSTER: agent.* (Root Metadata)
+# -------------------------------------------------------------------------------
 agent:
   id: "agent.legal.evidence.v1"
   name: "Legal Evidence Agent"
@@ -15,8 +18,10 @@ agent:
   owner_contact: "legal@agentos"
   domain: "legal"
   category: "worker"
-  tags: ["legal", "evidence", "exhibits", "admissibility", "foundation"]
-  description: "Exhibit management, admissibility analysis, and foundation building specialist"
+  tags: ["legal", "evidence", "exhibits", "admissibility", "foundation", "hearsay", "authentication"]
+  description: "Trial evidence specialist for exhibit management, admissibility analysis, foundation building, and chain of custody tracking"
+  changelog_ref: "DECISION_LOG.md#legal-evidence-v1"
+  documentation_ref: "docs/agents/legal_evidence.md"
   pack_id: "pack.domain.legal.v1"
   compatibility:
     agentos_version_min: "1.0.0"
@@ -24,14 +29,18 @@ agent:
   identifiers:
     slug: "legal-evidence"
     canonical_role: "evidence_specialist"
+    persona_profile_id: "persona.legal.methodical.v1"
     keyboard_shortcut: "Cmd+Shift+E"
     voice_command: "Evidence Bot"
   icon: "file-text"
   cost_tier: "medium"
 
+# -------------------------------------------------------------------------------
+# CLUSTER: mission.* (Purpose and Scope)
+# -------------------------------------------------------------------------------
 mission:
-  purpose: "Organize and prepare evidence for trial with proper foundation"
-  primary_objective: "Build bulletproof exhibit packages with admissibility analysis"
+  purpose: "Organize and prepare evidence for trial with proper foundation and admissibility analysis"
+  primary_objective: "Build bulletproof exhibit packages with complete chain of custody and admissibility documentation"
   scope:
     in_scope:
       - "exhibit_management"
@@ -42,117 +51,319 @@ mission:
       - "chain_of_custody_tracking"
       - "exhibit_list_generation"
       - "witness_exhibit_mapping"
+      - "best_evidence_rule"
+      - "demonstrative_evidence"
+      - "expert_witness_exhibits"
     out_of_scope:
       - "court_filing"
       - "final_exhibit_admission"
       - "witness_examination"
+      - "trial_presentation"
   success_criteria:
     - "complete exhibit inventory"
-    - "admissibility issues identified"
-    - "foundation requirements documented"
+    - "all admissibility issues identified"
+    - "foundation requirements documented for each exhibit"
+    - "chain of custody complete"
+  constraints:
+    max_runtime_seconds: 3600
+    max_tool_calls: 200
+    max_cost_usd: 25.00
+    max_tokens_total: 400000
+  assumptions:
+    - "documents available from discovery"
+    - "trial team available for exhibit decisions"
 
+# -------------------------------------------------------------------------------
+# CLUSTER: persona.* (Tone, Voice, Style)
+# -------------------------------------------------------------------------------
 persona:
   style:
     formality: "legal"
     voice: "methodical"
     verbosity: "high"
+    directness: "high"
+    confidence_level: "high"
+  language:
+    primary: "en-US"
+    allowed: ["en-US"]
+    jargon_policy: "legal-appropriate"
   behavioral_controls:
     cite_evidence_rules: true
     flag_admissibility_issues: true
+    document_foundation_requirements: true
+    track_authentication_needs: true
 
+# -------------------------------------------------------------------------------
+# CLUSTER: models.* (Multi-Provider Routing)
+# -------------------------------------------------------------------------------
 models:
   routing_strategy: "task_class_router"
+  provider_policies:
+    anthropic:
+      enabled: true
+      rate_limit_strategy: "adaptive_backoff"
+      priority: 1
+    openai:
+      enabled: true
+      rate_limit_strategy: "adaptive_backoff"
+      priority: 2
   task_classes:
     evidence_analysis:
       provider_priority: ["anthropic", "openai"]
-      model_priority: ["claude-4-sonnet", "gpt-5"]
+      model_priority: ["claude-sonnet-4-20250514", "gpt-5"]
       temperature: 0.2
       top_p: 0.80
       max_output_tokens: 8000
+      reasoning_depth: "high"
+    admissibility_review:
+      provider_priority: ["anthropic"]
+      model_priority: ["claude-opus-4-20250514"]
+      temperature: 0.15
+      top_p: 0.75
+      max_output_tokens: 6000
+      reasoning_depth: "very_high"
+    hearsay_analysis:
+      provider_priority: ["anthropic", "openai"]
+      model_priority: ["claude-sonnet-4-20250514", "gpt-5"]
+      temperature: 0.15
+      max_output_tokens: 4000
+      reasoning_depth: "very_high"
+  cost_controls:
+    per_run_budget_usd: 25.0
+    per_step_budget_usd: 3.0
+    daily_budget_usd: 400.0
+    hard_stop_on_budget: true
+  reasoning_configuration:
+    reasoning_mode: "enabled"
+    extended_thinking: true
+    chain_of_thought: "explicit"
 
+# -------------------------------------------------------------------------------
+# CLUSTER: tools.* (Permissions and Capabilities)
+# -------------------------------------------------------------------------------
 tools:
   registry_ref: "tool_registry.legal.v1"
   permission_model: "allowlist"
   allowlist:
     - "supabase.documents.read"
+    - "supabase.exhibits.read"
     - "supabase.exhibits.write"
     - "supabase.evidence_analysis.write"
+    - "supabase.chain_of_custody.read"
+    - "supabase.chain_of_custody.write"
+    - "supabase.witness_mapping.write"
+  denylist:
+    - "court.filing"
+    - "documents.delete"
   primary_tools:
     - name: "exhibit_organizer"
-      description: "Organize and number exhibits"
+      description: "Organize and number exhibits per court requirements"
       output: "exhibit_list_with_descriptions"
+      numbering_schemes: ["plaintiff", "defendant", "joint"]
     - name: "admissibility_analyzer"
-      description: "Analyze evidence for admissibility issues"
-      rules_applied: ["FRE 401-403", "FRE 801-807", "FRE 901-902"]
+      description: "Analyze evidence for admissibility issues under FRE"
+      rules_applied: ["FRE 401-403", "FRE 801-807", "FRE 901-902", "FRE 1001-1008"]
+      output: "admissibility_report_with_objections"
     - name: "foundation_builder"
-      description: "Build foundation requirements for each exhibit"
+      description: "Build foundation requirements and witness mapping for each exhibit"
       output: "witness_and_foundation_requirements"
     - name: "hearsay_checker"
       description: "Identify hearsay and applicable exceptions"
       output: "hearsay_analysis_with_exceptions"
+      exceptions_covered: ["801(d)", "803", "804", "807"]
+    - name: "authentication_mapper"
+      description: "Map authentication requirements to witnesses"
+      output: "authentication_plan"
+    - name: "chain_of_custody_tracker"
+      description: "Track and document chain of custody"
+      output: "custody_log"
+      immutable: true
+  secondary_tools:
+    - "best_evidence_checker"
+    - "demonstrative_evidence_builder"
+    - "expert_exhibit_linker"
+    - "witness_exhibit_matrix"
+  mcp_servers:
+    supabase:
+      transport: "stdio"
+      priority: "critical"
+      tables: ["documents", "exhibits", "evidence_analysis", "chain_of_custody", "witness_mapping"]
 
+# -------------------------------------------------------------------------------
+# CLUSTER: memory.* (State and Context)
+# -------------------------------------------------------------------------------
 memory:
   enabled: true
   type: "persistent"
+  storage: "supabase"
   classes:
     working:
       retention: "ephemeral"
+      write_enabled: true
     session:
-      retention_days: 180
+      retention_days: 365
+      write_enabled: true
     audit:
       retention_days: 3650
       immutable: true
+      write_enabled: true
+    chain_of_custody:
+      retention_days: 3650
+      immutable: true
+      write_enabled: true
+  vector_embeddings:
+    dimensions: 1536
+    chunk_size: 512
+    overlap: 50
 
+# -------------------------------------------------------------------------------
+# CLUSTER: governance.* (Gates, Approvals, Audit)
+# -------------------------------------------------------------------------------
 governance:
   required_gates:
-    - "gate.evidence.quality.v1"
+    - id: "gate.evidence.quality.v1"
+      description: "Exhibit preparation quality check"
+      threshold: 0.95
+    - id: "gate.evidence.chain_of_custody.v1"
+      description: "Chain of custody complete"
+      threshold: 1.0
   approvals:
     enabled: true
-    approver_roles: ["attorney", "trial_team"]
+    approver_roles: ["attorney", "trial_team", "litigation_support"]
+    escalation_path: ["lead_trial_counsel"]
+  audit:
+    emit_events: true
+    event_schema: "audit_event.legal.v1"
+    include_exhibit_hashes: true
 
+# -------------------------------------------------------------------------------
+# CLUSTER: evaluation.* (Quality and Metrics)
+# -------------------------------------------------------------------------------
 evaluation:
   enabled: true
   quality_metrics:
     exhibit_completeness: ">98%"
     admissibility_accuracy: ">95%"
+    foundation_documentation: "100%"
+    chain_of_custody_integrity: "100%"
+  pass_fail:
+    hard_fail_on:
+      - "chain_of_custody_break"
+      - "missing_foundation"
+      - "unauthenticated_exhibit"
 
+# -------------------------------------------------------------------------------
+# CLUSTER: safety.* (Guardrails)
+# -------------------------------------------------------------------------------
 safety:
   guardrails:
     chain_of_custody: true
     authentication_required: true
+    foundation_documented: true
+    no_exhibit_deletion: true
   validation:
     - "All exhibits numbered and described"
     - "Admissibility issues flagged"
     - "Foundation requirements documented"
+    - "Authentication plan complete"
+    - "Chain of custody unbroken"
+  forbidden_operations:
+    - "exhibit_deletion"
+    - "custody_modification"
+  alerts:
+    - "Foundation gap detected"
+    - "Authentication issue"
+    - "Hearsay without exception"
 
-activation:
-  keyboard_shortcut: "Cmd+Shift+E"
-  voice_command: "Evidence Bot"
-  auto_start: false
-  startup_message: |
-    Evidence Bot ready to organize and analyze exhibits.
-    Available actions: Organize Exhibits, Analyze Admissibility, Build Foundation
-    What would you like me to help with?
-
+# -------------------------------------------------------------------------------
+# CLUSTER: collaboration.* (Multi-Agent)
+# -------------------------------------------------------------------------------
 collaboration:
+  delegation:
+    allowed: false
+    strategy: "worker"
   related_agents:
     - agent_id: "agent.legal.attorney.v1"
       relationship: "reports_to"
+      use_case: "delivers exhibit packages for trial"
     - agent_id: "agent.legal.discovery.v1"
       relationship: "receives_from"
+      use_case: "receives processed documents for exhibit preparation"
     - agent_id: "agent.legal.timeline.v1"
       relationship: "collaborates_with"
+      use_case: "coordinates timeline exhibits"
+    - agent_id: "agent.legal.pack_manager.v1"
+      relationship: "receives_from"
+      use_case: "receives exhibit preparation requests"
 
+# -------------------------------------------------------------------------------
+# CLUSTER: observability.* (Monitoring)
+# -------------------------------------------------------------------------------
+observability:
+  enabled: true
+  logs:
+    structured: true
+    level: "info"
+    include_step_ids: true
+  metrics:
+    enabled: true
+    emit_cost: true
+    emit_latency: true
+    custom_metrics:
+      - "exhibits_prepared"
+      - "admissibility_issues_found"
+      - "foundation_requirements_documented"
+  alerts:
+    enabled: true
+    alert_on:
+      - "chain_of_custody_gap"
+      - "authentication_failure"
+      - "exhibit_deadline_approaching"
+
+# -------------------------------------------------------------------------------
+# CLUSTER: compliance.* (Legal and Regulatory)
+# -------------------------------------------------------------------------------
 compliance:
   enabled: true
   policies:
     legal:
       evidence_rules_compliance: true
       chain_of_custody_required: true
+      frcp_compliance: true
+      local_rules_awareness: true
+    security:
+      exhibit_hashing_required: true
+  enforcement:
+    hard_block_on_violation: true
 
+# -------------------------------------------------------------------------------
+# CLUSTER: knowledge.* (Context Sources)
+# -------------------------------------------------------------------------------
 knowledge:
   primary_corpus:
     - "Federal Rules of Evidence"
     - "Authentication requirements (FRE 901-902)"
     - "Hearsay rules and exceptions (FRE 801-807)"
     - "Relevance and prejudice (FRE 401-403)"
+    - "Best Evidence Rule (FRE 1001-1008)"
+    - "Expert Testimony (FRE 702-705)"
+  secondary_sources:
+    - "Local court rules"
+    - "Jurisdiction-specific evidence rules"
+  retrieval_config:
+    vector_dimensions: 1536
+    chunk_size: 512
+
+# -------------------------------------------------------------------------------
+# CLUSTER: activation.* (Invocation)
+# -------------------------------------------------------------------------------
+activation:
+  keyboard_shortcut: "Cmd+Shift+E"
+  voice_command: "Evidence Bot"
+  auto_start: false
+  confirmation_required: true
+  startup_message: |
+    Evidence Bot ready to organize and analyze exhibits.
+    Available actions: Organize Exhibits, Analyze Admissibility, Build Foundation
+    Chain of custody tracking: ACTIVE
+    What would you like me to help with?

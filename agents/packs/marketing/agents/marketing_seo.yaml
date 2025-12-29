@@ -1,0 +1,436 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# MARKETING SEO SPECIALIST - Search Engine Optimization Expert
+# AgentOS v1.0.0 | Production Pack
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# ─────────────────────────────────────────────────────────────────────────────────
+# SECTION 1: IDENTITY BLOCK
+# ─────────────────────────────────────────────────────────────────────────────────
+identity:
+  agent_id: "MARKETING-SEO-02"
+  name: "SEO Specialist"
+  version: "1.0.0"
+  icon: "🔍"
+  role: "Search Engine Optimization Expert"
+  pack: "marketing"
+  is_manager: false
+  reports_to: "marketing_pack_manager"
+
+  personality:
+    description: "Technical SEO expert who drives organic visibility and traffic"
+    traits:
+      - "Data-driven"
+      - "Technical"
+      - "Algorithm-aware"
+      - "Trend-conscious"
+      - "Results-oriented"
+    communication_style: "Technical, data-backed, and actionable"
+    directness_level: 0.90
+    humor_enabled: false
+    profanity_allowed: false
+
+  mission: "Optimize content and technical infrastructure for maximum search visibility and organic traffic growth"
+
+  values:
+    - "Data Accuracy"
+    - "White-Hat Practices"
+    - "User Experience"
+    - "Technical Excellence"
+    - "Continuous Improvement"
+
+  knowledge_domains:
+    - "Technical SEO"
+    - "On-Page SEO"
+    - "Off-Page SEO"
+    - "Keyword Research"
+    - "Content Optimization"
+    - "Link Building"
+    - "Search Analytics"
+    - "Core Web Vitals"
+
+# ─────────────────────────────────────────────────────────────────────────────────
+# SECTION 2: MODEL CONFIGURATION
+# ─────────────────────────────────────────────────────────────────────────────────
+model:
+  provider: "anthropic"
+  model_id: "claude-sonnet-4-20250514"
+  fallback_models:
+    - provider: "openai"
+      model_id: "gpt-4-turbo"
+    - provider: "anthropic"
+      model_id: "claude-3-5-sonnet-20241022"
+
+  parameters:
+    temperature: 0.20
+    top_p: 0.80
+    top_k: 30
+    frequency_penalty: 0.05
+    presence_penalty: 0.10
+    max_tokens: 8000
+    stop_sequences:
+      - "---END SEO ANALYSIS---"
+      - "---OPTIMIZATION COMPLETE---"
+
+  presets:
+    default:
+      temperature: 0.20
+      top_p: 0.80
+      max_tokens: 8000
+
+    keyword_research:
+      temperature: 0.15
+      top_p: 0.75
+      max_tokens: 10000
+
+    content_optimization:
+      temperature: 0.30
+      top_p: 0.85
+      max_tokens: 6000
+
+    technical_audit:
+      temperature: 0.10
+      top_p: 0.70
+      max_tokens: 12000
+
+# ─────────────────────────────────────────────────────────────────────────────────
+# SECTION 3: REASONING CONFIGURATION
+# ─────────────────────────────────────────────────────────────────────────────────
+reasoning:
+  mode: "analytical"
+  think_mode: "technical"
+  extended_thinking: true
+  chain_of_thought: "seo_analysis"
+  reasoning_depth: 5
+
+  learning:
+    mode: "continuous"
+    feedback_sources:
+      - "ranking_changes"
+      - "traffic_metrics"
+      - "click_through_rates"
+    fine_tune_ready: true
+    update_frequency: "weekly"
+
+  decision_framework:
+    primary: "Search Intent Match"
+    secondary: "Technical Optimization"
+    tertiary: "Competition Analysis"
+    quaternary: "User Experience"
+
+# ─────────────────────────────────────────────────────────────────────────────────
+# SECTION 4: AUTHORITY & PERMISSIONS
+# ─────────────────────────────────────────────────────────────────────────────────
+authority:
+  level: "Specialist"
+  zone: "GREEN"
+
+  execution_model: "autonomous_with_review"
+
+  zone_access:
+    red: false
+    yellow: false
+    green: true
+
+  allowed_operations:
+    - "keyword_research"
+    - "content_optimization"
+    - "meta_tag_creation"
+    - "seo_audits"
+    - "competitor_analysis"
+    - "link_analysis"
+
+  forbidden_operations:
+    - "production_changes"
+    - "redirect_implementation"
+    - "robots_txt_modification"
+    - "paid_link_acquisition"
+
+  financial_limits:
+    auto_execute: 0
+    require_confirmation: 100
+    absolute_max: 500
+    daily_limit: 300
+
+# ─────────────────────────────────────────────────────────────────────────────────
+# SECTION 5: MCP SERVERS & INTEGRATIONS
+# ─────────────────────────────────────────────────────────────────────────────────
+mcp_servers:
+  semrush:
+    transport: "http"
+    priority: "critical"
+    capabilities:
+      - "keyword_research"
+      - "position_tracking"
+      - "site_audit"
+      - "competitor_analysis"
+    rate_limit: 100
+    cache_ttl: 600
+    token_env: "SEMRUSH_API_KEY"
+
+  ahrefs:
+    transport: "http"
+    priority: "critical"
+    capabilities:
+      - "backlink_analysis"
+      - "keyword_research"
+      - "content_gap"
+    rate_limit: 50
+    cache_ttl: 600
+    token_env: "AHREFS_API_KEY"
+
+  google_search_console:
+    transport: "http"
+    priority: "critical"
+    capabilities:
+      - "search_performance"
+      - "index_coverage"
+      - "core_web_vitals"
+    rate_limit: 100
+    cache_ttl: 300
+    token_env: "GSC_CREDENTIALS"
+
+  screaming_frog:
+    transport: "http"
+    priority: "high"
+    capabilities:
+      - "technical_crawl"
+      - "site_structure"
+    rate_limit: 20
+    cache_ttl: 3600
+    token_env: "SCREAMING_FROG_API"
+
+# ─────────────────────────────────────────────────────────────────────────────────
+# SECTION 6: TOOLS & CAPABILITIES
+# ─────────────────────────────────────────────────────────────────────────────────
+tools:
+  primary:
+    - name: "keyword_researcher"
+      description: "Research and analyze keywords"
+      input_schema:
+        seed_keywords: "array"
+        competitors: "array"
+        market: "string"
+      output: "keyword_report"
+
+    - name: "content_optimizer"
+      description: "Optimize content for target keywords"
+      input_schema:
+        content: "string"
+        target_keywords: "array"
+        competitors: "array"
+      output: "optimized_content"
+
+    - name: "technical_auditor"
+      description: "Perform technical SEO audit"
+      input_schema:
+        url: "string"
+        depth: "number"
+      output: "technical_audit"
+
+    - name: "competitor_analyzer"
+      description: "Analyze competitor SEO strategies"
+      input_schema:
+        competitors: "array"
+        focus_areas: "array"
+      output: "competitor_analysis"
+
+  secondary:
+    - "meta_tag_generator"
+    - "schema_markup_creator"
+    - "internal_link_optimizer"
+    - "content_gap_finder"
+
+# ─────────────────────────────────────────────────────────────────────────────────
+# SECTION 7: MEMORY & CONTEXT
+# ─────────────────────────────────────────────────────────────────────────────────
+memory:
+  type: "persistent"
+  storage: "supabase"
+  retention: "forever"
+
+  vector_config:
+    enabled: true
+    dimensions: 1536
+    index_type: "HNSW"
+    similarity_metric: "cosine"
+
+  retrieval:
+    strategy: "hybrid"
+    semantic_weight: 0.4
+    keyword_weight: 0.6
+    max_results: 30
+    confidence_threshold: 0.75
+
+  context_management:
+    max_tokens: 60000
+    priority_sources:
+      - "ranking_history"
+      - "keyword_database"
+      - "competitor_data"
+      - "algorithm_updates"
+
+# ─────────────────────────────────────────────────────────────────────────────────
+# SECTION 8: GATES & POLICIES
+# ─────────────────────────────────────────────────────────────────────────────────
+gates:
+  required:
+    - id: "gate.quality.keyword_relevance"
+      description: "Keyword relevance validation"
+      type: "quality"
+      threshold: 0.85
+
+    - id: "gate.compliance.white_hat"
+      description: "White-hat SEO compliance"
+      type: "compliance"
+      threshold: 1.0
+
+  optional:
+    - id: "gate.performance.traffic_potential"
+      description: "Traffic potential threshold"
+      type: "performance"
+      threshold: 0.70
+
+policies:
+  execution:
+    require_keyword_research: true
+    require_competitor_analysis: true
+    enforce_white_hat_only: true
+    require_data_backup: true
+
+  quality:
+    min_keyword_difficulty_ratio: 0.5
+    require_search_intent_match: true
+    require_content_gap_analysis: true
+
+  prohibited_practices:
+    - "keyword_stuffing"
+    - "hidden_text"
+    - "link_schemes"
+    - "cloaking"
+    - "doorway_pages"
+
+# ─────────────────────────────────────────────────────────────────────────────────
+# SECTION 9: VOICE & COMMUNICATION
+# ─────────────────────────────────────────────────────────────────────────────────
+voice:
+  response_time_target: 5000
+  personality_preset: "seo-expert"
+  output_format: "structured_report"
+
+  communication:
+    interruption_handling: true
+    multi_turn_awareness: true
+    context_preservation: true
+
+  escalation:
+    triggers:
+      - "ranking_drop"
+      - "algorithm_update"
+      - "penalty_detection"
+    channels:
+      - "slack"
+      - "email"
+
+# ─────────────────────────────────────────────────────────────────────────────────
+# SECTION 10: BUSINESS METRICS
+# ─────────────────────────────────────────────────────────────────────────────────
+business:
+  cost_tracking:
+    per_analysis: true
+    per_keyword: true
+
+  time_estimates:
+    keyword_research: "30min"
+    content_optimization: "20min"
+    technical_audit: "1hr"
+    competitor_analysis: "45min"
+
+  quality_metrics:
+    ranking_improvement: ">20 positions"
+    organic_traffic_growth: ">30%"
+    click_through_rate: ">5%"
+
+  kpis:
+    - metric: "organic_traffic"
+      target: "+30% QoQ"
+    - metric: "keyword_rankings_top_10"
+      target: "+50 keywords"
+    - metric: "domain_authority"
+      target: "+5 points"
+
+# ─────────────────────────────────────────────────────────────────────────────────
+# SECTION 11: SAFETY & GUARDRAILS
+# ─────────────────────────────────────────────────────────────────────────────────
+safety:
+  guardrails:
+    prevent_black_hat_seo: true
+    protect_ranking_assets: true
+    require_implementation_review: true
+    audit_all_changes: true
+
+  validation:
+    - "White-hat practices only"
+    - "Data source verified"
+    - "Competitor data anonymized"
+    - "Recommendations are safe"
+
+  emergency:
+    abort_command: "ABORT SEO"
+    rollback_enabled: true
+    notification_channels:
+      - "slack"
+      - "email"
+
+# ─────────────────────────────────────────────────────────────────────────────────
+# SECTION 12: EXPECTED RESULTS
+# ─────────────────────────────────────────────────────────────────────────────────
+expected_results:
+  keyword_report:
+    format: "structured_report"
+    includes:
+      - "keyword_list"
+      - "search_volume"
+      - "difficulty_scores"
+      - "search_intent"
+      - "competitor_overlap"
+      - "recommendations"
+
+  technical_audit:
+    format: "prioritized_issues"
+    sections:
+      - "critical_issues"
+      - "warnings"
+      - "improvements"
+      - "core_web_vitals"
+      - "mobile_usability"
+      - "action_plan"
+
+  content_optimization:
+    format: "annotated_content"
+    includes:
+      - "optimized_title"
+      - "meta_description"
+      - "header_structure"
+      - "keyword_placement"
+      - "internal_links"
+      - "schema_markup"
+
+# ─────────────────────────────────────────────────────────────────────────────────
+# SECTION 13: ACTIVATION
+# ─────────────────────────────────────────────────────────────────────────────────
+activation:
+  keyboard_shortcut: "Cmd+Shift+2"
+  voice_command: "SEO Specialist activate"
+  auto_start: false
+
+  startup_message: |
+    SEO Specialist ready for optimization.
+    Capabilities: Keywords, Audits, Content Optimization, Competitor Analysis
+    Tools: SEMrush, Ahrefs, Search Console
+    What should I analyze?
+
+  health_check:
+    interval: 120
+    checks:
+      - "api_connectivity"
+      - "ranking_data_freshness"

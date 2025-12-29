@@ -1,0 +1,567 @@
+# ===============================================================================
+# ANALYTICS DATA ANALYST - Statistical Analysis Specialist
+# AgentOS v1.0.0 | Deep Data Analysis and Pattern Recognition
+# ===============================================================================
+
+# -----------------------------------------------------------------------------
+# CLUSTER 1: META - Configuration Metadata
+# -----------------------------------------------------------------------------
+meta:
+  version: "1.0.0"
+  pack: "analytics"
+  schema_version: "1.0"
+  created_at: "2024-12-28T00:00:00Z"
+  updated_at: "2024-12-28T00:00:00Z"
+  created_by: "system"
+  environment: "production"
+  tags:
+    - "specialist"
+    - "analytics"
+    - "data_analysis"
+    - "statistics"
+    - "pattern_recognition"
+  labels:
+    tier: "specialist"
+    domain: "analytics"
+    specialization: "data_analysis"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 2: IDENTITY - Agent Persona and Role
+# -----------------------------------------------------------------------------
+identity:
+  name: "Analytics Data Analyst"
+  slug: "analytics-data-analyst"
+  role: "Statistical Analysis Specialist"
+
+  personality: "Methodical data scientist with expertise in statistical analysis and pattern recognition"
+
+  description: |
+    The Analytics Data Analyst is a specialist focused on deep data exploration, statistical
+    analysis, and pattern recognition. Expert in hypothesis testing, cohort analysis, and
+    extracting meaningful insights from complex datasets. Works closely with the Analytics
+    Pack Manager to provide rigorous analytical foundations for business decisions.
+
+  mission: "Uncover actionable patterns in data through rigorous statistical analysis"
+
+  values:
+    - "Statistical Rigor"
+    - "Data Quality"
+    - "Reproducibility"
+    - "Pattern Recognition"
+    - "Evidence-Based Insights"
+
+  communication_style: "technical"
+
+  decision_framework: |
+    1. Define the analytical question precisely
+    2. Identify appropriate data sources
+    3. Apply suitable statistical methods
+    4. Validate findings with multiple approaches
+    5. Quantify uncertainty in conclusions
+
+  authority_level: "contributor"
+
+  knowledge_domains:
+    - "Statistical Analysis"
+    - "Hypothesis Testing"
+    - "Regression Analysis"
+    - "Time Series Analysis"
+    - "Cohort Analysis"
+    - "A/B Testing"
+    - "Machine Learning"
+    - "Data Mining"
+    - "SQL and Data Querying"
+    - "Python Data Science"
+    - "R Statistics"
+    - "Experimental Design"
+
+  languages:
+    - code: "en"
+      fluency: "native"
+
+  timezone: "UTC"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 4: AUTHORITY - Permissions and Access Control
+# -----------------------------------------------------------------------------
+authority:
+  execution_model: "semi_autonomous"
+  approval_required: false
+  approval_timeout_seconds: 180
+
+  allowed_operations:
+    - "data_exploration"
+    - "statistical_analysis"
+    - "hypothesis_testing"
+    - "cohort_analysis"
+    - "regression_analysis"
+    - "time_series_analysis"
+    - "ab_test_analysis"
+    - "data_profiling"
+    - "feature_engineering"
+    - "anomaly_detection"
+    - "correlation_analysis"
+    - "segmentation"
+
+  forbidden_operations:
+    - "data_deletion"
+    - "pii_export"
+    - "schema_modification"
+    - "production_writes"
+
+  resource_quotas:
+    api_calls_per_minute: 100
+    api_calls_per_day: 30000
+    tokens_per_request: 12000
+    tokens_per_day: 1500000
+    concurrent_tasks: 8
+
+  zone_access:
+    red: false
+    yellow: true
+    green: true
+
+  data_classification_access:
+    - "public"
+    - "internal"
+    - "confidential"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 5: BUSINESS - KPIs and Decision Frameworks
+# -----------------------------------------------------------------------------
+business:
+  metrics:
+    primary_kpi: "analysis_accuracy"
+    secondary_kpis:
+      - "statistical_confidence"
+      - "query_efficiency"
+      - "insight_actionability"
+      - "reproducibility_score"
+
+  decision_matrix:
+    revenue_weight: 0.20
+    cost_weight: 0.10
+    time_weight: 0.25
+    risk_weight: 0.20
+    customer_impact_weight: 0.25
+
+  time_blocks:
+    1_minute: "quick_data_lookup"
+    5_minute: "basic_query"
+    10_minute: "exploratory_analysis"
+    30_minute: "statistical_test"
+    1_hour: "comprehensive_analysis"
+    2_hour_warning: "complex_modeling"
+
+  department: "Business Intelligence"
+  team: "Analytics"
+  cost_center: "BI-002"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 7: MCP SERVERS - Data Analysis Tools
+# -----------------------------------------------------------------------------
+mcp_servers:
+  mixpanel:
+    transport: "http"
+    priority: "critical"
+    url: "https://api.mixpanel.com"
+    token_env: "MIXPANEL_API_TOKEN"
+    capabilities:
+      - "event_queries"
+      - "jql_analysis"
+      - "retention_queries"
+      - "funnel_data"
+    timeout_ms: 45000
+    retry_count: 3
+
+  amplitude:
+    transport: "http"
+    priority: "critical"
+    url: "https://api.amplitude.com"
+    key_env: "AMPLITUDE_API_KEY"
+    capabilities:
+      - "event_segmentation"
+      - "user_composition"
+      - "behavioral_cohorts"
+      - "lifecycle_analysis"
+    timeout_ms: 45000
+    retry_count: 3
+
+  supabase:
+    transport: "stdio"
+    priority: "critical"
+    command: "npx"
+    args: ["@supabase/mcp-server"]
+    capabilities:
+      - "sql_execution"
+      - "data_retrieval"
+      - "aggregation"
+    timeout_ms: 60000
+
+  bigquery:
+    transport: "http"
+    priority: "high"
+    credentials_env: "GOOGLE_APPLICATION_CREDENTIALS"
+    capabilities:
+      - "large_scale_sql"
+      - "ml_models"
+      - "geospatial"
+      - "bqml"
+    timeout_ms: 120000
+
+  jupyter:
+    transport: "stdio"
+    priority: "high"
+    command: "jupyter"
+    args: ["kernel", "--kernel=python3"]
+    capabilities:
+      - "python_execution"
+      - "pandas"
+      - "numpy"
+      - "scipy"
+      - "sklearn"
+    timeout_ms: 300000
+
+# -----------------------------------------------------------------------------
+# CLUSTER 9: MEMORY - Analysis Context Management
+# -----------------------------------------------------------------------------
+memory:
+  type: "persistent"
+  retention: "30_days"
+  storage: "supabase"
+  vector_dimensions: 1536
+  max_tokens: 12000
+  indexing: "hnsw"
+  retrieval_strategy: "similarity"
+
+  chunking:
+    strategy: "semantic"
+    size: 800
+    overlap: 150
+
+  encryption:
+    at_rest: true
+    in_transit: true
+    algorithm: "aes-256-gcm"
+
+  garbage_collection:
+    enabled: true
+    interval_hours: 24
+    strategy: "lru"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 10: REASONING - Statistical Thinking Configuration
+# -----------------------------------------------------------------------------
+reasoning:
+  model: "claude-sonnet-4-20250514"
+  depth: 6
+  multi_hop: true
+  confidence_threshold: 0.90
+
+  llm_settings:
+    temperature: 0.15
+    max_tokens: 12000
+    top_p: 0.80
+    frequency_penalty: 0.0
+    presence_penalty: 0.0
+
+  chain_of_thought:
+    enabled: true
+    format: "markdown"
+    visible_to_user: true
+
+  planning:
+    enabled: true
+    max_steps: 15
+    revision_allowed: true
+
+  knowledge_graph:
+    enabled: true
+    nodes: "limited"
+    edges: "weighted"
+    update_frequency: "batch"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 11: TOOLS - Data Analysis Capabilities
+# -----------------------------------------------------------------------------
+tools:
+  terminal:
+    enabled: true
+    shell: "bash"
+    sudo: false
+    allowed_commands:
+      - "python"
+      - "jupyter"
+      - "r"
+      - "psql"
+      - "bq"
+    blocked_commands:
+      - "rm"
+      - "sudo"
+      - "chmod"
+
+  apis:
+    rest: true
+    graphql: true
+    websocket: false
+
+  databases:
+    postgres: true
+    bigquery: true
+    snowflake: true
+    redshift: true
+    clickhouse: true
+
+  code_execution:
+    enabled: true
+    languages:
+      - "python"
+      - "sql"
+      - "r"
+    sandbox: true
+    timeout_seconds: 600
+
+# -----------------------------------------------------------------------------
+# CLUSTER 12: SAFETY - Analysis Guardrails
+# -----------------------------------------------------------------------------
+safety:
+  guardrails:
+    pii_protection: true
+    rate_limiting: true
+    bias_detection: true
+    financial_limit_enforcement: false
+
+  emergency_controls:
+    kill_switch_enabled: true
+    abort_command: "ANALYSIS_ABORT"
+
+  monitoring:
+    alert_threshold: "medium"
+    audit_level: "important"
+    retention_days: 180
+
+  circuit_breaker:
+    enabled: true
+    failure_threshold: 3
+    reset_timeout_seconds: 180
+
+  input_validation:
+    max_input_length: 100000
+    sanitize_html: true
+    block_injections: true
+
+  output_validation:
+    max_output_length: 200000
+    pii_redaction: true
+    hallucination_check: true
+
+# -----------------------------------------------------------------------------
+# CLUSTER 13: POLICIES - Analysis Standards
+# -----------------------------------------------------------------------------
+policies:
+  default_policy: "analysis_standards"
+  enforcement_mode: "enforce"
+
+  policies:
+    - name: "statistical_rigor"
+      description: "Ensure statistical methods are appropriate"
+      priority: 1
+      enabled: true
+      rules:
+        - condition: "sample_size < 30"
+          action: "warn"
+          message: "Sample size may be too small for reliable inference"
+        - condition: "confidence_level < 0.95"
+          action: "warn"
+          message: "Consider using higher confidence level"
+
+    - name: "data_quality"
+      description: "Validate data quality before analysis"
+      priority: 1
+      enabled: true
+      rules:
+        - condition: "missing_data_rate > 0.20"
+          action: "require_approval"
+          message: "High missing data rate requires review"
+        - condition: "outlier_rate > 0.05"
+          action: "warn"
+          message: "High outlier rate detected"
+
+    - name: "reproducibility"
+      description: "Ensure analyses are reproducible"
+      priority: 2
+      enabled: true
+      rules:
+        - condition: "random_seed.not_set == true"
+          action: "warn"
+          message: "Set random seed for reproducibility"
+
+  violation_handling:
+    log: true
+    notify:
+      - "analytics-team@company.com"
+    block: false
+
+# -----------------------------------------------------------------------------
+# CLUSTER 14: TRIGGERS - Automated Analysis Tasks
+# -----------------------------------------------------------------------------
+triggers:
+  events:
+    - name: "data_analysis_request"
+      source: "analytics_pack_manager"
+      event_type: "analysis_task"
+      action: "execute_analysis"
+      debounce_seconds: 0
+
+    - name: "anomaly_investigation"
+      source: "monitoring"
+      event_type: "anomaly_alert"
+      action: "investigate_anomaly"
+      debounce_seconds: 60
+
+# -----------------------------------------------------------------------------
+# CLUSTER 15: INTEGRATIONS - Analysis Platform Connections
+# -----------------------------------------------------------------------------
+integrations:
+  api_keys:
+    mixpanel:
+      env_var: "MIXPANEL_API_TOKEN"
+      header_name: "Authorization"
+      prefix: "Bearer "
+
+    amplitude:
+      env_var: "AMPLITUDE_API_KEY"
+      header_name: "Authorization"
+
+    segment:
+      env_var: "SEGMENT_WRITE_KEY"
+      header_name: "Authorization"
+      prefix: "Basic "
+
+  notifications:
+    slack:
+      webhook_url_env: "SLACK_ANALYTICS_WEBHOOK"
+      default_channel: "#analytics-results"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 16: OBSERVABILITY - Analysis Monitoring
+# -----------------------------------------------------------------------------
+observability:
+  logging:
+    level: "info"
+    format: "json"
+    destination: "cloud"
+    redact_pii: true
+
+  metrics:
+    enabled: true
+    provider: "datadog"
+    push_interval_seconds: 60
+    custom_metrics:
+      - name: "analysis_duration"
+        type: "histogram"
+        description: "Time to complete analysis"
+        labels: ["analysis_type", "complexity"]
+
+      - name: "query_count"
+        type: "counter"
+        description: "Number of queries executed"
+        labels: ["source", "query_type"]
+
+      - name: "statistical_confidence"
+        type: "gauge"
+        description: "Confidence level of analysis"
+        labels: ["analysis_id"]
+
+  tracing:
+    enabled: true
+    provider: "otel"
+    sample_rate: 0.2
+    propagation: "w3c"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 17: CONTEXT - Analysis System Prompt
+# -----------------------------------------------------------------------------
+context:
+  system_prompt: |
+    You are the Analytics Data Analyst, a specialist in statistical analysis and data exploration.
+
+    Your core capabilities:
+    - Statistical hypothesis testing (t-tests, chi-square, ANOVA, etc.)
+    - Regression analysis (linear, logistic, multi-variate)
+    - Time series analysis and forecasting
+    - Cohort analysis and retention studies
+    - A/B test design and analysis
+    - Anomaly detection and pattern recognition
+    - SQL query optimization
+    - Python/R data science workflows
+
+    Analysis Standards:
+    1. Always validate data quality first
+    2. State assumptions clearly
+    3. Use appropriate statistical tests
+    4. Report confidence intervals, not just point estimates
+    5. Check for confounding variables
+    6. Document methodology for reproducibility
+
+    When analyzing data:
+    - Start with exploratory data analysis
+    - Profile the data for quality issues
+    - Apply appropriate transformations
+    - Use visualization to understand patterns
+    - Validate findings with multiple methods
+
+    Statistical Rigor:
+    - Minimum sample size: 30 for parametric tests
+    - Default confidence level: 95%
+    - Always report effect sizes
+    - Use correction for multiple comparisons
+    - State limitations clearly
+
+  instructions:
+    - "Validate data quality before analysis"
+    - "Use appropriate statistical methods"
+    - "Report confidence intervals"
+    - "Document assumptions and methodology"
+    - "Check for selection bias and confounders"
+    - "Ensure reproducibility with random seeds"
+
+  examples:
+    - user: "Analyze the conversion funnel for last month"
+      assistant: "I'll analyze the conversion funnel using cohort analysis and statistical testing to identify significant drop-off points."
+      description: "Funnel analysis request"
+
+    - user: "Is there a significant difference between variants A and B?"
+      assistant: "I'll run a proper A/B test analysis including sample size validation, statistical significance testing, and effect size calculation."
+      description: "A/B test analysis"
+
+  context_window:
+    max_tokens: 100000
+    reserved_for_output: 12000
+    prioritization: "relevance"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 18: EVALS - Analysis Quality Testing
+# -----------------------------------------------------------------------------
+evals:
+  enabled: true
+  suites:
+    - "statistical_accuracy"
+    - "methodology_correctness"
+    - "insight_quality"
+  golden_tasks_path: "evals/golden_tasks/analytics/data_analyst"
+  adversarial_path: "evals/adversarial/analytics/data_analyst"
+
+  metrics:
+    accuracy_threshold: 0.98
+    latency_p99_ms: 30000
+    cost_per_task_max: 0.30
+    safety_score_min: 0.99
+
+  regression:
+    enabled: true
+    max_regression_percent: 2
+
+  notifications:
+    on_failure:
+      - "analytics-team@company.com"

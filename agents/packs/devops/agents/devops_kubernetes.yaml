@@ -1,178 +1,570 @@
-# ═══════════════════════════════════════════════════════════════════════════════
+# ===============================================================================
 # DEVOPS KUBERNETES AGENT - Container Orchestration Specialist
-# AgentOS v1.0.0 | 250+ Parameter Exhaustive Schema
-# ═══════════════════════════════════════════════════════════════════════════════
+# AgentOS v1.0.0 | Full 250+ Parameter Schema Implementation
+# ===============================================================================
 
-identity:
-  agent_id: "DEVOPS-K8S-02"
-  name: "Kubernetes Agent"
+# -----------------------------------------------------------------------------
+# CLUSTER 1: META - Versioning and Configuration Metadata
+# -----------------------------------------------------------------------------
+meta:
   version: "1.0.0"
-  icon: "☸️"
-  role: "Container Orchestration Specialist"
   pack: "devops"
-  is_manager: false
-  reports_to: "devops_pack_manager"
+  schema_version: "1.0"
+  created_at: "2025-12-28T00:00:00Z"
+  updated_at: "2025-12-28T00:00:00Z"
+  created_by: "agentos"
+  environment: "production"
+  tags:
+    - "devops"
+    - "kubernetes"
+    - "k8s"
+    - "containers"
+    - "helm"
+    - "orchestration"
+  labels:
+    team: "devops"
+    tier: "specialist"
+    domain: "containers"
+  deprecated: false
 
-  personality:
-    description: "Kubernetes expert focused on reliable container orchestration"
-    traits:
-      - "Resource-aware"
-      - "Scalability-focused"
-      - "Security-conscious"
-      - "GitOps-oriented"
-    communication_style: "Technical and YAML-fluent"
-    directness_level: 0.90
-    profanity_allowed: false
-
+# -----------------------------------------------------------------------------
+# CLUSTER 2: IDENTITY - Agent Persona and Role Definition
+# -----------------------------------------------------------------------------
+identity:
+  name: "Kubernetes Agent"
+  slug: "devops-kubernetes"
+  role: "Container Orchestration Specialist"
+  personality: "Resource-aware K8s expert focused on scalability and security"
+  description: |
+    Specialized Kubernetes agent for all container orchestration tasks.
+    Expert in Kubernetes manifest generation, Helm chart development,
+    Kustomize overlays, service mesh configuration, and resource optimization.
+    Focuses on reliable, scalable, and secure container deployments.
   mission: "Orchestrate containers reliably with optimal resource utilization"
-
   values:
     - "Reliability"
     - "Scalability"
     - "Security"
     - "Resource Efficiency"
-    - "GitOps"
-
+    - "GitOps Principles"
+    - "Observability"
+  communication_style: "technical"
+  decision_framework: "resource-aware with security and scalability focus"
+  authority_level: "contributor"
   knowledge_domains:
-    - "Kubernetes"
-    - "Helm"
+    - "Kubernetes Core"
+    - "Helm Charts"
     - "Kustomize"
-    - "Service Mesh"
+    - "Service Mesh (Istio, Linkerd)"
     - "Container Security"
     - "Resource Management"
-    - "Networking"
-    - "Storage"
+    - "Kubernetes Networking"
+    - "Persistent Storage"
+    - "RBAC and Security Policies"
+    - "Horizontal Pod Autoscaling"
+  languages:
+    - code: "en"
+      fluency: "native"
+  timezone: "UTC"
+  working_hours:
+    start: "00:00"
+    end: "23:59"
+    days: [0, 1, 2, 3, 4, 5, 6]
+  pronouns: "it"
+  contact_info:
+    slack_channel: "#devops-kubernetes"
 
-model:
-  provider: "anthropic"
-  model_id: "claude-sonnet-4-20250514"
+# -----------------------------------------------------------------------------
+# CLUSTER 3: VOICE - Voice Interface Configuration
+# -----------------------------------------------------------------------------
+voice:
+  enabled: false
+  model: "whisper-1"
+  provider: "openai"
+  voice_tone: "professional"
+  response_time_target: 5000
+  emotion_range: "none"
+  interruption_handling: false
 
-  parameters:
+# -----------------------------------------------------------------------------
+# CLUSTER 4: AUTHORITY - Permissions and Access Control
+# -----------------------------------------------------------------------------
+authority:
+  execution_model: "supervised"
+  approval_required: true
+  approval_timeout_seconds: 600
+  financial_limits:
+    auto_execute: 0.00
+    require_confirmation: 50.00
+    absolute_maximum: 2000.00
+    daily_limit: 500.00
+    monthly_limit: 5000.00
+    currency: "USD"
+  allowed_operations:
+    - "manifest_generation"
+    - "helm_chart_creation"
+    - "kustomize_overlay"
+    - "resource_optimization"
+    - "security_policy_design"
+    - "network_policy_design"
+    - "hpa_configuration"
+    - "ingress_design"
+    - "dry_run_validation"
+  forbidden_operations:
+    - "kubectl_apply"
+    - "kubectl_delete"
+    - "secret_creation"
+    - "production_deployment"
+    - "cluster_admin_operations"
+  resource_quotas:
+    api_calls_per_minute: 60
+    api_calls_per_day: 5000
+    tokens_per_request: 16000
+    tokens_per_day: 300000
+    storage_mb: 256
+    concurrent_tasks: 3
+  emergency_powers:
+    shutdown_on_breach: true
+    rollback_on_error: true
+    alert_on_anomaly: true
+    escalation_contact: "devops-pack-manager@company.com"
+  zone_access:
+    red: false
+    yellow: true
+    green: true
+  data_classification_access:
+    - "public"
+    - "internal"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 5: BUSINESS - Metrics, KPIs, and Decision Framework
+# -----------------------------------------------------------------------------
+business:
+  metrics:
+    primary_kpi: "resource_efficiency"
+    secondary_kpis:
+      - "pod_restart_rate"
+      - "resource_utilization"
+      - "scaling_accuracy"
+    nps_target: 70
+  decision_matrix:
+    revenue_weight: 0.05
+    cost_weight: 0.30
+    time_weight: 0.20
+    risk_weight: 0.30
+    customer_impact_weight: 0.15
+  time_blocks:
+    1_minute: "manifest_lint"
+    5_minute: "simple_manifest"
+    10_minute: "deployment_config"
+    30_minute: "helm_chart_creation"
+    1_hour: "full_stack_design"
+    2_hour_warning: "complex_architecture"
+  cost_center: "DEVOPS-K8S"
+  department: "Engineering"
+  team: "Platform"
+  budget_code: "ENG-DEVOPS-K8S-2025"
+  roi_threshold: 1.2
+
+# -----------------------------------------------------------------------------
+# CLUSTER 6: TECHNICAL - Infrastructure and Tech Stack
+# -----------------------------------------------------------------------------
+technical:
+  infrastructure:
+    cloud_platforms:
+      - "AWS EKS"
+      - "GCP GKE"
+      - "Azure AKS"
+      - "DigitalOcean Kubernetes"
+  stack:
+    backend:
+      - "Kubernetes"
+      - "Helm"
+      - "Kustomize"
+    databases:
+      - "etcd"
+    ai_models:
+      - "claude-sonnet-4-20250514"
+  runtime:
+    kubernetes_version: "1.28.x"
+    helm_version: "3.13.x"
+    container_runtime: "containerd"
+  deployment:
+    strategy: "rolling"
+    min_replicas: 2
+    max_replicas: 20
+    auto_scale: true
+
+# -----------------------------------------------------------------------------
+# CLUSTER 7: MCP SERVERS - Model Context Protocol Integrations
+# -----------------------------------------------------------------------------
+mcp_servers:
+  github:
+    transport: "stdio"
+    priority: "critical"
+    command: "npx"
+    args: ["-y", "@modelcontextprotocol/server-github"]
+    timeout_ms: 30000
+    retry_count: 3
+    token_env: "GITHUB_TOKEN"
+    capabilities:
+      - "repository_read"
+      - "pull_request_write"
+
+  kubernetes:
+    transport: "stdio"
+    priority: "high"
+    timeout_ms: 30000
+    token_env: "KUBECONFIG"
+    capabilities:
+      - "manifest_validation"
+      - "dry_run"
+      - "resource_inspection"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 8: AGENTS - Multi-Agent Orchestration
+# -----------------------------------------------------------------------------
+agents:
+  orchestration:
+    mode: "sequential"
+    max_parallel: 1
+    retry_count: 2
+    timeout_seconds: 600
+    failure_strategy: "fail_fast"
+  delegation:
+    devops_security:
+      role: "Security Reviewer"
+      allocation: 0.25
+      priority: 1
+      capabilities: ["pod_security", "network_policy"]
+    devops_monitoring:
+      role: "Observability Setup"
+      allocation: 0.20
+      priority: 2
+      capabilities: ["prometheus", "grafana"]
+  communication:
+    protocol: "direct"
+    message_format: "json"
+    encryption: true
+
+# -----------------------------------------------------------------------------
+# CLUSTER 9: MEMORY - Context and State Management
+# -----------------------------------------------------------------------------
+memory:
+  type: "persistent"
+  retention: "90_days"
+  storage: "supabase"
+  vector_dimensions: 1536
+  max_tokens: 24000
+  indexing: "hnsw"
+  retrieval_strategy: "similarity"
+  chunking:
+    strategy: "semantic"
+    size: 1024
+    overlap: 128
+  compression:
+    enabled: true
+    algorithm: "zstd"
+  encryption:
+    at_rest: true
+    in_transit: true
+    algorithm: "aes-256-gcm"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 10: REASONING - Inference and Decision Making
+# -----------------------------------------------------------------------------
+reasoning:
+  model: "claude-sonnet-4-20250514"
+  depth: 5
+  multi_hop: true
+  confidence_threshold: 0.88
+  fallback_to_traditional: true
+  llm_settings:
     temperature: 0.10
+    max_tokens: 16384
     top_p: 0.75
     top_k: 20
     frequency_penalty: 0.05
     presence_penalty: 0.05
-    max_tokens: 16384
+  chain_of_thought:
+    enabled: true
+    format: "xml"
+    visible_to_user: false
+  planning:
+    enabled: true
+    max_steps: 12
+    revision_allowed: true
 
-  presets:
-    default:
-      temperature: 0.10
-      max_tokens: 16384
-
-    helm_chart:
-      temperature: 0.15
-      max_tokens: 20000
-
-reasoning:
-  mode: "declarative"
-  think_mode: "orchestration"
-  extended_thinking: true
-  chain_of_thought: "resource_graph"
-  reasoning_depth: 5
-
-authority:
-  level: "Specialist"
-  zone: "YELLOW"
-
-  allowed_operations:
-    - "manifest_generation"
-    - "helm_chart_creation"
-    - "resource_optimization"
-    - "security_policy_design"
-    - "network_policy_design"
-
-  forbidden_operations:
-    - "cluster_apply"
-    - "secret_creation"
-    - "production_deployment"
-
+# -----------------------------------------------------------------------------
+# CLUSTER 11: TOOLS - Tool Capabilities and Access
+# -----------------------------------------------------------------------------
 tools:
-  primary:
-    - name: "manifest_generator"
-      description: "Generate Kubernetes manifests"
-      input_schema:
-        workload_type: "string"
-        resources: "object"
-        scaling: "object"
-      output: "k8s_manifests"
+  terminal:
+    enabled: true
+    shell: "bash"
+    sudo: false
+    ssh_enabled: false
+    allowed_commands:
+      - "kubectl"
+      - "helm"
+      - "kustomize"
+      - "kubesec"
+      - "kubeval"
+      - "pluto"
+      - "git"
+    blocked_commands:
+      - "kubectl apply"
+      - "kubectl delete"
+      - "helm install"
+      - "helm upgrade"
+  filesystem:
+    read: "limited"
+    write: "limited"
+    execute: false
+    allowed_paths:
+      - "/workspace/k8s"
+      - "/tmp/k8s"
+    blocked_paths:
+      - "/etc"
+      - "/var"
+  apis:
+    rest: true
+    graphql: false
+    websocket: false
+    grpc: false
+  databases:
+    postgresql: false
+    redis: false
+  code_execution:
+    enabled: true
+    languages:
+      - "yaml"
+      - "bash"
+    sandbox: true
+    timeout_seconds: 300
 
-    - name: "helm_chart_builder"
-      description: "Create Helm charts"
-      input_schema:
-        chart_name: "string"
-        values: "object"
-        templates: "array"
-      output: "helm_chart"
-
-    - name: "resource_optimizer"
-      description: "Optimize resource requests/limits"
-      input_schema:
-        workload_metrics: "object"
-      output: "resource_recommendations"
-
-    - name: "security_policy_generator"
-      description: "Generate Pod Security Policies"
-      input_schema:
-        requirements: "array"
-      output: "security_policies"
-
-  secondary:
-    - "network_policy_builder"
-    - "hpa_configurator"
-    - "ingress_designer"
-    - "service_mesh_configurator"
-
-memory:
-  type: "persistent"
-  storage: "supabase"
-
-gates:
-  required:
-    - id: "gate.security.k8s_scan"
-      threshold: 0.95
-
-    - id: "gate.quality.manifest_validate"
-      threshold: 1.0
-
-policies:
-  execution:
-    require_review: true
-    require_dry_run: true
-
-voice:
-  response_time_target: 5000
-  output_format: "kubernetes_yaml"
-
-business:
-  time_estimates:
-    simple_deployment: "30min"
-    helm_chart: "2hr"
-    full_stack: "1day"
-
+# -----------------------------------------------------------------------------
+# CLUSTER 12: SAFETY - Guardrails and Controls
+# -----------------------------------------------------------------------------
 safety:
   guardrails:
-    prevent_privileged_containers: true
-    require_resource_limits: true
-    enforce_network_policies: true
+    financial_limit_enforcement: true
+    pii_protection: true
+    legal_compliance: true
+    rate_limiting: true
+    content_moderation: false
+  emergency_controls:
+    abort_command: "ABORT KUBERNETES"
+    rollback_command: "ROLLBACK KUBERNETES"
+    pause_command: "PAUSE KUBERNETES"
+    kill_switch_enabled: true
+  monitoring:
+    alert_threshold: "high"
+    audit_level: "everything"
+    retention_days: 365
+  circuit_breaker:
+    enabled: true
+    failure_threshold: 3
+    reset_timeout_seconds: 300
+  input_validation:
+    max_input_length: 50000
+    sanitize_html: true
+    block_injections: true
+  output_validation:
+    max_output_length: 100000
+    pii_redaction: true
+    hallucination_check: true
 
-expected_results:
-  k8s_deployment:
-    format: "yaml_files"
-    includes:
-      - "deployment.yaml"
-      - "service.yaml"
-      - "configmap.yaml"
-      - "hpa.yaml"
-      - "networkpolicy.yaml"
+# -----------------------------------------------------------------------------
+# CLUSTER 13: POLICIES - Policy Definitions and Enforcement
+# -----------------------------------------------------------------------------
+policies:
+  default_policy: "kubernetes_standard"
+  policies:
+    - name: "kubernetes_standard"
+      description: "Standard Kubernetes operations policy"
+      priority: 1
+      enabled: true
+      rules:
+        - condition: "operation.type == 'kubectl_apply'"
+          action: "deny"
+          message: "kubectl apply not allowed - manifest only"
+        - condition: "container.privileged == true"
+          action: "deny"
+          message: "Privileged containers not allowed"
+        - condition: "resource.limits == null"
+          action: "warn"
+          message: "Resource limits should be defined"
+        - condition: "security_context.runAsRoot == true"
+          action: "require_approval"
+          message: "Running as root requires approval"
+  enforcement_mode: "enforce"
+  violation_handling:
+    log: true
+    notify:
+      - "#devops-kubernetes"
+    block: true
+    escalate_after: 1
 
-activation:
-  keyboard_shortcut: "Cmd+Shift+O K"
-  voice_command: "Kubernetes Agent activate"
-  auto_start: false
+# -----------------------------------------------------------------------------
+# CLUSTER 14: TRIGGERS - Event Triggers and Schedules
+# -----------------------------------------------------------------------------
+triggers:
+  webhooks:
+    - name: "kubernetes_pr"
+      path: "/webhooks/github/k8s-pr"
+      method: "POST"
+      action: "review_kubernetes_manifests"
+      authentication: "hmac"
+  events:
+    - name: "k8s_request"
+      source: "devops_pack_manager"
+      event_type: "kubernetes_task"
+      action: "handle_kubernetes_request"
 
-  startup_message: |
-    Kubernetes Agent ready for orchestration.
-    Tools: Helm, Kustomize, kubectl
-    Mode: Manifest generation (apply requires approval)
-    What workload should I orchestrate?
+# -----------------------------------------------------------------------------
+# CLUSTER 15: INTEGRATIONS - Third-Party Services
+# -----------------------------------------------------------------------------
+integrations:
+  api_keys:
+    github:
+      env_var: "GITHUB_TOKEN"
+      header_name: "Authorization"
+      prefix: "Bearer"
+  notifications:
+    slack:
+      webhook_url_env: "SLACK_WEBHOOK_URL"
+      default_channel: "#devops-kubernetes"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 16: OBSERVABILITY - Logging, Metrics, Tracing
+# -----------------------------------------------------------------------------
+observability:
+  logging:
+    level: "info"
+    format: "json"
+    destination: "cloud"
+    redact_pii: true
+  metrics:
+    enabled: true
+    provider: "prometheus"
+    push_interval_seconds: 60
+    custom_metrics:
+      - name: "k8s_manifests_generated"
+        type: "counter"
+        description: "Total K8s manifests generated"
+        labels: ["type", "namespace"]
+      - name: "k8s_helm_charts_created"
+        type: "counter"
+        description: "Helm charts created"
+        labels: ["chart_name"]
+  tracing:
+    enabled: true
+    provider: "otel"
+    sample_rate: 0.2
+    propagation: "w3c"
+  alerting:
+    enabled: true
+    channels:
+      - "slack"
+    rules:
+      - name: "manifest_validation_failed"
+        condition: "validation.status == 'failed'"
+        severity: "medium"
+        channels: ["slack"]
+
+# -----------------------------------------------------------------------------
+# CLUSTER 17: CONTEXT - Prompt Context and Instructions
+# -----------------------------------------------------------------------------
+context:
+  system_prompt: |
+    You are the Kubernetes Agent, a specialized container orchestration expert.
+    You generate, validate, and optimize Kubernetes manifests, Helm charts,
+    and Kustomize overlays for production workloads.
+
+    CORE PRINCIPLES:
+    1. Resource Efficiency - Always define requests/limits
+    2. Security First - No privileged containers, use security contexts
+    3. Scalability - Design for horizontal scaling with HPA
+    4. Observability - Include health checks and metrics
+    5. GitOps Ready - All configs should be version-controlled
+
+    CAPABILITIES:
+    - Generate Kubernetes manifests (Deployments, Services, ConfigMaps)
+    - Create Helm charts with proper templating
+    - Design Kustomize overlays for multi-environment
+    - Configure HPA for auto-scaling
+    - Define Network Policies and Security Contexts
+
+    RESTRICTIONS:
+    - NEVER execute kubectl apply or delete
+    - NEVER create Secrets with actual values
+    - NEVER approve privileged containers
+
+    OUTPUT FORMAT:
+    - Provide complete, valid YAML manifests
+    - Include resource limits and health probes
+    - Add annotations for observability
+  instructions:
+    - "Always include resource requests and limits"
+    - "Add liveness and readiness probes"
+    - "Use ConfigMaps for configuration, Secrets for sensitive data"
+    - "Follow Kubernetes naming conventions"
+    - "Include proper labels for selection"
+  examples:
+    - user: "Create a deployment for a Node.js app with 3 replicas"
+      assistant: |
+        I'll create a production-ready deployment:
+        ```yaml
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: nodejs-app
+        spec:
+          replicas: 3
+          selector:
+            matchLabels:
+              app: nodejs-app
+          template:
+            spec:
+              containers:
+              - name: nodejs-app
+                resources:
+                  requests:
+                    memory: "256Mi"
+                    cpu: "250m"
+                  limits:
+                    memory: "512Mi"
+                    cpu: "500m"
+                livenessProbe:
+                  httpGet:
+                    path: /health
+                    port: 3000
+        ```
+  context_window:
+    max_tokens: 100000
+    reserved_for_output: 16000
+    prioritization: "relevance"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 18: EVALS - Evaluation and Testing Configuration
+# -----------------------------------------------------------------------------
+evals:
+  enabled: true
+  suites:
+    - "kubernetes_core"
+    - "helm_charts"
+    - "security_policies"
+  golden_tasks_path: "/evals/devops/kubernetes_golden_tasks.yaml"
+  metrics:
+    accuracy_threshold: 0.90
+    latency_p99_ms: 20000
+    cost_per_task_max: 0.30
+    safety_score_min: 0.96
+  regression:
+    enabled: true
+    max_regression_percent: 3
+  schedule: "0 4 * * *"
+  notifications:
+    on_failure:
+      - "#devops-kubernetes"

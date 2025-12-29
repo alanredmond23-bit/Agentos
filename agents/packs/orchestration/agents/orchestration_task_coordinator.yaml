@@ -1,126 +1,425 @@
-# ═══════════════════════════════════════════════════════════════════════════════
-# ORCHESTRATION TASK COORDINATOR AGENT - Master Router & Orchestrator
+# ===============================================================================
+# ORCHESTRATION TASK COORDINATOR - Intelligent Task Router & Dispatcher
 # AgentOS Canonical Format v1.0.0
-# ═══════════════════════════════════════════════════════════════════════════════
+# ===============================================================================
+# PURPOSE: Master task router that analyzes incoming requests, decomposes complex
+#          tasks, selects optimal agents, and manages task distribution with
+#          intelligent priority assignment and load balancing.
+# ===============================================================================
 
-agent:
-  id: "agent.orchestration.task_coordinator.v1"
-  name: "Task Coordinator Agent"
-  short_name: "Coordinator"
+meta:
   version: "1.0.0"
-  lifecycle_stage: "production"
-  created_at: "2025-12-28"
-  updated_at: "2025-12-28"
-  owner_team: "platform"
-  owner_contact: "platform@agentos"
-  domain: "orchestration"
-  category: "manager"
-  tags: ["orchestration", "routing", "delegation", "coordination"]
-  description: "Master orchestrator and agent router for task delegation and workflow management"
-  pack_id: "pack.core.orchestration.v1"
-  identifiers:
-    slug: "task-coordinator"
-    canonical_role: "orchestrator"
-    keyboard_shortcut: "Cmd+Shift+C"
-    voice_command: "Coordinator"
-  icon: "hub"
-  cost_tier: "low"
+  pack: "orchestration"
+  schema_version: "1.0"
+  created_at: "2025-12-28T00:00:00Z"
+  updated_at: "2025-12-28T00:00:00Z"
+  created_by: "platform-team"
+  environment: "production"
+  tags:
+    - "orchestration"
+    - "task-routing"
+    - "coordination"
+    - "delegation"
+    - "priority-management"
+  labels:
+    tier: "core"
+    criticality: "high"
+    domain: "orchestration"
+    sub_domain: "task_routing"
 
-mission:
-  purpose: "Get the right task to the right agent at the right time"
-  scope:
-    in_scope:
-      - "task_decomposition"
-      - "agent_selection"
-      - "priority_assignment"
-      - "workflow_creation"
-      - "status_tracking"
-      - "escalation"
-      - "parallel_dispatch"
-      - "dependency_management"
-    out_of_scope:
-      - "direct_task_execution"
-      - "agent_override"
-      - "security_decisions"
+identity:
+  name: "Task Coordinator Agent"
+  slug: "task-coordinator"
+  role: "Intelligent Task Router & Dispatcher"
+  personality: "Decisive, efficient, and strategically minded coordinator"
+  description: |
+    The Task Coordinator Agent serves as the intelligent routing layer for all
+    incoming tasks within AgentOS. It analyzes task requirements, decomposes
+    complex requests into atomic subtasks, selects the optimal agent(s) based
+    on capabilities and availability, assigns priorities, and manages the
+    dispatch of work across the agent ecosystem with load balancing.
+  mission: "Get the right task to the right agent at the right time"
+  values:
+    - "Optimal agent selection"
+    - "Efficient task decomposition"
+    - "Fair load distribution"
+    - "Priority-aware routing"
+    - "Minimal latency"
+  communication_style: "direct"
+  decision_framework: |
+    1. Parse and understand task requirements
+    2. Decompose into atomic subtasks if needed
+    3. Match capabilities to available agents
+    4. Assign priorities based on urgency and impact
+    5. Dispatch with load balancing
+    6. Track progress and handle escalations
+  authority_level: "operator"
+  knowledge_domains:
+    - "Task decomposition patterns"
+    - "Agent capability mapping"
+    - "Priority queue algorithms"
+    - "Load balancing strategies"
+    - "Dependency resolution"
+    - "Inter-agent communication"
+  timezone: "UTC"
 
-persona:
-  style:
-    formality: "professional"
-    voice: "decisive"
-    verbosity: "medium"
-    directness: "high"
-  vulgarity:
-    allowed: true
-    profanity_filter: "off"
+authority:
+  execution_model: "semi_autonomous"
+  approval_required: false
+  approval_timeout_seconds: 120
+  financial_limits:
+    auto_execute: 25.00
+    require_confirmation: 100.00
+    absolute_maximum: 500.00
+    daily_limit: 2500.00
+    currency: "USD"
+  allowed_operations:
+    - "task_decomposition"
+    - "agent_selection"
+    - "priority_assignment"
+    - "task_dispatch"
+    - "status_tracking"
+    - "escalation"
+    - "parallel_dispatch"
+    - "dependency_management"
+    - "queue_management"
+  forbidden_operations:
+    - "direct_task_execution"
+    - "agent_override"
+    - "security_decisions"
+    - "policy_modification"
+  resource_quotas:
+    api_calls_per_minute: 500
+    api_calls_per_day: 50000
+    tokens_per_request: 16000
+    tokens_per_day: 2000000
+    concurrent_tasks: 100
+  zone_access:
+    red: false
+    yellow: true
+    green: true
 
-models:
-  routing_strategy: "task_class_router"
-  task_classes:
-    coordination:
-      provider_priority: ["anthropic", "openai"]
-      model_priority: ["claude-4-sonnet", "gpt-5-mini"]
-      temperature: 0.3
-      top_p: 0.85
-      max_output_tokens: 4000
+business:
+  metrics:
+    primary_kpi: "routing_accuracy"
+    secondary_kpis:
+      - "first_time_success_rate"
+      - "average_routing_latency"
+      - "agent_utilization"
+      - "task_completion_rate"
+  decision_matrix:
+    revenue_weight: 0.15
+    cost_weight: 0.20
+    time_weight: 0.35
+    risk_weight: 0.15
+    customer_impact_weight: 0.15
+  time_blocks:
+    1_minute: "Simple single-agent routing"
+    5_minute: "Multi-step decomposition"
+    10_minute: "Complex parallel routing"
+    30_minute: "Cross-domain coordination"
+  cost_center: "PLATFORM-ORCH-002"
+  department: "Platform Engineering"
+  team: "Orchestration"
 
-tools:
-  primary_tools:
-    - name: "task_decomposer"
-      description: "Break complex tasks into subtasks"
-      output:
-        subtasks: "list of atomic tasks"
-        dependencies: "task dependency graph"
-        parallel_groups: "tasks that can run in parallel"
-    - name: "agent_router"
-      description: "Route task to best agent"
-      output:
-        agent: "selected agent"
-        confidence: "0-100%"
-        alternatives: "backup agents"
-        reasoning: "why this agent"
-    - name: "workflow_builder"
-      description: "Create multi-agent workflows"
-      output:
-        workflow: "ordered list of agent tasks"
-        parallelization: "what can run together"
-        estimated_time: "total time estimate"
-        estimated_cost: "total cost estimate"
-    - name: "status_tracker"
-      description: "Track workflow progress"
+# Task Distribution Algorithms
+task_distribution:
+  algorithms:
+    round_robin:
+      description: "Distribute tasks evenly across available agents"
+      use_when: "Homogeneous tasks, balanced agent pool"
+      weight_factor: 1.0
+    weighted_round_robin:
+      description: "Distribute based on agent capacity weights"
+      use_when: "Varying agent capacities"
+      weight_factor: "agent.capacity_score"
+    least_connections:
+      description: "Route to agent with fewest active tasks"
+      use_when: "Variable task duration"
+      weight_factor: "1 / active_task_count"
+    capability_match:
+      description: "Route based on capability alignment score"
+      use_when: "Specialized tasks"
+      weight_factor: "capability_match_score * 2.0"
+    performance_based:
+      description: "Route based on historical performance"
+      use_when: "Quality-critical tasks"
+      weight_factor: "historical_success_rate * 1.5"
+    hybrid:
+      description: "Combine multiple strategies"
+      use_when: "Complex routing decisions"
+      components:
+        - algorithm: "capability_match"
+          weight: 0.4
+        - algorithm: "performance_based"
+          weight: 0.3
+        - algorithm: "least_connections"
+          weight: 0.3
+  default_algorithm: "hybrid"
+  fallback_algorithm: "round_robin"
 
+# Agent Routing Rules
 routing_rules:
-  legal_tasks:
-    motion_drafting: "agent.legal.attorney.v1"
-    legal_research: "agent.legal.research.v1"
-    document_review: "agent.legal.discovery.v1"
-    privilege_check: "agent.legal.privilege.v1"
-    exhibit_prep: "agent.legal.evidence.v1"
-    timeline_creation: "agent.legal.timeline.v1"
-  development_tasks:
-    ui_component: "agent.design.uiux.v1"
-    feature_build: "agent.engineering.product_developer.v1"
-    integration: "agent.engineering.plumber.v1"
-    architecture: "agent.engineering.architecture.v1"
-    code_review: "agent.engineering.code_analysis.v1"
-    test_writing: "agent.qa.test.v1"
-    optimization: "agent.engineering.performance.v1"
-    deployment: "agent.devops.lead.v1"
+  legal_domain:
+    motion_drafting:
+      primary: "agent.legal.attorney.v1"
+      fallback: "agent.legal.research.v1"
+      priority_boost: 1.2
+    legal_research:
+      primary: "agent.legal.research.v1"
+      fallback: "agent.legal.attorney.v1"
+    document_review:
+      primary: "agent.legal.discovery.v1"
+      parallel_agents: ["agent.legal.privilege.v1"]
+    privilege_check:
+      primary: "agent.legal.privilege.v1"
+      required: true
+      blocking: true
+    exhibit_prep:
+      primary: "agent.legal.evidence.v1"
+    timeline_creation:
+      primary: "agent.legal.timeline.v1"
+  engineering_domain:
+    ui_component:
+      primary: "agent.design.uiux.v1"
+      handoff_to: "agent.engineering.product_developer.v1"
+    feature_build:
+      primary: "agent.engineering.product_developer.v1"
+      parallel_agents: ["agent.qa.test.v1"]
+    integration:
+      primary: "agent.engineering.plumber.v1"
+    architecture:
+      primary: "agent.engineering.architecture.v1"
+      review_required: true
+    code_review:
+      primary: "agent.engineering.code_analysis.v1"
+      blocking: true
+    test_writing:
+      primary: "agent.qa.test.v1"
+    optimization:
+      primary: "agent.engineering.performance.v1"
+    deployment:
+      primary: "agent.devops.lead.v1"
+      approval_required: true
 
+# Orchestration Modes
 orchestration_modes:
   single_agent:
     description: "Route to single best agent"
     use_when: "Simple, focused tasks"
+    max_agents: 1
+    timeout_seconds: 300
   parallel_swarm:
     description: "Multiple agents work simultaneously"
     use_when: "Independent subtasks that can run together"
     max_parallel: 5
+    join_strategy: "wait_all"
+    timeout_seconds: 600
   sequential_pipeline:
     description: "Agents work in sequence, output feeds next"
     use_when: "Tasks with dependencies"
+    max_steps: 10
+    pass_context: true
+    timeout_seconds: 900
+  hierarchical:
+    description: "Manager delegates to workers"
+    use_when: "Complex tasks requiring supervision"
+    levels: 2
+    timeout_seconds: 1200
   hybrid:
     description: "Mix of parallel and sequential"
     use_when: "Complex multi-step workflows"
     default: true
+    adaptive: true
+    timeout_seconds: 1800
+
+memory:
+  type: "persistent"
+  retention: "7_days"
+  storage: "supabase_tasks"
+  vector_dimensions: 1536
+  max_tokens: 16000
+  indexing: "hnsw"
+  retrieval_strategy: "similarity"
+  chunking:
+    strategy: "fixed"
+    size: 256
+    overlap: 32
+  encryption:
+    at_rest: true
+    in_transit: true
+    algorithm: "aes-256-gcm"
+
+reasoning:
+  model: "task_router"
+  depth: 3
+  multi_hop: true
+  confidence_threshold: 0.80
+  fallback_to_traditional: true
+  llm_settings:
+    temperature: 0.3
+    max_tokens: 8000
+    top_p: 0.85
+    frequency_penalty: 0.1
+  chain_of_thought:
+    enabled: true
+    format: "json"
+    visible_to_user: false
+  planning:
+    enabled: true
+    max_steps: 20
+    revision_allowed: true
+
+mcp_servers:
+  redis:
+    transport: "stdio"
+    priority: "critical"
+    command: "npx"
+    args: ["@agentos/mcp-redis"]
+    capabilities:
+      - "task_queue"
+      - "priority_queue"
+      - "distributed_locking"
+    connection_env: "REDIS_URL"
+  supabase:
+    transport: "stdio"
+    priority: "high"
+    command: "npx"
+    args: ["@agentos/mcp-supabase"]
+    capabilities:
+      - "task_state"
+      - "agent_registry"
+      - "routing_history"
+    token_env: "SUPABASE_SERVICE_KEY"
+
+tools:
+  primary_tools:
+    - name: "task_decomposer"
+      description: "Break complex tasks into atomic subtasks"
+      input:
+        task_description: "string"
+        constraints: "object"
+        context: "object"
+      output:
+        subtasks: "list of atomic tasks"
+        dependencies: "task dependency graph"
+        parallel_groups: "tasks that can run in parallel"
+        estimated_complexity: "1-10 score"
+    - name: "agent_router"
+      description: "Route task to optimal agent"
+      input:
+        task: "object"
+        agent_pool: "list of agent IDs"
+        constraints: "object"
+      output:
+        selected_agent: "agent ID"
+        confidence: "0-100%"
+        alternatives: "ranked list of backup agents"
+        reasoning: "explanation of selection"
+    - name: "priority_assigner"
+      description: "Assign priority based on task analysis"
+      input:
+        task: "object"
+        context: "object"
+        urgency_signals: "list"
+      output:
+        priority: "1-10"
+        sla_deadline: "ISO timestamp"
+        escalation_path: "list of contacts"
+    - name: "status_tracker"
+      description: "Track task progress across agents"
+      input:
+        task_ids: "list of task IDs"
+      output:
+        statuses: "map of task ID to status"
+        progress_percent: "0-100"
+        blockers: "list of blocking issues"
+  secondary_tools:
+    - "dependency_resolver"
+    - "load_balancer"
+    - "escalation_manager"
+    - "capacity_planner"
+
+safety:
+  guardrails:
+    financial_limit_enforcement: true
+    rate_limiting: true
+    content_moderation: false
+  emergency_controls:
+    abort_command: "ABORT_ROUTING"
+    pause_command: "PAUSE_DISPATCH"
+    kill_switch_enabled: true
+  circuit_breaker:
+    enabled: true
+    failure_threshold: 5
+    reset_timeout_seconds: 30
+
+observability:
+  logging:
+    level: "info"
+    format: "json"
+    redact_pii: true
+  metrics:
+    enabled: true
+    provider: "prometheus"
+    custom_metrics:
+      - name: "tasks_routed_total"
+        type: "counter"
+        labels: ["agent_type", "priority", "status"]
+      - name: "routing_decision_seconds"
+        type: "histogram"
+        labels: ["complexity"]
+      - name: "agent_queue_depth"
+        type: "gauge"
+        labels: ["agent_id"]
+  tracing:
+    enabled: true
+    provider: "otel"
+    sample_rate: 0.2
+
+context:
+  system_prompt: |
+    You are the Task Coordinator Agent, the intelligent routing layer for AgentOS.
+    Your role is to analyze incoming tasks and route them to the optimal agent(s).
+
+    CORE RESPONSIBILITIES:
+    1. TASK ANALYSIS: Understand what the task requires and its constraints
+    2. DECOMPOSITION: Break complex tasks into atomic, actionable subtasks
+    3. AGENT SELECTION: Match task requirements to agent capabilities
+    4. PRIORITY ASSIGNMENT: Determine urgency and assign appropriate priority
+    5. DISPATCH: Route tasks with optimal load balancing
+    6. TRACKING: Monitor progress and handle escalations
+
+    ROUTING PRINCIPLES:
+    - Always select the most capable available agent
+    - Consider agent current load and historical performance
+    - Identify parallelizable subtasks for efficiency
+    - Respect dependencies and required sequencing
+    - Escalate when confidence is low or errors occur
+
+    Available agent pools by domain are defined in routing_rules.
+    Use the task_distribution algorithms to balance load effectively.
+  instructions:
+    - "Analyze task requirements before routing"
+    - "Decompose complex tasks into atomic subtasks"
+    - "Select agents based on capability match and availability"
+    - "Assign priorities based on urgency and business impact"
+    - "Monitor task progress and escalate blockers"
+    - "Log all routing decisions for audit"
+
+evals:
+  enabled: true
+  suites:
+    - "task_routing_accuracy"
+    - "decomposition_quality"
+    - "load_balancing"
+  metrics:
+    accuracy_threshold: 0.95
+    latency_p99_ms: 200
+    cost_per_task_max: 0.02
+  regression:
+    enabled: true
+    max_regression_percent: 3
 
 activation:
   keyboard_shortcut: "Cmd+Shift+C"
@@ -130,20 +429,10 @@ activation:
   startup_message: |
     Task Coordinator ready - Your command center.
 
-    Available Agents:
-    Legal: Attorney (A), Research (R), Discovery (D), Privilege (P), Evidence (E), Timeline (T)
-    Builder: UIUX (U), Product (F), Plumber (I), Architecture (W), Code (Q), Test (X), Perf (Y), DevOps (O)
+    Available Domains:
+    - Legal: Attorney, Research, Discovery, Privilege, Evidence, Timeline
+    - Engineering: UIUX, Product, Plumber, Architecture, Code, Test, Perf, DevOps
 
-    What do you need done?
+    Routing modes: single | parallel | sequential | hierarchical | hybrid
 
-business:
-  efficiency:
-    routing_accuracy: ">95%"
-    first_time_success: ">90%"
-    average_routing_time: "<2s"
-  cost:
-    routing_overhead: "$0.01 per task"
-    optimization_savings: "20% cost reduction"
-  quality:
-    task_completion_rate: ">98%"
-    on_time_delivery: ">95%"
+    What task can I route for you?

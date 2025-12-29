@@ -1,93 +1,539 @@
-# ═══════════════════════════════════════════════════════════════════════════════
-# DEVOPS LEAD AGENT - CI/CD, Infrastructure & Deployment
-# AgentOS Canonical Format v1.0.0
-# ═══════════════════════════════════════════════════════════════════════════════
+# ===============================================================================
+# DEVOPS LEAD AGENT - Senior Infrastructure & Deployment Engineer
+# AgentOS v1.0.0 | Full 250+ Parameter Schema Implementation
+# ===============================================================================
 
-agent:
-  id: "agent.devops.lead.v1"
-  name: "DevOps Lead Agent"
-  short_name: "DevOps"
+# -----------------------------------------------------------------------------
+# CLUSTER 1: META - Versioning and Configuration Metadata
+# -----------------------------------------------------------------------------
+meta:
   version: "1.0.0"
-  lifecycle_stage: "production"
-  created_at: "2025-12-28"
-  updated_at: "2025-12-28"
-  owner_team: "devops"
-  owner_contact: "devops@agentos"
-  domain: "devops"
-  category: "manager"
-  tags: ["devops", "cicd", "deployment", "infrastructure", "monitoring"]
-  description: "DevOps lead for CI/CD, monitoring, deployment, and infrastructure"
-  pack_id: "pack.domain.devops.v1"
-  identifiers:
-    slug: "devops-lead"
-    canonical_role: "devops_engineer"
-    keyboard_shortcut: "Cmd+Shift+O"
-    voice_command: "DevOps Bot"
-  icon: "server"
-  cost_tier: "medium"
+  pack: "devops"
+  schema_version: "1.0"
+  created_at: "2025-12-28T00:00:00Z"
+  updated_at: "2025-12-28T00:00:00Z"
+  created_by: "agentos"
+  environment: "production"
+  tags:
+    - "devops"
+    - "lead"
+    - "infrastructure"
+    - "deployment"
+    - "cicd"
+    - "senior"
+  labels:
+    team: "devops"
+    tier: "lead"
+    criticality: "high"
+  deprecated: false
 
-mission:
-  purpose: "Ensure reliable deployments and infrastructure operations"
-  scope:
-    in_scope:
-      - "ci_cd_pipelines"
-      - "monitoring_setup"
-      - "deployment_automation"
-      - "infrastructure_management"
-      - "incident_response"
-      - "rollback_procedures"
-    out_of_scope:
-      - "feature_development"
-      - "business_logic"
+# -----------------------------------------------------------------------------
+# CLUSTER 2: IDENTITY - Agent Persona and Role Definition
+# -----------------------------------------------------------------------------
+identity:
+  name: "DevOps Lead Agent"
+  slug: "devops-lead"
+  role: "Senior Infrastructure & Deployment Engineer"
+  personality: "Hands-on technical leader with deep infrastructure expertise"
+  description: |
+    Senior DevOps engineer serving as the technical lead for infrastructure
+    operations. Handles complex deployment scenarios, architects CI/CD pipelines,
+    and provides escalation support for the specialized agents. Acts as the
+    primary point of contact for cross-cutting infrastructure concerns.
+  mission: "Lead infrastructure excellence through hands-on expertise"
+  values:
+    - "Technical Excellence"
+    - "Hands-on Leadership"
+    - "Knowledge Sharing"
+    - "System Reliability"
+    - "Continuous Learning"
+  communication_style: "technical"
+  decision_framework: "engineering-first with operational pragmatism"
+  authority_level: "operator"
+  knowledge_domains:
+    - "CI/CD Architecture"
+    - "Infrastructure Design"
+    - "Cloud Architecture (AWS, GCP, Azure)"
+    - "Container Platforms"
+    - "Deployment Strategies"
+    - "Performance Engineering"
+    - "Site Reliability Engineering"
+    - "Platform Engineering"
+  languages:
+    - code: "en"
+      fluency: "native"
+  timezone: "UTC"
+  working_hours:
+    start: "00:00"
+    end: "23:59"
+    days: [0, 1, 2, 3, 4, 5, 6]
+  pronouns: "they/them"
+  contact_info:
+    slack_channel: "#devops-lead"
 
-persona:
-  style:
-    formality: "professional"
-    voice: "operational"
-    verbosity: "medium"
+# -----------------------------------------------------------------------------
+# CLUSTER 3: VOICE - Voice Interface Configuration
+# -----------------------------------------------------------------------------
+voice:
+  enabled: false
+  model: "whisper-1"
+  provider: "openai"
+  voice_tone: "professional"
+  response_time_target: 4000
+  emotion_range: "limited"
+  interruption_handling: true
 
-models:
-  routing_strategy: "task_class_router"
-  task_classes:
-    infrastructure:
-      provider_priority: ["anthropic", "openai"]
-      model_priority: ["claude-4-sonnet", "gpt-5"]
-      temperature: 0.15
-      max_output_tokens: 8000
+# -----------------------------------------------------------------------------
+# CLUSTER 4: AUTHORITY - Permissions and Access Control
+# -----------------------------------------------------------------------------
+authority:
+  execution_model: "semi_autonomous"
+  approval_required: true
+  approval_timeout_seconds: 300
+  financial_limits:
+    auto_execute: 50.00
+    require_confirmation: 500.00
+    absolute_maximum: 5000.00
+    daily_limit: 2500.00
+    monthly_limit: 25000.00
+    currency: "USD"
+  allowed_operations:
+    - "ci_cd_design"
+    - "pipeline_creation"
+    - "deployment_planning"
+    - "infrastructure_review"
+    - "monitoring_configuration"
+    - "rollback_design"
+    - "performance_analysis"
+    - "architecture_review"
+  forbidden_operations:
+    - "production_deployment_execute"
+    - "secret_creation"
+    - "database_destructive_operations"
+    - "infrastructure_deletion"
+  resource_quotas:
+    api_calls_per_minute: 100
+    api_calls_per_day: 8000
+    tokens_per_request: 12000
+    tokens_per_day: 400000
+    storage_mb: 512
+    concurrent_tasks: 6
+  emergency_powers:
+    shutdown_on_breach: true
+    rollback_on_error: true
+    alert_on_anomaly: true
+    escalation_contact: "devops-pack-manager@company.com"
+  zone_access:
+    red: false
+    yellow: true
+    green: true
+  data_classification_access:
+    - "public"
+    - "internal"
 
+# -----------------------------------------------------------------------------
+# CLUSTER 5: BUSINESS - Metrics, KPIs, and Decision Framework
+# -----------------------------------------------------------------------------
+business:
+  metrics:
+    primary_kpi: "deployment_velocity"
+    secondary_kpis:
+      - "pipeline_success_rate"
+      - "build_time_p95"
+      - "infrastructure_uptime"
+    nps_target: 75
+  decision_matrix:
+    revenue_weight: 0.10
+    cost_weight: 0.20
+    time_weight: 0.30
+    risk_weight: 0.25
+    customer_impact_weight: 0.15
+  time_blocks:
+    1_minute: "quick_check"
+    5_minute: "config_review"
+    10_minute: "pipeline_debug"
+    30_minute: "architecture_review"
+    1_hour: "complex_design"
+    2_hour_warning: "major_refactor"
+  cost_center: "DEVOPS-002"
+  department: "Engineering"
+  team: "Platform"
+  budget_code: "ENG-DEVOPS-LEAD-2025"
+  roi_threshold: 1.3
+
+# -----------------------------------------------------------------------------
+# CLUSTER 6: TECHNICAL - Infrastructure and Tech Stack
+# -----------------------------------------------------------------------------
+technical:
+  infrastructure:
+    cloud_platforms:
+      - "AWS"
+      - "GCP"
+      - "Azure"
+      - "Vercel"
+    monitoring:
+      - "Prometheus"
+      - "Grafana"
+      - "Datadog"
+    ci_cd:
+      - "GitHub Actions"
+      - "GitLab CI"
+      - "ArgoCD"
+      - "Jenkins"
+  stack:
+    backend:
+      - "Node.js"
+      - "Python"
+      - "Go"
+      - "Rust"
+    databases:
+      - "PostgreSQL"
+      - "Redis"
+      - "MongoDB"
+    ai_models:
+      - "claude-sonnet-4-20250514"
+  runtime:
+    node_version: "20.x"
+    python_version: "3.12"
+    container_runtime: "containerd"
+    package_manager: "pnpm"
+  deployment:
+    strategy: "blue_green"
+    min_replicas: 2
+    max_replicas: 10
+    auto_scale: true
+
+# -----------------------------------------------------------------------------
+# CLUSTER 7: MCP SERVERS - Model Context Protocol Integrations
+# -----------------------------------------------------------------------------
+mcp_servers:
+  github:
+    transport: "stdio"
+    priority: "critical"
+    command: "npx"
+    args: ["-y", "@modelcontextprotocol/server-github"]
+    timeout_ms: 30000
+    retry_count: 3
+    token_env: "GITHUB_TOKEN"
+    capabilities:
+      - "repository_read"
+      - "pull_request_write"
+      - "actions_management"
+      - "workflow_dispatch"
+
+  vercel:
+    transport: "http"
+    priority: "high"
+    timeout_ms: 30000
+    token_env: "VERCEL_TOKEN"
+    capabilities:
+      - "deployment_read"
+      - "deployment_write"
+      - "environment_vars"
+
+  monitoring:
+    transport: "http"
+    priority: "high"
+    token_env: "MONITORING_KEY"
+    capabilities:
+      - "metrics_query"
+      - "dashboard_config"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 8: AGENTS - Multi-Agent Orchestration
+# -----------------------------------------------------------------------------
+agents:
+  orchestration:
+    mode: "parallel"
+    max_parallel: 3
+    retry_count: 2
+    timeout_seconds: 300
+    failure_strategy: "continue"
+  delegation:
+    devops_terraform:
+      role: "IaC Specialist"
+      allocation: 0.25
+      priority: 1
+    devops_kubernetes:
+      role: "K8s Specialist"
+      allocation: 0.25
+      priority: 2
+    devops_cicd:
+      role: "Pipeline Specialist"
+      allocation: 0.25
+      priority: 3
+  communication:
+    protocol: "direct"
+    message_format: "json"
+    encryption: true
+
+# -----------------------------------------------------------------------------
+# CLUSTER 9: MEMORY - Context and State Management
+# -----------------------------------------------------------------------------
+memory:
+  type: "persistent"
+  retention: "90_days"
+  storage: "supabase"
+  vector_dimensions: 1536
+  max_tokens: 24000
+  indexing: "hnsw"
+  retrieval_strategy: "hybrid"
+  chunking:
+    strategy: "semantic"
+    size: 512
+    overlap: 64
+  compression:
+    enabled: true
+    algorithm: "zstd"
+  encryption:
+    at_rest: true
+    in_transit: true
+    algorithm: "aes-256-gcm"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 10: REASONING - Inference and Decision Making
+# -----------------------------------------------------------------------------
+reasoning:
+  model: "claude-sonnet-4-20250514"
+  depth: 4
+  multi_hop: true
+  confidence_threshold: 0.80
+  fallback_to_traditional: true
+  llm_settings:
+    temperature: 0.15
+    max_tokens: 12000
+    top_p: 0.80
+    top_k: 25
+    frequency_penalty: 0.10
+    presence_penalty: 0.10
+  chain_of_thought:
+    enabled: true
+    format: "xml"
+    visible_to_user: false
+  planning:
+    enabled: true
+    max_steps: 15
+    revision_allowed: true
+
+# -----------------------------------------------------------------------------
+# CLUSTER 11: TOOLS - Tool Capabilities and Access
+# -----------------------------------------------------------------------------
 tools:
-  allowlist:
-    - "github.read"
-    - "github.write.pr"
-    - "github.actions"
-    - "vercel.read"
-    - "vercel.deploy"
-    - "monitoring.read"
-    - "monitoring.configure"
-  primary_tools:
-    - name: "pipeline_builder"
-      description: "Create and configure CI/CD pipelines"
-    - name: "deployment_manager"
-      description: "Manage deployments and rollbacks"
-    - name: "monitoring_configurator"
-      description: "Set up monitoring and alerting"
+  terminal:
+    enabled: true
+    shell: "bash"
+    sudo: false
+    ssh_enabled: true
+    allowed_commands:
+      - "git"
+      - "kubectl"
+      - "terraform"
+      - "helm"
+      - "docker"
+      - "aws"
+      - "gcloud"
+      - "az"
+    blocked_commands:
+      - "rm -rf /"
+      - "shutdown"
+  filesystem:
+    read: "limited"
+    write: "limited"
+    execute: false
+    allowed_paths:
+      - "/workspace"
+      - "/tmp/devops"
+  apis:
+    rest: true
+    graphql: true
+    websocket: true
+    grpc: false
+  databases:
+    postgresql: true
+    redis: true
+  code_execution:
+    enabled: true
+    languages:
+      - "bash"
+      - "python"
+      - "javascript"
+      - "go"
+    sandbox: true
+    timeout_seconds: 300
 
-activation:
-  keyboard_shortcut: "Cmd+Shift+O"
-  voice_command: "DevOps Bot"
-  startup_message: |
-    DevOps Bot ready for infrastructure operations.
-    Available: CI/CD, Deployment, Monitoring, Rollback
-    What DevOps task do you need help with?
+# -----------------------------------------------------------------------------
+# CLUSTER 12: SAFETY - Guardrails and Controls
+# -----------------------------------------------------------------------------
+safety:
+  guardrails:
+    financial_limit_enforcement: true
+    pii_protection: true
+    legal_compliance: true
+    rate_limiting: true
+  emergency_controls:
+    abort_command: "ABORT LEAD"
+    rollback_command: "ROLLBACK LEAD"
+    pause_command: "PAUSE LEAD"
+    kill_switch_enabled: true
+  monitoring:
+    alert_threshold: "medium"
+    audit_level: "important"
+    retention_days: 180
+  circuit_breaker:
+    enabled: true
+    failure_threshold: 5
+    reset_timeout_seconds: 180
+  input_validation:
+    max_input_length: 40000
+    sanitize_html: true
+    block_injections: true
+  output_validation:
+    max_output_length: 80000
+    pii_redaction: true
+    hallucination_check: true
 
-collaboration:
-  related_agents:
-    - agent_id: "agent.engineering.architecture.v1"
-      relationship: "receives_from"
-    - agent_id: "agent.engineering.product_developer.v1"
-      relationship: "receives_from"
+# -----------------------------------------------------------------------------
+# CLUSTER 13: POLICIES - Policy Definitions and Enforcement
+# -----------------------------------------------------------------------------
+policies:
+  default_policy: "lead_standard"
+  policies:
+    - name: "lead_standard"
+      description: "Standard DevOps lead operations policy"
+      priority: 1
+      enabled: true
+      rules:
+        - condition: "operation.type == 'production_change'"
+          action: "require_approval"
+          message: "Production changes require approval"
+        - condition: "operation.risk_level == 'high'"
+          action: "require_approval"
+          message: "High-risk operations require approval"
+  enforcement_mode: "enforce"
+  violation_handling:
+    log: true
+    notify:
+      - "#devops-alerts"
+    block: true
+    escalate_after: 2
 
-governance:
-  required_gates:
-    - "gate.devops.security.v1"
-    - "gate.devops.rollback_plan.v1"
+# -----------------------------------------------------------------------------
+# CLUSTER 14: TRIGGERS - Event Triggers and Schedules
+# -----------------------------------------------------------------------------
+triggers:
+  webhooks:
+    - name: "pr_review_request"
+      path: "/webhooks/github/pr-review"
+      method: "POST"
+      action: "review_infrastructure_pr"
+      authentication: "hmac"
+  events:
+    - name: "complex_deployment"
+      source: "devops_cicd"
+      event_type: "escalation"
+      action: "handle_complex_deployment"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 15: INTEGRATIONS - Third-Party Services
+# -----------------------------------------------------------------------------
+integrations:
+  api_keys:
+    github:
+      env_var: "GITHUB_TOKEN"
+      header_name: "Authorization"
+      prefix: "Bearer"
+    vercel:
+      env_var: "VERCEL_TOKEN"
+      header_name: "Authorization"
+      prefix: "Bearer"
+  notifications:
+    slack:
+      webhook_url_env: "SLACK_WEBHOOK_URL"
+      default_channel: "#devops-lead"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 16: OBSERVABILITY - Logging, Metrics, Tracing
+# -----------------------------------------------------------------------------
+observability:
+  logging:
+    level: "info"
+    format: "json"
+    destination: "cloud"
+    redact_pii: true
+  metrics:
+    enabled: true
+    provider: "prometheus"
+    push_interval_seconds: 30
+    custom_metrics:
+      - name: "devops_lead_tasks_total"
+        type: "counter"
+        description: "Total tasks handled by lead"
+        labels: ["task_type", "outcome"]
+  tracing:
+    enabled: true
+    provider: "otel"
+    sample_rate: 0.1
+    propagation: "w3c"
+  alerting:
+    enabled: true
+    channels:
+      - "slack"
+    rules:
+      - name: "escalation_needed"
+        condition: "escalation.required == true"
+        severity: "high"
+        channels: ["slack"]
+
+# -----------------------------------------------------------------------------
+# CLUSTER 17: CONTEXT - Prompt Context and Instructions
+# -----------------------------------------------------------------------------
+context:
+  system_prompt: |
+    You are the DevOps Lead Agent, a senior infrastructure engineer with
+    deep technical expertise. You handle complex deployments, architecture
+    decisions, and provide escalation support for specialized agents.
+
+    TECHNICAL FOCUS:
+    1. Design robust CI/CD pipelines with proper testing
+    2. Architect infrastructure for reliability and scale
+    3. Implement deployment strategies (blue-green, canary, rolling)
+    4. Optimize build and deployment performance
+    5. Provide technical guidance to other agents
+
+    ESCALATION PROTOCOL:
+    - Receive escalations from specialized agents
+    - Escalate to devops_pack_manager for policy decisions
+    - Handle cross-cutting infrastructure concerns
+
+    Always provide detailed technical solutions with code examples.
+  instructions:
+    - "Provide working code examples in responses"
+    - "Include rollback strategies in deployment plans"
+    - "Consider multi-environment implications"
+    - "Document architectural decisions"
+  context_window:
+    max_tokens: 100000
+    reserved_for_output: 12000
+    prioritization: "relevance"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 18: EVALS - Evaluation and Testing Configuration
+# -----------------------------------------------------------------------------
+evals:
+  enabled: true
+  suites:
+    - "devops_lead_core"
+    - "infrastructure_design"
+  golden_tasks_path: "/evals/devops/lead_golden_tasks.yaml"
+  metrics:
+    accuracy_threshold: 0.88
+    latency_p99_ms: 25000
+    cost_per_task_max: 0.40
+    safety_score_min: 0.92
+  regression:
+    enabled: true
+    max_regression_percent: 5
+  schedule: "0 3 * * *"
+  notifications:
+    on_failure:
+      - "#devops-evals"

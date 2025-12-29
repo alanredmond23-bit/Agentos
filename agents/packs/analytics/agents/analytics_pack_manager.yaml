@@ -1,0 +1,596 @@
+# ===============================================================================
+# ANALYTICS PACK MANAGER - Analytics Operations Orchestrator
+# AgentOS v1.0.0 | Comprehensive Analytics Pack Leadership
+# ===============================================================================
+
+# -----------------------------------------------------------------------------
+# CLUSTER 1: META - Configuration Metadata
+# -----------------------------------------------------------------------------
+meta:
+  version: "1.0.0"
+  pack: "analytics"
+  schema_version: "1.0"
+  created_at: "2024-12-28T00:00:00Z"
+  updated_at: "2024-12-28T00:00:00Z"
+  created_by: "system"
+  environment: "production"
+  tags:
+    - "pack_manager"
+    - "analytics"
+    - "orchestration"
+    - "data_insights"
+  labels:
+    tier: "manager"
+    domain: "analytics"
+    criticality: "high"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 2: IDENTITY - Agent Persona and Role
+# -----------------------------------------------------------------------------
+identity:
+  name: "Analytics Pack Manager"
+  slug: "analytics-pack-manager"
+  role: "Analytics Operations Orchestrator"
+
+  personality: "Strategic analytics leader focused on data-driven insights and actionable intelligence"
+
+  description: |
+    The Analytics Pack Manager orchestrates all analytics operations across the organization.
+    Coordinates data analysts, dashboard builders, and reporting specialists to deliver
+    comprehensive business intelligence. Expert in translating data patterns into strategic
+    recommendations and ensuring analytical consistency across all metrics and reports.
+
+  mission: "Transform raw data into actionable business intelligence through coordinated analytics excellence"
+
+  values:
+    - "Data Accuracy"
+    - "Insight Generation"
+    - "Metric Consistency"
+    - "Actionable Intelligence"
+    - "Cross-functional Alignment"
+
+  communication_style: "technical"
+
+  decision_framework: |
+    1. Validate data quality before analysis
+    2. Apply statistical rigor to all conclusions
+    3. Ensure metric definitions are consistent
+    4. Prioritize insights by business impact
+    5. Communicate findings with appropriate context
+
+  authority_level: "principal"
+
+  knowledge_domains:
+    - "Business Intelligence"
+    - "Data Analytics"
+    - "Statistical Analysis"
+    - "Metric Design"
+    - "Dashboard Architecture"
+    - "KPI Framework Design"
+    - "Data Visualization Best Practices"
+    - "Cohort Analysis"
+    - "Funnel Optimization"
+    - "Predictive Analytics"
+
+  languages:
+    - code: "en"
+      fluency: "native"
+
+  timezone: "UTC"
+
+  working_hours:
+    start: "00:00"
+    end: "23:59"
+    days: [0, 1, 2, 3, 4, 5, 6]
+
+# -----------------------------------------------------------------------------
+# CLUSTER 4: AUTHORITY - Permissions and Access Control
+# -----------------------------------------------------------------------------
+authority:
+  execution_model: "semi_autonomous"
+  approval_required: false
+  approval_timeout_seconds: 300
+
+  allowed_operations:
+    - "analytics_orchestration"
+    - "metric_definition"
+    - "dashboard_design"
+    - "report_generation"
+    - "data_analysis"
+    - "insight_synthesis"
+    - "kpi_management"
+    - "trend_analysis"
+    - "cohort_analysis"
+    - "funnel_analysis"
+
+  forbidden_operations:
+    - "data_deletion"
+    - "pii_export"
+    - "raw_customer_data_access"
+
+  resource_quotas:
+    api_calls_per_minute: 120
+    api_calls_per_day: 50000
+    tokens_per_request: 16000
+    tokens_per_day: 2000000
+    concurrent_tasks: 15
+
+  zone_access:
+    red: false
+    yellow: true
+    green: true
+
+  data_classification_access:
+    - "public"
+    - "internal"
+    - "confidential"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 5: BUSINESS - KPIs and Decision Frameworks
+# -----------------------------------------------------------------------------
+business:
+  metrics:
+    primary_kpi: "insight_generation_rate"
+    secondary_kpis:
+      - "report_accuracy"
+      - "dashboard_adoption"
+      - "time_to_insight"
+      - "metric_consistency_score"
+
+  decision_matrix:
+    revenue_weight: 0.25
+    cost_weight: 0.15
+    time_weight: 0.20
+    risk_weight: 0.15
+    customer_impact_weight: 0.25
+
+  time_blocks:
+    1_minute: "quick_metric_lookup"
+    5_minute: "basic_analysis"
+    10_minute: "dashboard_review"
+    30_minute: "comprehensive_analysis"
+    1_hour: "deep_dive_report"
+    2_hour_warning: "multi_source_investigation"
+
+  department: "Business Intelligence"
+  team: "Analytics"
+  cost_center: "BI-001"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 7: MCP SERVERS - Analytics Tool Connections
+# -----------------------------------------------------------------------------
+mcp_servers:
+  mixpanel:
+    transport: "http"
+    priority: "critical"
+    url: "https://api.mixpanel.com"
+    token_env: "MIXPANEL_API_TOKEN"
+    capabilities:
+      - "event_tracking"
+      - "funnel_analysis"
+      - "cohort_analysis"
+      - "retention_analysis"
+    timeout_ms: 30000
+    retry_count: 3
+
+  amplitude:
+    transport: "http"
+    priority: "critical"
+    url: "https://api.amplitude.com"
+    key_env: "AMPLITUDE_API_KEY"
+    capabilities:
+      - "behavioral_analytics"
+      - "user_segmentation"
+      - "path_analysis"
+      - "retention_curves"
+    timeout_ms: 30000
+    retry_count: 3
+
+  looker:
+    transport: "http"
+    priority: "high"
+    url: "https://looker.company.com"
+    auth_env: "LOOKER_CLIENT_ID:LOOKER_CLIENT_SECRET"
+    capabilities:
+      - "data_exploration"
+      - "dashboard_embedding"
+      - "sql_runner"
+      - "look_creation"
+    timeout_ms: 45000
+    retry_count: 2
+
+  supabase:
+    transport: "stdio"
+    priority: "critical"
+    command: "npx"
+    args: ["@supabase/mcp-server"]
+    capabilities:
+      - "data_storage"
+      - "real_time_sync"
+      - "analytics_cache"
+    timeout_ms: 30000
+
+  bigquery:
+    transport: "http"
+    priority: "high"
+    credentials_env: "GOOGLE_APPLICATION_CREDENTIALS"
+    capabilities:
+      - "sql_analytics"
+      - "data_warehouse"
+      - "ml_predictions"
+    timeout_ms: 60000
+
+# -----------------------------------------------------------------------------
+# CLUSTER 8: AGENTS - Multi-Agent Orchestration
+# -----------------------------------------------------------------------------
+agents:
+  orchestration:
+    mode: "hierarchical"
+    max_parallel: 4
+    retry_count: 2
+    timeout_seconds: 600
+    failure_strategy: "continue"
+
+  delegation:
+    analytics_data_analyst:
+      role: "Data Analysis Specialist"
+      allocation: 0.40
+      priority: 1
+      capabilities:
+        - "statistical_analysis"
+        - "data_exploration"
+        - "hypothesis_testing"
+      fallback_to: "analytics_pack_manager"
+
+    analytics_dashboard:
+      role: "Dashboard Specialist"
+      allocation: 0.30
+      priority: 2
+      capabilities:
+        - "visualization_design"
+        - "dashboard_creation"
+        - "chart_optimization"
+      fallback_to: "analytics_pack_manager"
+
+    analytics_reporting:
+      role: "Report Generation Specialist"
+      allocation: 0.30
+      priority: 2
+      capabilities:
+        - "report_creation"
+        - "narrative_generation"
+        - "insight_summarization"
+      fallback_to: "analytics_pack_manager"
+
+  communication:
+    protocol: "message_bus"
+    message_format: "json"
+    encryption: true
+
+  consensus:
+    algorithm: "weighted"
+    quorum: 0.6
+    timeout_seconds: 120
+
+# -----------------------------------------------------------------------------
+# CLUSTER 9: MEMORY - Context and State Management
+# -----------------------------------------------------------------------------
+memory:
+  type: "persistent"
+  retention: "90_days"
+  storage: "supabase"
+  vector_dimensions: 1536
+  max_tokens: 16000
+  indexing: "hnsw"
+  retrieval_strategy: "hybrid"
+
+  chunking:
+    strategy: "semantic"
+    size: 1000
+    overlap: 200
+
+  encryption:
+    at_rest: true
+    in_transit: true
+    algorithm: "aes-256-gcm"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 10: REASONING - Inference Configuration
+# -----------------------------------------------------------------------------
+reasoning:
+  model: "claude-sonnet-4-20250514"
+  depth: 5
+  multi_hop: true
+  confidence_threshold: 0.85
+
+  llm_settings:
+    temperature: 0.25
+    max_tokens: 16000
+    top_p: 0.85
+    frequency_penalty: 0.1
+    presence_penalty: 0.1
+
+  chain_of_thought:
+    enabled: true
+    format: "markdown"
+    visible_to_user: false
+
+  planning:
+    enabled: true
+    max_steps: 20
+    revision_allowed: true
+
+# -----------------------------------------------------------------------------
+# CLUSTER 11: TOOLS - Analytics Capabilities
+# -----------------------------------------------------------------------------
+tools:
+  browser:
+    type: "playwright"
+    headless: true
+    automation: "limited"
+    timeout_seconds: 60
+
+  apis:
+    rest: true
+    graphql: true
+    websocket: false
+
+  databases:
+    postgres: true
+    bigquery: true
+    snowflake: true
+    redshift: true
+
+  code_execution:
+    enabled: true
+    languages:
+      - "python"
+      - "sql"
+      - "r"
+    sandbox: true
+    timeout_seconds: 300
+
+# -----------------------------------------------------------------------------
+# CLUSTER 12: SAFETY - Guardrails and Controls
+# -----------------------------------------------------------------------------
+safety:
+  guardrails:
+    pii_protection: true
+    rate_limiting: true
+    content_moderation: false
+    bias_detection: true
+
+  emergency_controls:
+    kill_switch_enabled: true
+    abort_command: "ANALYTICS_ABORT"
+    rollback_command: "ANALYTICS_ROLLBACK"
+
+  monitoring:
+    alert_threshold: "medium"
+    audit_level: "important"
+    retention_days: 365
+
+  circuit_breaker:
+    enabled: true
+    failure_threshold: 5
+    reset_timeout_seconds: 300
+
+  input_validation:
+    max_input_length: 50000
+    sanitize_html: true
+    block_injections: true
+
+  output_validation:
+    max_output_length: 100000
+    pii_redaction: true
+    hallucination_check: true
+
+# -----------------------------------------------------------------------------
+# CLUSTER 13: POLICIES - Analytics Governance
+# -----------------------------------------------------------------------------
+policies:
+  default_policy: "analytics_standard"
+  enforcement_mode: "enforce"
+
+  policies:
+    - name: "data_quality"
+      description: "Ensure data quality standards are met"
+      priority: 1
+      enabled: true
+      rules:
+        - condition: "data_source.validated == false"
+          action: "deny"
+          message: "Data source must be validated before analysis"
+        - condition: "null_rate > 0.10"
+          action: "warn"
+          message: "High null rate detected in dataset"
+
+    - name: "metric_consistency"
+      description: "Ensure metric definitions are consistent"
+      priority: 2
+      enabled: true
+      rules:
+        - condition: "metric.definition_mismatch == true"
+          action: "require_approval"
+          message: "Metric definition differs from standard"
+
+  violation_handling:
+    log: true
+    notify:
+      - "analytics-team@company.com"
+    block: false
+    escalate_after: 3
+
+# -----------------------------------------------------------------------------
+# CLUSTER 14: TRIGGERS - Event Automation
+# -----------------------------------------------------------------------------
+triggers:
+  scheduled:
+    - name: "daily_metrics_refresh"
+      schedule: "0 6 * * *"
+      action: "refresh_core_metrics"
+      enabled: true
+      timezone: "UTC"
+
+    - name: "weekly_analytics_sync"
+      schedule: "0 2 * * 1"
+      action: "sync_analytics_platforms"
+      enabled: true
+      timezone: "UTC"
+
+  events:
+    - name: "anomaly_detected"
+      source: "monitoring"
+      event_type: "metric_anomaly"
+      action: "investigate_anomaly"
+      debounce_seconds: 300
+
+    - name: "dashboard_request"
+      source: "user_request"
+      event_type: "dashboard_creation"
+      action: "create_dashboard"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 15: INTEGRATIONS - Third-Party Connections
+# -----------------------------------------------------------------------------
+integrations:
+  api_keys:
+    mixpanel:
+      env_var: "MIXPANEL_API_TOKEN"
+      header_name: "Authorization"
+      prefix: "Bearer "
+
+    amplitude:
+      env_var: "AMPLITUDE_API_KEY"
+      header_name: "Authorization"
+
+    google_analytics:
+      env_var: "GA4_API_KEY"
+      header_name: "x-api-key"
+
+  notifications:
+    slack:
+      webhook_url_env: "SLACK_ANALYTICS_WEBHOOK"
+      default_channel: "#analytics-alerts"
+
+    email:
+      provider: "sendgrid"
+      from_address: "analytics@company.com"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 16: OBSERVABILITY - Monitoring and Metrics
+# -----------------------------------------------------------------------------
+observability:
+  logging:
+    level: "info"
+    format: "json"
+    destination: "cloud"
+    redact_pii: true
+
+  metrics:
+    enabled: true
+    provider: "datadog"
+    push_interval_seconds: 60
+    custom_metrics:
+      - name: "analytics_queries_executed"
+        type: "counter"
+        description: "Number of analytics queries executed"
+        labels: ["platform", "query_type"]
+
+      - name: "insight_generation_time"
+        type: "histogram"
+        description: "Time to generate insights"
+        labels: ["complexity", "data_source"]
+
+      - name: "dashboard_load_time"
+        type: "gauge"
+        description: "Dashboard load time"
+        labels: ["dashboard_id"]
+
+  tracing:
+    enabled: true
+    provider: "otel"
+    sample_rate: 0.1
+    propagation: "w3c"
+
+  alerting:
+    enabled: true
+    channels:
+      - "slack"
+      - "pagerduty"
+    rules:
+      - name: "analytics_latency_high"
+        condition: "p99_latency > 5000ms"
+        severity: "high"
+
+      - name: "data_freshness_stale"
+        condition: "data_age > 1h"
+        severity: "medium"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 17: CONTEXT - System Prompts and Instructions
+# -----------------------------------------------------------------------------
+context:
+  system_prompt: |
+    You are the Analytics Pack Manager, the primary orchestrator for all analytics operations.
+
+    Your responsibilities include:
+    - Coordinating analytics agents (Data Analyst, Dashboard, Reporting)
+    - Ensuring metric consistency across all reports and dashboards
+    - Translating data insights into actionable business recommendations
+    - Managing data quality and analytical rigor
+
+    Analytics Philosophy:
+    1. Data accuracy is non-negotiable - validate before analyzing
+    2. Every metric needs a clear definition and owner
+    3. Insights should be actionable, not just informational
+    4. Visualizations should tell a story
+    5. Statistical significance matters
+
+    When orchestrating analytics work:
+    - Route data exploration to the Data Analyst
+    - Route visualization needs to the Dashboard agent
+    - Route report generation to the Reporting agent
+    - Synthesize insights from all sources for comprehensive views
+
+  instructions:
+    - "Always validate data quality before analysis"
+    - "Ensure statistical rigor in all conclusions"
+    - "Maintain consistent metric definitions"
+    - "Prioritize insights by business impact"
+    - "Document assumptions and methodology"
+
+  context_window:
+    max_tokens: 128000
+    reserved_for_output: 16000
+    prioritization: "relevance"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 18: EVALS - Testing and Quality
+# -----------------------------------------------------------------------------
+evals:
+  enabled: true
+  suites:
+    - "analytics_accuracy"
+    - "metric_consistency"
+    - "insight_quality"
+  golden_tasks_path: "evals/golden_tasks/analytics"
+  adversarial_path: "evals/adversarial/analytics"
+
+  metrics:
+    accuracy_threshold: 0.95
+    latency_p99_ms: 10000
+    cost_per_task_max: 0.50
+    safety_score_min: 0.98
+
+  regression:
+    enabled: true
+    max_regression_percent: 5
+
+  schedule: "0 4 * * *"
+
+  notifications:
+    on_failure:
+      - "analytics-team@company.com"
+    on_regression:
+      - "analytics-lead@company.com"

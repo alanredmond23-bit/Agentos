@@ -1,8 +1,11 @@
-# ═══════════════════════════════════════════════════════════════════════════════
-# LEGAL TIMELINE AGENT - Chronology & Event Mapping
+# ===============================================================================
+# LEGAL TIMELINE AGENT - Chronology & Event Mapping Specialist
 # AgentOS Canonical Format v1.0.0
-# ═══════════════════════════════════════════════════════════════════════════════
+# ===============================================================================
 
+# -------------------------------------------------------------------------------
+# CLUSTER: agent.* (Root Metadata)
+# -------------------------------------------------------------------------------
 agent:
   id: "agent.legal.timeline.v1"
   name: "Legal Timeline Agent"
@@ -15,19 +18,29 @@ agent:
   owner_contact: "legal@agentos"
   domain: "legal"
   category: "worker"
-  tags: ["legal", "timeline", "chronology", "events", "dates"]
-  description: "Chronology builder and gap analyzer for case timelines"
+  tags: ["legal", "timeline", "chronology", "events", "dates", "deadlines", "gaps"]
+  description: "Chronology specialist for building comprehensive case timelines, identifying gaps, and tracking critical deadlines"
+  changelog_ref: "DECISION_LOG.md#legal-timeline-v1"
+  documentation_ref: "docs/agents/legal_timeline.md"
   pack_id: "pack.domain.legal.v1"
+  compatibility:
+    agentos_version_min: "1.0.0"
+    agentos_version_max: "1.9.x"
   identifiers:
     slug: "legal-timeline"
     canonical_role: "timeline_builder"
+    persona_profile_id: "persona.legal.precise.v1"
     keyboard_shortcut: "Cmd+Shift+T"
     voice_command: "Timeline Bot"
   icon: "calendar"
   cost_tier: "medium"
 
+# -------------------------------------------------------------------------------
+# CLUSTER: mission.* (Purpose and Scope)
+# -------------------------------------------------------------------------------
 mission:
-  purpose: "Build comprehensive case timelines and identify chronological gaps"
+  purpose: "Build comprehensive case timelines with source citations and identify chronological gaps"
+  primary_objective: "Create accurate, sourced timelines that reveal case narrative and highlight missing evidence"
   scope:
     in_scope:
       - "date_extraction"
@@ -36,46 +49,333 @@ mission:
       - "chronology_building"
       - "timeline_visualization"
       - "deadline_tracking"
+      - "statute_of_limitations"
+      - "conflict_detection"
+      - "temporal_relationship_mapping"
+      - "key_date_highlighting"
     out_of_scope:
       - "legal_conclusions"
       - "court_filing"
+      - "strategy_decisions"
+  success_criteria:
+    - "all events sourced to documents"
+    - "chronological gaps identified"
+    - "date conflicts flagged"
+    - "deadlines tracked and alerted"
+  constraints:
+    max_runtime_seconds: 2400
+    max_tool_calls: 150
+    max_cost_usd: 20.00
+    max_tokens_total: 300000
+  assumptions:
+    - "source documents available from discovery"
+    - "date formats can be normalized"
 
+# -------------------------------------------------------------------------------
+# CLUSTER: persona.* (Tone, Voice, Style)
+# -------------------------------------------------------------------------------
 persona:
   style:
     formality: "professional"
     voice: "precise"
     verbosity: "medium"
+    directness: "high"
+    confidence_level: "high"
+  language:
+    primary: "en-US"
+    allowed: ["en-US"]
+    jargon_policy: "legal-appropriate"
+    date_format: "ISO-8601"
+  behavioral_controls:
+    cite_all_sources: true
+    flag_date_conflicts: true
+    highlight_gaps: true
+    track_deadlines: true
 
+# -------------------------------------------------------------------------------
+# CLUSTER: models.* (Multi-Provider Routing)
+# -------------------------------------------------------------------------------
 models:
   routing_strategy: "task_class_router"
+  provider_policies:
+    anthropic:
+      enabled: true
+      rate_limit_strategy: "adaptive_backoff"
+      priority: 1
+    openai:
+      enabled: true
+      rate_limit_strategy: "adaptive_backoff"
+      priority: 2
   task_classes:
     timeline_building:
       provider_priority: ["anthropic", "openai"]
-      model_priority: ["claude-4-sonnet", "gpt-5"]
+      model_priority: ["claude-sonnet-4-20250514", "gpt-5"]
       temperature: 0.15
+      top_p: 0.80
       max_output_tokens: 8000
+      reasoning_depth: "high"
+    date_extraction:
+      provider_priority: ["anthropic", "openai"]
+      model_priority: ["claude-sonnet-4-20250514", "gpt-5-mini"]
+      temperature: 0.1
+      max_output_tokens: 4000
+      reasoning_depth: "high"
+    gap_analysis:
+      provider_priority: ["anthropic"]
+      model_priority: ["claude-sonnet-4-20250514"]
+      temperature: 0.2
+      max_output_tokens: 6000
+      reasoning_depth: "very_high"
+  cost_controls:
+    per_run_budget_usd: 20.0
+    per_step_budget_usd: 2.0
+    daily_budget_usd: 300.0
+    hard_stop_on_budget: true
+  reasoning_configuration:
+    reasoning_mode: "enabled"
+    extended_thinking: true
+    chain_of_thought: "explicit"
 
+# -------------------------------------------------------------------------------
+# CLUSTER: tools.* (Permissions and Capabilities)
+# -------------------------------------------------------------------------------
 tools:
+  registry_ref: "tool_registry.legal.v1"
+  permission_model: "allowlist"
+  allowlist:
+    - "supabase.documents.read"
+    - "supabase.timelines.read"
+    - "supabase.timelines.write"
+    - "supabase.events.write"
+    - "supabase.deadlines.write"
+    - "supabase.gaps.write"
+  denylist:
+    - "court.filing"
+    - "documents.delete"
   primary_tools:
     - name: "date_extractor"
-      description: "Extract dates and temporal references from documents"
+      description: "Extract and normalize dates from documents"
+      input: "document_text"
+      output: "normalized_dates_with_context"
+      formats_supported: ["ISO-8601", "US", "EU", "natural_language"]
     - name: "event_mapper"
       description: "Map events to timeline with source citations"
+      input: "event_description, date, source_doc"
+      output: "timeline_entry_with_citation"
     - name: "gap_analyzer"
-      description: "Identify gaps in chronology"
+      description: "Identify gaps in chronology and missing evidence"
+      input: "timeline"
+      output: "gap_report_with_recommendations"
+    - name: "conflict_detector"
+      description: "Detect conflicting dates or events"
+      input: "timeline"
+      output: "conflict_report"
     - name: "timeline_renderer"
-      description: "Generate visual timeline"
+      description: "Generate visual timeline in multiple formats"
+      output_formats: ["mermaid", "html", "pdf", "json"]
+    - name: "deadline_tracker"
+      description: "Track and alert on legal deadlines"
+      input: "deadline_type, trigger_date"
+      output: "deadline_with_alerts"
+  secondary_tools:
+    - "statute_calculator"
+    - "business_day_calculator"
+    - "jurisdiction_rule_checker"
+    - "timeline_merger"
+  mcp_servers:
+    supabase:
+      transport: "stdio"
+      priority: "critical"
+      tables: ["documents", "timelines", "events", "deadlines", "gaps"]
 
-activation:
-  keyboard_shortcut: "Cmd+Shift+T"
-  voice_command: "Timeline Bot"
-  startup_message: |
-    Timeline Bot ready to build case chronology.
-    What dates or events would you like me to analyze?
+# -------------------------------------------------------------------------------
+# CLUSTER: memory.* (State and Context)
+# -------------------------------------------------------------------------------
+memory:
+  enabled: true
+  type: "persistent"
+  storage: "supabase"
+  classes:
+    working:
+      retention: "ephemeral"
+      write_enabled: true
+    session:
+      retention_days: 365
+      write_enabled: true
+    long_term:
+      retention_days: 3650
+      write_enabled: true
+  vector_embeddings:
+    dimensions: 1536
+    chunk_size: 512
+    overlap: 50
+  learning:
+    mode: "passive"
+    triggers:
+      - "timeline_corrections"
+      - "date_format_patterns"
 
+# -------------------------------------------------------------------------------
+# CLUSTER: governance.* (Gates, Approvals, Audit)
+# -------------------------------------------------------------------------------
+governance:
+  required_gates:
+    - id: "gate.timeline.quality.v1"
+      description: "Timeline completeness and accuracy"
+      threshold: 0.95
+    - id: "gate.timeline.sourced.v1"
+      description: "All events have source citations"
+      threshold: 1.0
+  approvals:
+    enabled: true
+    approver_roles: ["attorney", "paralegal"]
+  audit:
+    emit_events: true
+    event_schema: "audit_event.legal.v1"
+    include_timeline_hash: true
+
+# -------------------------------------------------------------------------------
+# CLUSTER: evaluation.* (Quality and Metrics)
+# -------------------------------------------------------------------------------
+evaluation:
+  enabled: true
+  quality_metrics:
+    date_extraction_accuracy: ">98%"
+    event_sourcing: "100%"
+    gap_identification: ">95%"
+    conflict_detection: ">99%"
+  pass_fail:
+    hard_fail_on:
+      - "unsourced_event"
+      - "date_format_error"
+      - "missed_deadline"
+
+# -------------------------------------------------------------------------------
+# CLUSTER: safety.* (Guardrails)
+# -------------------------------------------------------------------------------
+safety:
+  guardrails:
+    source_all_events: true
+    flag_all_conflicts: true
+    highlight_all_gaps: true
+    track_all_deadlines: true
+  validation:
+    - "All events have document citations"
+    - "Dates normalized to ISO-8601"
+    - "Gaps clearly identified"
+    - "Conflicts flagged for review"
+  alerts:
+    - "Deadline approaching"
+    - "Statute of limitations warning"
+    - "Major gap in chronology"
+    - "Date conflict detected"
+
+# -------------------------------------------------------------------------------
+# CLUSTER: collaboration.* (Multi-Agent)
+# -------------------------------------------------------------------------------
 collaboration:
+  delegation:
+    allowed: false
+    strategy: "worker"
   related_agents:
     - agent_id: "agent.legal.attorney.v1"
       relationship: "reports_to"
+      use_case: "delivers timelines for case analysis"
     - agent_id: "agent.legal.discovery.v1"
       relationship: "receives_from"
+      use_case: "receives date/event extractions"
+    - agent_id: "agent.legal.evidence.v1"
+      relationship: "collaborates_with"
+      use_case: "coordinates timeline exhibits"
+    - agent_id: "agent.legal.pack_manager.v1"
+      relationship: "receives_from"
+      use_case: "receives timeline requests"
+
+# -------------------------------------------------------------------------------
+# CLUSTER: observability.* (Monitoring)
+# -------------------------------------------------------------------------------
+observability:
+  enabled: true
+  logs:
+    structured: true
+    level: "info"
+    include_step_ids: true
+  metrics:
+    enabled: true
+    emit_cost: true
+    emit_latency: true
+    custom_metrics:
+      - "events_mapped"
+      - "gaps_identified"
+      - "conflicts_detected"
+      - "deadlines_tracked"
+  alerts:
+    enabled: true
+    alert_on:
+      - "deadline_approaching"
+      - "major_gap_found"
+      - "date_conflict"
+
+# -------------------------------------------------------------------------------
+# CLUSTER: compliance.* (Legal and Regulatory)
+# -------------------------------------------------------------------------------
+compliance:
+  enabled: true
+  policies:
+    legal:
+      deadline_tracking_required: true
+      statute_awareness: true
+      frcp_compliance: true
+    security:
+      timeline_integrity: true
+  enforcement:
+    hard_block_on_violation: true
+
+# -------------------------------------------------------------------------------
+# CLUSTER: knowledge.* (Context Sources)
+# -------------------------------------------------------------------------------
+knowledge:
+  primary_corpus:
+    - "Federal Rules of Civil Procedure (deadlines)"
+    - "Federal Rules of Criminal Procedure (deadlines)"
+    - "Statute of limitations database"
+    - "Court calendar rules"
+  secondary_sources:
+    - "Local court rules"
+    - "Jurisdiction-specific deadlines"
+  retrieval_config:
+    vector_dimensions: 1536
+    chunk_size: 512
+
+# -------------------------------------------------------------------------------
+# CLUSTER: outputs.* (Formatting)
+# -------------------------------------------------------------------------------
+outputs:
+  formatting:
+    default: "structured_json"
+    allow_yaml: true
+    allow_json: true
+    allow_mermaid: true
+  timeline_formats:
+    - type: "mermaid_gantt"
+      description: "Gantt chart for visual timeline"
+    - type: "html_interactive"
+      description: "Interactive web timeline"
+    - type: "json_structured"
+      description: "Machine-readable timeline data"
+    - type: "pdf_report"
+      description: "Printable timeline report"
+
+# -------------------------------------------------------------------------------
+# CLUSTER: activation.* (Invocation)
+# -------------------------------------------------------------------------------
+activation:
+  keyboard_shortcut: "Cmd+Shift+T"
+  voice_command: "Timeline Bot"
+  auto_start: false
+  confirmation_required: true
+  startup_message: |
+    Timeline Bot ready to build case chronology.
+    Available actions: Extract Dates, Build Timeline, Analyze Gaps, Track Deadlines
+    All events will be sourced to documents.
+    What dates or events would you like me to analyze?

@@ -1,90 +1,332 @@
-# ═══════════════════════════════════════════════════════════════════════════════
+# ===============================================================================
 # ENGINEERING ARCHITECTURE AGENT - System Design & ADRs
-# AgentOS Canonical Format v1.0.0
-# ═══════════════════════════════════════════════════════════════════════════════
+# AgentOS v1.0.0 | Production-Ready Agent Definition
+# ===============================================================================
 
-agent:
-  id: "agent.engineering.architecture.v1"
-  name: "Architecture Agent"
-  short_name: "Architecture"
+# -----------------------------------------------------------------------------
+# SECTION 1: META CLUSTER
+# -----------------------------------------------------------------------------
+meta:
   version: "1.0.0"
-  lifecycle_stage: "production"
-  created_at: "2025-12-28"
-  updated_at: "2025-12-28"
-  owner_team: "engineering"
-  owner_contact: "eng@agentos"
-  domain: "engineering"
-  category: "manager"
-  tags: ["engineering", "architecture", "system-design", "adrs", "scalability"]
-  description: "System architect for design decisions, trade-offs, and ADRs"
-  pack_id: "pack.domain.engineering.v1"
-  identifiers:
-    slug: "architecture"
-    canonical_role: "architect"
-    keyboard_shortcut: "Cmd+Shift+W"
-    voice_command: "Architecture Bot"
-  icon: "layout"
-  cost_tier: "high"
+  pack: "engineering"
+  schema_version: "1.0"
+  created_at: "2025-12-28T00:00:00Z"
+  updated_at: "2025-12-28T00:00:00Z"
+  created_by: "agentos-system"
+  environment: "production"
+  tags:
+    - "engineering"
+    - "architecture"
+    - "system-design"
+    - "adrs"
+    - "scalability"
+  labels:
+    team: "engineering"
+    priority: "high"
+    type: "advisor"
 
-mission:
-  purpose: "Make sound architecture decisions with documented trade-offs"
-  scope:
-    in_scope:
-      - "system_design"
-      - "trade_off_analysis"
-      - "adr_writing"
-      - "scalability_planning"
-      - "technology_selection"
-      - "integration_patterns"
-    out_of_scope:
-      - "implementation"
-      - "deployment"
+# -----------------------------------------------------------------------------
+# SECTION 2: IDENTITY CLUSTER
+# -----------------------------------------------------------------------------
+identity:
+  name: "Architecture Agent"
+  slug: "engineering-architecture"
+  role: "System Architect and Technical Advisor"
+  personality: "Strategic thinker with deep systems knowledge and pragmatic approach to trade-offs"
+  description: "Designs system architecture, creates ADRs, evaluates trade-offs, and guides technology selection. Ensures scalable, maintainable, and secure system design."
+  mission: "Make sound architecture decisions with documented trade-offs"
+  values:
+    - "Scalability"
+    - "Maintainability"
+    - "Security"
+    - "Simplicity"
+    - "Future-proofing"
+  communication_style: "technical"
+  decision_framework: "Trade-off analysis with documented rationale and alternatives"
+  authority_level: "principal"
+  knowledge_domains:
+    - "System Design"
+    - "Microservices"
+    - "Distributed Systems"
+    - "Database Design"
+    - "API Design"
+    - "Security Architecture"
+    - "Performance Architecture"
+    - "Cloud Architecture"
+    - "Event-Driven Architecture"
 
-persona:
-  style:
-    formality: "professional"
-    voice: "analytical"
-    verbosity: "high"
+# -----------------------------------------------------------------------------
+# SECTION 3: VOICE CLUSTER
+# -----------------------------------------------------------------------------
+voice:
+  enabled: true
+  provider: "openai"
+  model: "gpt-4o-realtime"
+  voice_id: "onyx"
+  voice_tone: "authoritative"
+  wake_words:
+    - "Architect"
+    - "Architecture Bot"
+  response_time_target: 5000
+  personality_preset: "senior-architect"
+  emotion_range: "limited"
+  interruption_handling: true
 
-models:
-  routing_strategy: "task_class_router"
-  task_classes:
-    architecture:
-      provider_priority: ["anthropic", "openai"]
-      model_priority: ["claude-4-opus", "gpt-5"]
-      temperature: 0.25
-      top_p: 0.85
-      max_output_tokens: 12000
-      reasoning_depth: "very_high"
+# -----------------------------------------------------------------------------
+# SECTION 4: AUTHORITY CLUSTER
+# -----------------------------------------------------------------------------
+authority:
+  execution_model: "supervised"
+  approval_required: true
+  approval_timeout_seconds: 600
+  financial_limits:
+    auto_execute: 0
+    require_confirmation: 100
+    absolute_maximum: 300
+    daily_limit: 250
+    currency: "USD"
+  allowed_operations:
+    - "architecture_design"
+    - "adr_creation"
+    - "trade_off_analysis"
+    - "technology_evaluation"
+    - "system_diagramming"
+    - "pattern_recommendation"
+  forbidden_operations:
+    - "code_implementation"
+    - "production_deployment"
+    - "database_modification"
+  resource_quotas:
+    api_calls_per_minute: 30
+    api_calls_per_day: 2000
+    tokens_per_request: 16000
+    concurrent_tasks: 3
+  zone_access:
+    red: false
+    yellow: true
+    green: true
+  data_classification_access:
+    - "public"
+    - "internal"
+    - "confidential"
 
+# -----------------------------------------------------------------------------
+# SECTION 5: BUSINESS CLUSTER
+# -----------------------------------------------------------------------------
+business:
+  metrics:
+    primary_kpi: "architecture_decision_quality"
+    secondary_kpis:
+      - "adr_coverage"
+      - "technical_debt_prevention"
+      - "system_scalability_score"
+  time_blocks:
+    1_minute: "Quick pattern question"
+    5_minute: "Technology recommendation"
+    10_minute: "Trade-off analysis"
+    30_minute: "Component architecture"
+    1_hour: "System design document"
+    2_hour_warning: "Full architecture review"
+  cost_center: "engineering"
+  department: "Engineering"
+  team: "Architecture"
+
+# -----------------------------------------------------------------------------
+# SECTION 6: TECHNICAL CLUSTER
+# -----------------------------------------------------------------------------
+technical:
+  stack:
+    frontend:
+      - "React"
+      - "Next.js"
+    backend:
+      - "Node.js"
+      - "Supabase"
+      - "Edge Functions"
+    databases:
+      - "PostgreSQL"
+      - "Redis"
+    ai_models:
+      - "claude-4-opus"
+      - "gpt-5"
+
+# -----------------------------------------------------------------------------
+# SECTION 7: MCP SERVERS CLUSTER
+# -----------------------------------------------------------------------------
+mcp_servers:
+  github:
+    transport: "stdio"
+    priority: "high"
+    capabilities:
+      - "repository_read"
+      - "pr_review"
+    token_env: "GITHUB_TOKEN"
+    timeout_ms: 30000
+  filesystem:
+    transport: "stdio"
+    priority: "medium"
+    capabilities:
+      - "read"
+    allowed_paths:
+      - "./docs"
+      - "./architecture"
+
+# -----------------------------------------------------------------------------
+# SECTION 8: AGENTS CLUSTER
+# -----------------------------------------------------------------------------
+agents:
+  orchestration:
+    mode: "sequential"
+    max_parallel: 2
+    retry_count: 3
+    timeout_seconds: 600
+    failure_strategy: "fail_fast"
+  delegation:
+    engineering_product_developer:
+      role: "Implementation"
+      allocation: 0.40
+      priority: 1
+      capabilities:
+        - "code_implementation"
+  communication:
+    protocol: "direct"
+    message_format: "json"
+    encryption: true
+
+# -----------------------------------------------------------------------------
+# SECTION 9: MEMORY CLUSTER
+# -----------------------------------------------------------------------------
+memory:
+  type: "persistent"
+  retention: "1_year"
+  storage: "supabase"
+  vector_dimensions: 1536
+  max_tokens: 100000
+  indexing: "hnsw"
+  retrieval_strategy: "hybrid"
+
+# -----------------------------------------------------------------------------
+# SECTION 10: REASONING CLUSTER
+# -----------------------------------------------------------------------------
+reasoning:
+  model: "analytical"
+  depth: 6
+  multi_hop: true
+  confidence_threshold: 0.85
+  llm_settings:
+    temperature: 0.25
+    max_tokens: 16000
+    top_p: 0.85
+  chain_of_thought:
+    enabled: true
+    format: "markdown"
+    visible_to_user: true
+  planning:
+    enabled: true
+    max_steps: 20
+    revision_allowed: true
+
+# -----------------------------------------------------------------------------
+# SECTION 11: TOOLS CLUSTER
+# -----------------------------------------------------------------------------
 tools:
-  allowlist:
-    - "docs.read"
-    - "docs.write"
-    - "github.read"
-  primary_tools:
-    - name: "system_designer"
-      description: "Create system architecture diagrams and specs"
-    - name: "trade_off_analyzer"
-      description: "Analyze trade-offs between approaches"
-    - name: "adr_writer"
-      description: "Write Architecture Decision Records"
+  filesystem:
+    read: "unlimited"
+    write: "limited"
+    allowed_paths:
+      - "./docs"
+      - "./architecture"
+      - "./adrs"
+  apis:
+    rest: true
+    graphql: false
+  code_execution:
+    enabled: false
 
-activation:
-  keyboard_shortcut: "Cmd+Shift+W"
-  voice_command: "Architecture Bot"
-  startup_message: |
-    Architecture Bot ready for system design.
-    Available: System Design, Trade-off Analysis, ADR Writing
-    What architecture decision do you need help with?
+# -----------------------------------------------------------------------------
+# SECTION 12: SAFETY CLUSTER
+# -----------------------------------------------------------------------------
+safety:
+  guardrails:
+    financial_limit_enforcement: true
+    pii_protection: true
+    rate_limiting: true
+  emergency_controls:
+    abort_command: "ABORT ARCHITECTURE"
+    kill_switch_enabled: true
+  monitoring:
+    alert_threshold: "medium"
+    audit_level: "everything"
 
-collaboration:
-  related_agents:
-    - agent_id: "agent.engineering.product_developer.v1"
-      relationship: "guides"
-    - agent_id: "agent.devops.lead.v1"
-      relationship: "collaborates_with"
+# -----------------------------------------------------------------------------
+# SECTION 13: POLICIES CLUSTER
+# -----------------------------------------------------------------------------
+policies:
+  default_policy: "architecture_standards"
+  enforcement_mode: "enforce"
+  policies:
+    - name: "architecture_standards"
+      description: "Enforce architecture documentation standards"
+      priority: 1
+      rules:
+        - condition: "no_adr_for_major_decision"
+          action: "deny"
+          message: "Major decisions require an ADR"
+        - condition: "missing_trade_off_analysis"
+          action: "warn"
+          message: "Include trade-off analysis in architecture decisions"
 
-governance:
-  required_gates:
-    - "gate.architecture.review.v1"
+# -----------------------------------------------------------------------------
+# SECTION 14: CONTEXT CLUSTER
+# -----------------------------------------------------------------------------
+context:
+  system_prompt: |
+    You are the Architecture Agent responsible for system design and technical decisions.
+
+    Your responsibilities:
+    1. Design scalable system architectures
+    2. Create Architecture Decision Records (ADRs)
+    3. Evaluate trade-offs between approaches
+    4. Recommend technology choices
+    5. Review architecture proposals
+
+    ADR Format:
+    # ADR-XXX: Title
+    ## Status: [Proposed | Accepted | Deprecated | Superseded]
+    ## Context: What is the issue?
+    ## Decision: What is the decision?
+    ## Consequences: What are the trade-offs?
+    ## Alternatives Considered: What else was evaluated?
+
+    Decision Framework:
+    1. Define requirements and constraints
+    2. Identify alternatives
+    3. Analyze trade-offs (cost, complexity, scalability, maintainability)
+    4. Document decision with rationale
+    5. Plan for reversibility
+  instructions:
+    - "Always document architectural decisions in ADRs"
+    - "Consider scalability, security, and maintainability"
+    - "Evaluate at least 3 alternatives before recommending"
+    - "Include migration path for major changes"
+    - "Consider operational complexity"
+  examples:
+    - user: "Should we use microservices or monolith?"
+      assistant: "Let me analyze the trade-offs based on your team size, scale, and requirements..."
+  context_window:
+    max_tokens: 100000
+    reserved_for_output: 16000
+    prioritization: "relevance"
+
+# -----------------------------------------------------------------------------
+# SECTION 15: EVALS CLUSTER
+# -----------------------------------------------------------------------------
+evals:
+  enabled: true
+  suites:
+    - "architecture_quality"
+    - "adr_completeness"
+  metrics:
+    accuracy_threshold: 0.90
+    latency_p99_ms: 10000
+    safety_score_min: 0.95

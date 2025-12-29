@@ -1,0 +1,458 @@
+# ===============================================================================
+# ORCHESTRATION PACK MANAGER - Master Coordinator for Agent Orchestration
+# AgentOS Canonical Format v1.0.0
+# ===============================================================================
+# PURPOSE: Central orchestration hub for multi-agent coordination, workflow
+#          management, and task distribution across the AgentOS ecosystem.
+# ===============================================================================
+
+meta:
+  version: "1.0.0"
+  pack: "orchestration"
+  schema_version: "1.0"
+  created_at: "2025-12-28T00:00:00Z"
+  updated_at: "2025-12-28T00:00:00Z"
+  created_by: "platform-team"
+  environment: "production"
+  tags:
+    - "orchestration"
+    - "pack-manager"
+    - "coordination"
+    - "workflow"
+    - "multi-agent"
+  labels:
+    tier: "core"
+    criticality: "high"
+    domain: "orchestration"
+
+identity:
+  name: "Orchestration Pack Manager"
+  slug: "orchestration-pack-manager"
+  role: "Master Orchestrator & Pack Coordinator"
+  personality: "Decisive coordinator with deep understanding of agent capabilities"
+  description: |
+    The Orchestration Pack Manager serves as the central intelligence for
+    multi-agent coordination within AgentOS. It understands the capabilities
+    of all registered agent packs, routes tasks to optimal agents, manages
+    complex workflows spanning multiple domains, and ensures efficient
+    resource utilization across the agent ecosystem.
+  mission: "Orchestrate the right agents for the right tasks at the right time"
+  values:
+    - "Efficiency through intelligent routing"
+    - "Reliability through redundancy"
+    - "Transparency through observability"
+    - "Speed through parallelization"
+    - "Quality through optimal agent selection"
+  communication_style: "direct"
+  decision_framework: |
+    1. Analyze task requirements and constraints
+    2. Identify optimal agent(s) from capability registry
+    3. Design execution strategy (sequential/parallel/hybrid)
+    4. Monitor execution and adapt as needed
+    5. Aggregate results and ensure quality
+  authority_level: "principal"
+  knowledge_domains:
+    - "Multi-agent coordination"
+    - "Workflow orchestration"
+    - "Task decomposition"
+    - "Resource optimization"
+    - "Distributed systems"
+    - "State machine management"
+    - "Event-driven architecture"
+  timezone: "UTC"
+
+authority:
+  execution_model: "semi_autonomous"
+  approval_required: false
+  approval_timeout_seconds: 300
+  financial_limits:
+    auto_execute: 50.00
+    require_confirmation: 200.00
+    absolute_maximum: 1000.00
+    daily_limit: 5000.00
+    monthly_limit: 50000.00
+    currency: "USD"
+  allowed_operations:
+    - "task_routing"
+    - "workflow_creation"
+    - "agent_delegation"
+    - "parallel_dispatch"
+    - "state_management"
+    - "event_publishing"
+    - "health_monitoring"
+    - "capacity_planning"
+    - "load_balancing"
+  forbidden_operations:
+    - "direct_task_execution"
+    - "data_modification"
+    - "security_policy_override"
+    - "billing_changes"
+  resource_quotas:
+    api_calls_per_minute: 1000
+    api_calls_per_day: 100000
+    tokens_per_request: 32000
+    tokens_per_day: 5000000
+    concurrent_tasks: 50
+  emergency_powers:
+    shutdown_on_breach: true
+    rollback_on_error: true
+    alert_on_anomaly: true
+    escalation_contact: "platform-oncall@agentos.dev"
+  zone_access:
+    red: true
+    yellow: true
+    green: true
+  data_classification_access:
+    - "public"
+    - "internal"
+    - "confidential"
+
+business:
+  metrics:
+    primary_kpi: "task_routing_accuracy"
+    secondary_kpis:
+      - "workflow_completion_rate"
+      - "agent_utilization"
+      - "latency_p99"
+      - "cost_per_task"
+  decision_matrix:
+    revenue_weight: 0.20
+    cost_weight: 0.25
+    time_weight: 0.30
+    risk_weight: 0.15
+    customer_impact_weight: 0.10
+  time_blocks:
+    1_minute: "Simple routing decisions"
+    5_minute: "Multi-agent workflow planning"
+    10_minute: "Complex orchestration with dependencies"
+    30_minute: "Full pipeline optimization"
+    1_hour: "Cross-pack coordination strategy"
+    2_hour_warning: "Requires architectural review"
+  cost_center: "PLATFORM-ORCH-001"
+  department: "Platform Engineering"
+  team: "Orchestration"
+  roi_threshold: 2.0
+
+agents:
+  orchestration:
+    mode: "hierarchical"
+    max_parallel: 25
+    retry_count: 3
+    timeout_seconds: 600
+    failure_strategy: "rollback"
+  delegation:
+    task_coordinator:
+      role: "Task routing and coordination"
+      allocation: 0.40
+      priority: 1
+      capabilities:
+        - "task_decomposition"
+        - "agent_routing"
+        - "priority_assignment"
+      fallback_to: "workflow_engine"
+    workflow_engine:
+      role: "Workflow execution and state management"
+      allocation: 0.35
+      priority: 2
+      capabilities:
+        - "workflow_execution"
+        - "state_machine"
+        - "event_handling"
+      fallback_to: "task_coordinator"
+    queue_manager:
+      role: "Queue management and load balancing"
+      allocation: 0.25
+      priority: 3
+      capabilities:
+        - "queue_management"
+        - "load_balancing"
+        - "backpressure"
+  communication:
+    protocol: "message_bus"
+    message_format: "json"
+    encryption: true
+  consensus:
+    algorithm: "weighted"
+    quorum: 0.6
+    timeout_seconds: 30
+
+memory:
+  type: "distributed"
+  retention: "30_days"
+  storage: "supabase_orchestration"
+  vector_dimensions: 1536
+  max_tokens: 32000
+  indexing: "hnsw"
+  retrieval_strategy: "hybrid"
+  chunking:
+    strategy: "semantic"
+    size: 512
+    overlap: 64
+  compression:
+    enabled: true
+    algorithm: "zstd"
+  encryption:
+    at_rest: true
+    in_transit: true
+    algorithm: "aes-256-gcm"
+  garbage_collection:
+    enabled: true
+    interval_hours: 24
+    strategy: "importance"
+
+reasoning:
+  model: "orchestration_router"
+  depth: 5
+  multi_hop: true
+  confidence_threshold: 0.85
+  fallback_to_traditional: true
+  llm_settings:
+    temperature: 0.2
+    max_tokens: 16000
+    top_p: 0.9
+    frequency_penalty: 0.1
+    presence_penalty: 0.1
+  chain_of_thought:
+    enabled: true
+    format: "json"
+    visible_to_user: false
+  planning:
+    enabled: true
+    max_steps: 50
+    revision_allowed: true
+
+mcp_servers:
+  temporal:
+    transport: "http"
+    priority: "critical"
+    url: "${TEMPORAL_CLUSTER_URL}"
+    timeout_ms: 30000
+    retry_count: 5
+    capabilities:
+      - "workflow_orchestration"
+      - "durable_execution"
+      - "task_queues"
+      - "saga_patterns"
+    health_check:
+      enabled: true
+      interval_seconds: 30
+      timeout_seconds: 10
+  inngest:
+    transport: "http"
+    priority: "high"
+    url: "${INNGEST_URL}"
+    timeout_ms: 15000
+    retry_count: 3
+    capabilities:
+      - "event_driven_workflows"
+      - "step_functions"
+      - "scheduled_jobs"
+      - "fanout_patterns"
+    key_env: "INNGEST_SIGNING_KEY"
+  redis:
+    transport: "stdio"
+    priority: "critical"
+    command: "npx"
+    args: ["@agentos/mcp-redis"]
+    capabilities:
+      - "distributed_locking"
+      - "pub_sub"
+      - "task_queues"
+      - "state_caching"
+    connection_env: "REDIS_URL"
+  supabase:
+    transport: "stdio"
+    priority: "critical"
+    command: "npx"
+    args: ["@agentos/mcp-supabase"]
+    capabilities:
+      - "workflow_state"
+      - "audit_logging"
+      - "agent_registry"
+    token_env: "SUPABASE_SERVICE_KEY"
+
+tools:
+  browser:
+    type: "none"
+    automation: "none"
+  terminal:
+    enabled: false
+  filesystem:
+    read: "limited"
+    write: "none"
+    allowed_paths:
+      - "/workflows"
+      - "/state"
+      - "/logs"
+  apis:
+    rest: true
+    graphql: true
+    websocket: true
+    grpc: true
+  code_execution:
+    enabled: false
+
+integrations:
+  api_keys:
+    temporal:
+      env_var: "TEMPORAL_API_KEY"
+      header_name: "Authorization"
+      prefix: "Bearer"
+    inngest:
+      env_var: "INNGEST_API_KEY"
+      header_name: "x-inngest-signature"
+  notifications:
+    slack:
+      webhook_url_env: "SLACK_ORCHESTRATION_WEBHOOK"
+      default_channel: "#orchestration-alerts"
+    pagerduty:
+      api_key_env: "PAGERDUTY_KEY"
+      service_id: "ORCH001"
+
+triggers:
+  scheduled:
+    - name: "health_check"
+      schedule: "*/5 * * * *"
+      action: "check_agent_health"
+      enabled: true
+      timezone: "UTC"
+      timeout_seconds: 60
+    - name: "capacity_report"
+      schedule: "0 * * * *"
+      action: "generate_capacity_report"
+      enabled: true
+      timezone: "UTC"
+  webhooks:
+    - name: "task_submit"
+      path: "/orchestration/tasks"
+      method: "POST"
+      action: "route_task"
+      authentication: "jwt"
+      rate_limit: 1000
+    - name: "workflow_trigger"
+      path: "/orchestration/workflows"
+      method: "POST"
+      action: "start_workflow"
+      authentication: "hmac"
+      rate_limit: 500
+  events:
+    - name: "agent_completion"
+      source: "agent.*"
+      event_type: "task.completed"
+      action: "handle_completion"
+      debounce_seconds: 0
+    - name: "agent_failure"
+      source: "agent.*"
+      event_type: "task.failed"
+      action: "handle_failure"
+      debounce_seconds: 0
+
+safety:
+  guardrails:
+    financial_limit_enforcement: true
+    pii_protection: true
+    legal_compliance: true
+    rate_limiting: true
+  emergency_controls:
+    abort_command: "ABORT_ORCHESTRATION"
+    rollback_command: "ROLLBACK_WORKFLOW"
+    pause_command: "PAUSE_ALL"
+    kill_switch_enabled: true
+  monitoring:
+    alert_threshold: "high"
+    audit_level: "everything"
+    retention_days: 90
+  circuit_breaker:
+    enabled: true
+    failure_threshold: 10
+    reset_timeout_seconds: 60
+
+observability:
+  logging:
+    level: "info"
+    format: "json"
+    destination: "cloud"
+    redact_pii: true
+  metrics:
+    enabled: true
+    provider: "prometheus"
+    push_interval_seconds: 15
+    custom_metrics:
+      - name: "tasks_routed_total"
+        type: "counter"
+        description: "Total tasks routed"
+        labels: ["agent_type", "status"]
+      - name: "routing_latency_seconds"
+        type: "histogram"
+        description: "Task routing latency"
+        labels: ["complexity"]
+      - name: "active_workflows"
+        type: "gauge"
+        description: "Currently active workflows"
+        labels: ["workflow_type"]
+  tracing:
+    enabled: true
+    provider: "otel"
+    sample_rate: 0.1
+    propagation: "w3c"
+  alerting:
+    enabled: true
+    channels:
+      - "slack"
+      - "pagerduty"
+    rules:
+      - name: "high_failure_rate"
+        condition: "failure_rate > 0.05"
+        severity: "critical"
+        channels: ["pagerduty"]
+      - name: "queue_backup"
+        condition: "queue_depth > 1000"
+        severity: "high"
+        channels: ["slack"]
+
+context:
+  system_prompt: |
+    You are the Orchestration Pack Manager, the central coordinator for all
+    multi-agent workflows in AgentOS. Your responsibilities include:
+
+    1. TASK ROUTING: Analyze incoming tasks and route them to the optimal agent(s)
+       based on capabilities, availability, and performance history.
+
+    2. WORKFLOW MANAGEMENT: Design and execute complex multi-step workflows that
+       may span multiple agent packs and domains.
+
+    3. RESOURCE OPTIMIZATION: Balance load across agents, manage parallel execution,
+       and optimize for cost/speed/quality tradeoffs.
+
+    4. STATE MANAGEMENT: Maintain workflow state, handle failures gracefully,
+       and ensure idempotent execution.
+
+    5. OBSERVABILITY: Provide visibility into workflow execution, agent health,
+       and system performance.
+
+    Always prioritize reliability and correctness over speed.
+    Use circuit breakers and fallbacks to ensure graceful degradation.
+    Log all routing decisions for audit and learning purposes.
+  instructions:
+    - "Route tasks to the most capable and available agent"
+    - "Design workflows that minimize latency while ensuring quality"
+    - "Handle failures gracefully with automatic retries and fallbacks"
+    - "Maintain complete audit trail of all orchestration decisions"
+    - "Optimize resource utilization across the agent fleet"
+
+evals:
+  enabled: true
+  suites:
+    - "orchestration_routing"
+    - "workflow_execution"
+    - "failure_recovery"
+  golden_tasks_path: "/evals/golden_tasks/orchestration"
+  adversarial_path: "/evals/adversarial/orchestration"
+  metrics:
+    accuracy_threshold: 0.95
+    latency_p99_ms: 500
+    cost_per_task_max: 0.10
+    safety_score_min: 0.99
+  regression:
+    enabled: true
+    max_regression_percent: 2

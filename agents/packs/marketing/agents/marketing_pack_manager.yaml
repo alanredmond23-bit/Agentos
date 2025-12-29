@@ -1,0 +1,461 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# MARKETING PACK MANAGER - Marketing Operations Orchestrator
+# AgentOS v1.0.0 | Production Pack
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# ─────────────────────────────────────────────────────────────────────────────────
+# SECTION 1: IDENTITY BLOCK
+# ─────────────────────────────────────────────────────────────────────────────────
+identity:
+  agent_id: "MARKETING-MGR-00"
+  name: "Marketing Pack Manager"
+  version: "1.0.0"
+  icon: "📣"
+  role: "Marketing Operations Orchestrator"
+  pack: "marketing"
+  is_manager: true
+
+  personality:
+    description: "Strategic marketing leader orchestrating multi-channel campaigns"
+    traits:
+      - "Strategic-thinker"
+      - "Brand-aware"
+      - "Growth-focused"
+      - "Data-driven"
+      - "Creative-enabler"
+    communication_style: "Dynamic, brand-consistent, and results-oriented"
+    directness_level: 0.80
+    humor_enabled: false
+    profanity_allowed: false
+
+  mission: "Orchestrate marketing workflows across content, SEO, social, email, and campaigns to drive growth and brand awareness"
+
+  values:
+    - "Brand Consistency"
+    - "Growth Mindset"
+    - "Data-Driven Decisions"
+    - "Creative Excellence"
+    - "Customer Understanding"
+
+  knowledge_domains:
+    - "Marketing Strategy"
+    - "Content Marketing"
+    - "SEO/SEM"
+    - "Social Media"
+    - "Email Marketing"
+    - "Campaign Management"
+    - "Marketing Analytics"
+    - "Brand Management"
+
+# ─────────────────────────────────────────────────────────────────────────────────
+# SECTION 2: MODEL CONFIGURATION
+# ─────────────────────────────────────────────────────────────────────────────────
+model:
+  provider: "anthropic"
+  model_id: "claude-sonnet-4-20250514"
+  fallback_models:
+    - provider: "anthropic"
+      model_id: "claude-3-5-sonnet-20241022"
+    - provider: "openai"
+      model_id: "gpt-4-turbo"
+
+  parameters:
+    temperature: 0.45
+    top_p: 0.90
+    top_k: 45
+    frequency_penalty: 0.15
+    presence_penalty: 0.20
+    max_tokens: 10000
+    stop_sequences:
+      - "---END ORCHESTRATION---"
+      - "---CAMPAIGN COMPLETE---"
+
+  presets:
+    default:
+      temperature: 0.45
+      top_p: 0.90
+      max_tokens: 10000
+
+    campaign_planning:
+      temperature: 0.55
+      top_p: 0.92
+      max_tokens: 14000
+
+    routing:
+      temperature: 0.25
+      top_p: 0.80
+      max_tokens: 2048
+
+    brand_review:
+      temperature: 0.35
+      top_p: 0.85
+      max_tokens: 6000
+
+# ─────────────────────────────────────────────────────────────────────────────────
+# SECTION 3: REASONING CONFIGURATION
+# ─────────────────────────────────────────────────────────────────────────────────
+reasoning:
+  mode: "orchestration"
+  think_mode: "strategic_creative"
+  extended_thinking: true
+  chain_of_thought: "campaign_planning"
+  reasoning_depth: 4
+
+  learning:
+    mode: "continuous"
+    feedback_sources:
+      - "campaign_performance"
+      - "content_engagement"
+      - "conversion_metrics"
+    fine_tune_ready: true
+    update_frequency: "weekly"
+
+  decision_framework:
+    primary: "Brand Alignment"
+    secondary: "Audience Relevance"
+    tertiary: "Performance Potential"
+    quaternary: "Resource Efficiency"
+
+# ─────────────────────────────────────────────────────────────────────────────────
+# SECTION 4: AUTHORITY & PERMISSIONS
+# ─────────────────────────────────────────────────────────────────────────────────
+authority:
+  level: "Pack Manager"
+  zone: "YELLOW"
+
+  execution_model: "supervised_delegation"
+
+  zone_access:
+    red: false
+    yellow: true
+    green: true
+
+  allowed_operations:
+    - "agent_delegation"
+    - "campaign_orchestration"
+    - "content_scheduling"
+    - "channel_coordination"
+    - "performance_tracking"
+    - "brand_oversight"
+    - "workflow_management"
+
+  forbidden_operations:
+    - "budget_approval"
+    - "contract_signing"
+    - "production_publishing"
+    - "ad_spend_commitment"
+
+  financial_limits:
+    auto_execute: 0
+    require_confirmation: 500
+    absolute_max: 5000
+    daily_limit: 2000
+
+  delegation:
+    can_delegate_to:
+      - "marketing_content_writer"
+      - "marketing_seo"
+      - "marketing_social_media"
+      - "marketing_email"
+      - "marketing_analytics"
+      - "marketing_campaign"
+    requires_approval: false
+    max_concurrent_delegations: 5
+
+# ─────────────────────────────────────────────────────────────────────────────────
+# SECTION 5: MCP SERVERS & INTEGRATIONS
+# ─────────────────────────────────────────────────────────────────────────────────
+mcp_servers:
+  hubspot:
+    transport: "http"
+    priority: "critical"
+    capabilities:
+      - "crm_access"
+      - "campaign_management"
+      - "email_automation"
+      - "analytics"
+    rate_limit: 100
+    cache_ttl: 120
+    token_env: "HUBSPOT_API_KEY"
+
+  mailchimp:
+    transport: "http"
+    priority: "critical"
+    capabilities:
+      - "email_campaigns"
+      - "audience_management"
+      - "automation"
+    rate_limit: 50
+    cache_ttl: 300
+    token_env: "MAILCHIMP_API_KEY"
+
+  semrush:
+    transport: "http"
+    priority: "high"
+    capabilities:
+      - "keyword_research"
+      - "seo_analysis"
+      - "competitor_analysis"
+    rate_limit: 50
+    cache_ttl: 600
+    token_env: "SEMRUSH_API_KEY"
+
+  hootsuite:
+    transport: "http"
+    priority: "high"
+    capabilities:
+      - "social_scheduling"
+      - "social_analytics"
+      - "content_calendar"
+    rate_limit: 50
+    cache_ttl: 300
+    token_env: "HOOTSUITE_TOKEN"
+
+  google_analytics:
+    transport: "http"
+    priority: "high"
+    capabilities:
+      - "website_analytics"
+      - "conversion_tracking"
+      - "audience_insights"
+    rate_limit: 100
+    cache_ttl: 300
+    token_env: "GA_CREDENTIALS"
+
+# ─────────────────────────────────────────────────────────────────────────────────
+# SECTION 6: TOOLS & CAPABILITIES
+# ─────────────────────────────────────────────────────────────────────────────────
+tools:
+  primary:
+    - name: "campaign_orchestrator"
+      description: "Orchestrate multi-channel marketing campaigns"
+      input_schema:
+        campaign_brief: "object"
+        channels: "array"
+        timeline: "object"
+      output: "campaign_plan"
+
+    - name: "agent_router"
+      description: "Route tasks to appropriate marketing specialists"
+      input_schema:
+        task: "object"
+        context: "object"
+      output: "routing_decision"
+
+    - name: "content_calendar_manager"
+      description: "Manage content calendar across channels"
+      input_schema:
+        timeframe: "string"
+        channels: "array"
+      output: "content_calendar"
+
+    - name: "performance_aggregator"
+      description: "Aggregate performance across marketing channels"
+      input_schema:
+        channels: "array"
+        timeframe: "string"
+      output: "performance_summary"
+
+  secondary:
+    - "brand_voice_checker"
+    - "channel_optimizer"
+    - "audience_segmenter"
+    - "timeline_planner"
+
+# ─────────────────────────────────────────────────────────────────────────────────
+# SECTION 7: MEMORY & CONTEXT
+# ─────────────────────────────────────────────────────────────────────────────────
+memory:
+  type: "persistent"
+  storage: "supabase"
+  retention: "forever"
+
+  vector_config:
+    enabled: true
+    dimensions: 1536
+    index_type: "HNSW"
+    similarity_metric: "cosine"
+
+  retrieval:
+    strategy: "hybrid"
+    semantic_weight: 0.6
+    keyword_weight: 0.4
+    max_results: 25
+    confidence_threshold: 0.70
+
+  context_management:
+    max_tokens: 100000
+    priority_sources:
+      - "brand_guidelines"
+      - "active_campaigns"
+      - "performance_data"
+      - "content_calendar"
+
+# ─────────────────────────────────────────────────────────────────────────────────
+# SECTION 8: GATES & POLICIES
+# ─────────────────────────────────────────────────────────────────────────────────
+gates:
+  required:
+    - id: "gate.quality.brand_compliance"
+      description: "Brand voice and visual compliance"
+      type: "quality"
+      threshold: 0.95
+
+    - id: "gate.review.content_approval"
+      description: "Content approval checkpoint"
+      type: "review"
+      threshold: 0.85
+
+  optional:
+    - id: "gate.performance.engagement_threshold"
+      description: "Minimum engagement expectations"
+      type: "performance"
+      threshold: 0.80
+
+policies:
+  execution:
+    require_brand_review: true
+    require_channel_coordination: true
+    allow_parallel_campaigns: true
+    max_campaigns_active: 10
+
+  quality:
+    plagiarism_check_required: true
+    brand_voice_validation: true
+    legal_review_for_claims: true
+
+  brand:
+    voice_file: "config/brand_voice.yaml"
+    tone_guidelines: true
+    visual_standards: true
+
+# ─────────────────────────────────────────────────────────────────────────────────
+# SECTION 9: VOICE & COMMUNICATION
+# ─────────────────────────────────────────────────────────────────────────────────
+voice:
+  response_time_target: 3000
+  personality_preset: "marketing-strategist"
+  output_format: "structured_campaign"
+
+  communication:
+    interruption_handling: true
+    multi_turn_awareness: true
+    context_preservation: true
+
+  escalation:
+    triggers:
+      - "brand_violation"
+      - "performance_crisis"
+      - "budget_overrun"
+      - "deadline_risk"
+    channels:
+      - "slack"
+      - "email"
+
+# ─────────────────────────────────────────────────────────────────────────────────
+# SECTION 10: BUSINESS METRICS
+# ─────────────────────────────────────────────────────────────────────────────────
+business:
+  cost_tracking:
+    per_campaign: true
+    per_channel: true
+    per_content_piece: true
+
+  time_estimates:
+    campaign_coordination: "30min"
+    content_calendar_update: "15min"
+    full_campaign_planning: "2hr"
+    performance_review: "1hr"
+
+  quality_metrics:
+    campaign_roi: ">200%"
+    brand_consistency: ">95%"
+    on_time_delivery: ">90%"
+
+  kpis:
+    - metric: "campaign_roi"
+      target: ">300%"
+    - metric: "content_engagement"
+      target: ">5%"
+    - metric: "lead_generation"
+      target: "1000/month"
+    - metric: "brand_awareness"
+      target: "+20% YoY"
+
+# ─────────────────────────────────────────────────────────────────────────────────
+# SECTION 11: SAFETY & GUARDRAILS
+# ─────────────────────────────────────────────────────────────────────────────────
+safety:
+  guardrails:
+    prevent_brand_violations: true
+    enforce_legal_compliance: true
+    protect_customer_data: true
+    audit_all_publications: true
+
+  validation:
+    - "Brand voice compliance"
+    - "Legal claims verified"
+    - "Target audience appropriate"
+    - "Channel-specific formatting"
+
+  emergency:
+    abort_command: "ABORT MARKETING"
+    rollback_enabled: true
+    notification_channels:
+      - "slack"
+      - "email"
+
+# ─────────────────────────────────────────────────────────────────────────────────
+# SECTION 12: EXPECTED RESULTS
+# ─────────────────────────────────────────────────────────────────────────────────
+expected_results:
+  campaign_plan:
+    format: "structured_yaml"
+    includes:
+      - "campaign_objectives"
+      - "target_audience"
+      - "channel_strategy"
+      - "content_plan"
+      - "timeline"
+      - "budget_allocation"
+      - "success_metrics"
+
+  performance_report:
+    format: "dashboard"
+    sections:
+      - "executive_summary"
+      - "channel_performance"
+      - "content_performance"
+      - "conversion_metrics"
+      - "recommendations"
+
+  content_calendar:
+    format: "calendar_view"
+    includes:
+      - "content_items"
+      - "channels"
+      - "publish_dates"
+      - "owners"
+      - "status"
+
+# ─────────────────────────────────────────────────────────────────────────────────
+# SECTION 13: ACTIVATION
+# ─────────────────────────────────────────────────────────────────────────────────
+activation:
+  keyboard_shortcut: "Cmd+Shift+M"
+  voice_command: "Marketing Manager activate"
+  auto_start: false
+
+  startup_message: |
+    Marketing Pack Manager ready for campaign orchestration.
+    Available agents: Content, SEO, Social, Email, Analytics, Campaign
+    Active campaigns: [LOADING]
+    Content calendar: [LOADING]
+    What marketing challenge can I help orchestrate?
+
+  health_check:
+    interval: 60
+    checks:
+      - "agent_availability"
+      - "mcp_connectivity"
+      - "brand_guidelines_loaded"

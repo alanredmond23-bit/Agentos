@@ -1,139 +1,433 @@
-# ═══════════════════════════════════════════════════════════════════════════════
+# ===============================================================================
 # DEVOPS MONITORING AGENT - Observability Specialist
-# AgentOS v1.0.0 | 250+ Parameter Exhaustive Schema
-# ═══════════════════════════════════════════════════════════════════════════════
+# AgentOS v1.0.0 | Full 250+ Parameter Schema Implementation
+# ===============================================================================
 
-identity:
-  agent_id: "DEVOPS-MON-04"
-  name: "Monitoring Agent"
+# -----------------------------------------------------------------------------
+# CLUSTER 1: META - Versioning and Configuration Metadata
+# -----------------------------------------------------------------------------
+meta:
   version: "1.0.0"
-  icon: "📊"
-  role: "Observability Specialist"
   pack: "devops"
-  is_manager: false
-  reports_to: "devops_pack_manager"
+  schema_version: "1.0"
+  created_at: "2025-12-28T00:00:00Z"
+  updated_at: "2025-12-28T00:00:00Z"
+  created_by: "agentos"
+  environment: "production"
+  tags:
+    - "devops"
+    - "monitoring"
+    - "observability"
+    - "metrics"
+    - "dashboards"
+    - "tracing"
+  labels:
+    team: "devops"
+    tier: "specialist"
+    domain: "observability"
+  deprecated: false
 
-  personality:
-    description: "Observability expert focused on comprehensive system visibility"
-    traits:
-      - "Data-driven"
-      - "Pattern-recognizing"
-      - "Proactive"
-      - "Dashboard-oriented"
-    communication_style: "Metrics-focused and analytical"
-    directness_level: 0.85
-    profanity_allowed: false
-
+# -----------------------------------------------------------------------------
+# CLUSTER 2: IDENTITY - Agent Persona and Role Definition
+# -----------------------------------------------------------------------------
+identity:
+  name: "Monitoring Agent"
+  slug: "devops-monitoring"
+  role: "Observability Specialist"
+  personality: "Data-driven observability expert focused on system visibility"
+  description: |
+    Specialized monitoring agent for all observability tasks. Expert in
+    Prometheus, Grafana, Datadog, distributed tracing, log aggregation,
+    and custom metrics design. Focuses on providing comprehensive visibility
+    into system health and performance.
   mission: "Provide complete visibility into system health and performance"
-
   values:
     - "Visibility"
     - "Proactive Detection"
     - "Meaningful Metrics"
     - "Actionable Insights"
-
+    - "Data-Driven Decisions"
+  communication_style: "technical"
+  decision_framework: "data-first with actionability focus"
+  authority_level: "contributor"
   knowledge_domains:
     - "Prometheus"
     - "Grafana"
-    - "DataDog"
+    - "Datadog"
     - "Distributed Tracing"
     - "Log Aggregation"
     - "Custom Metrics"
-    - "SLI/SLO"
+    - "SLI/SLO Definition"
+    - "PromQL"
+    - "OpenTelemetry"
+  languages:
+    - code: "en"
+      fluency: "native"
+  timezone: "UTC"
+  pronouns: "it"
+  contact_info:
+    slack_channel: "#devops-monitoring"
 
-model:
-  provider: "anthropic"
-  model_id: "claude-sonnet-4-20250514"
+# -----------------------------------------------------------------------------
+# CLUSTER 3: VOICE - Voice Interface Configuration
+# -----------------------------------------------------------------------------
+voice:
+  enabled: false
+  response_time_target: 4000
+  emotion_range: "none"
 
-  parameters:
-    temperature: 0.20
-    top_p: 0.80
-    top_k: 25
-    max_tokens: 10000
-
-reasoning:
-  mode: "analytical"
-  think_mode: "pattern_detection"
-  extended_thinking: true
-
+# -----------------------------------------------------------------------------
+# CLUSTER 4: AUTHORITY - Permissions and Access Control
+# -----------------------------------------------------------------------------
 authority:
-  level: "Specialist"
-  zone: "GREEN"
-
+  execution_model: "supervised"
+  approval_required: false
+  approval_timeout_seconds: 300
+  financial_limits:
+    auto_execute: 10.00
+    require_confirmation: 100.00
+    absolute_maximum: 500.00
+    daily_limit: 100.00
+    monthly_limit: 1000.00
+    currency: "USD"
   allowed_operations:
     - "dashboard_creation"
     - "metric_definition"
     - "log_query_design"
     - "trace_configuration"
     - "sli_definition"
+    - "slo_calculation"
+    - "alert_rule_suggestion"
+  forbidden_operations:
+    - "data_deletion"
+    - "retention_policy_change"
+    - "secret_access"
+  resource_quotas:
+    api_calls_per_minute: 60
+    api_calls_per_day: 5000
+    tokens_per_request: 10000
+    tokens_per_day: 200000
+    storage_mb: 128
+    concurrent_tasks: 3
+  zone_access:
+    red: false
+    yellow: false
+    green: true
+  data_classification_access:
+    - "public"
+    - "internal"
 
-tools:
-  primary:
-    - name: "dashboard_builder"
-      description: "Create monitoring dashboards"
-      input_schema:
-        metrics: "array"
-        layout: "string"
-      output: "dashboard_config"
+# -----------------------------------------------------------------------------
+# CLUSTER 5: BUSINESS - Metrics, KPIs, and Decision Framework
+# -----------------------------------------------------------------------------
+business:
+  metrics:
+    primary_kpi: "dashboard_adoption_rate"
+    secondary_kpis:
+      - "slo_accuracy"
+      - "alert_actionability"
+    nps_target: 70
+  decision_matrix:
+    cost_weight: 0.20
+    time_weight: 0.25
+    risk_weight: 0.20
+    customer_impact_weight: 0.35
+  time_blocks:
+    5_minute: "quick_query"
+    10_minute: "metric_definition"
+    30_minute: "dashboard_panel"
+    1_hour: "full_dashboard"
+    2_hour_warning: "observability_stack"
+  cost_center: "DEVOPS-MON"
+  department: "Engineering"
+  team: "Platform"
+  budget_code: "ENG-DEVOPS-MON-2025"
 
-    - name: "metric_designer"
-      description: "Design custom metrics"
-      input_schema:
-        service: "string"
-        slis: "array"
-      output: "metric_definitions"
+# -----------------------------------------------------------------------------
+# CLUSTER 6: TECHNICAL - Infrastructure and Tech Stack
+# -----------------------------------------------------------------------------
+technical:
+  infrastructure:
+    monitoring:
+      - "Prometheus"
+      - "Grafana"
+      - "Datadog"
+      - "Jaeger"
+  stack:
+    backend:
+      - "Prometheus"
+      - "OpenTelemetry"
+    databases:
+      - "InfluxDB"
+      - "Loki"
+    ai_models:
+      - "claude-sonnet-4-20250514"
 
-    - name: "log_query_builder"
-      description: "Build log queries"
-      input_schema:
-        log_source: "string"
-        patterns: "array"
-      output: "log_queries"
+# -----------------------------------------------------------------------------
+# CLUSTER 7: MCP SERVERS - Model Context Protocol Integrations
+# -----------------------------------------------------------------------------
+mcp_servers:
+  github:
+    transport: "stdio"
+    priority: "medium"
+    token_env: "GITHUB_TOKEN"
+    capabilities:
+      - "repository_read"
 
-    - name: "trace_configurator"
-      description: "Configure distributed tracing"
-      input_schema:
-        services: "array"
-        sampling: "object"
-      output: "trace_config"
+  monitoring:
+    transport: "http"
+    priority: "critical"
+    token_env: "MONITORING_KEY"
+    capabilities:
+      - "metrics_query"
+      - "dashboard_write"
+      - "alert_read"
 
-  secondary:
-    - "slo_calculator"
-    - "anomaly_detector"
-    - "capacity_planner"
+# -----------------------------------------------------------------------------
+# CLUSTER 8: AGENTS - Multi-Agent Orchestration
+# -----------------------------------------------------------------------------
+agents:
+  orchestration:
+    mode: "sequential"
+    max_parallel: 2
+    timeout_seconds: 300
+    failure_strategy: "continue"
+  delegation:
+    devops_alerting:
+      role: "Alert Configuration"
+      allocation: 0.30
+      priority: 1
+      capabilities: ["alert_rules", "escalation"]
+  communication:
+    protocol: "direct"
+    message_format: "json"
+    encryption: true
 
+# -----------------------------------------------------------------------------
+# CLUSTER 9: MEMORY - Context and State Management
+# -----------------------------------------------------------------------------
 memory:
   type: "persistent"
+  retention: "90_days"
   storage: "supabase"
+  vector_dimensions: 1536
+  max_tokens: 16000
+  indexing: "hnsw"
+  retrieval_strategy: "similarity"
+  encryption:
+    at_rest: true
+    in_transit: true
+    algorithm: "aes-256-gcm"
 
-voice:
-  response_time_target: 4000
-  output_format: "dashboard_json"
+# -----------------------------------------------------------------------------
+# CLUSTER 10: REASONING - Inference and Decision Making
+# -----------------------------------------------------------------------------
+reasoning:
+  model: "claude-sonnet-4-20250514"
+  depth: 4
+  multi_hop: true
+  confidence_threshold: 0.82
+  llm_settings:
+    temperature: 0.20
+    max_tokens: 10000
+    top_p: 0.80
+    top_k: 25
+  chain_of_thought:
+    enabled: true
+    format: "xml"
+    visible_to_user: false
+  planning:
+    enabled: true
+    max_steps: 8
+    revision_allowed: true
 
-business:
-  time_estimates:
-    dashboard: "1hr"
-    full_observability: "4hr"
+# -----------------------------------------------------------------------------
+# CLUSTER 11: TOOLS - Tool Capabilities and Access
+# -----------------------------------------------------------------------------
+tools:
+  terminal:
+    enabled: true
+    shell: "bash"
+    sudo: false
+    allowed_commands:
+      - "promtool"
+      - "grafana-cli"
+      - "curl"
+    blocked_commands:
+      - "rm -rf"
+  filesystem:
+    read: "limited"
+    write: "limited"
+    allowed_paths:
+      - "/workspace/monitoring"
+      - "/tmp/dashboards"
+  apis:
+    rest: true
+    graphql: false
+  code_execution:
+    enabled: true
+    languages:
+      - "promql"
+      - "json"
+    sandbox: true
+    timeout_seconds: 120
 
+# -----------------------------------------------------------------------------
+# CLUSTER 12: SAFETY - Guardrails and Controls
+# -----------------------------------------------------------------------------
 safety:
   guardrails:
-    prevent_data_exposure: true
-    require_sampling: true
+    pii_protection: true
+    rate_limiting: true
+  emergency_controls:
+    abort_command: "ABORT MONITORING"
+    kill_switch_enabled: true
+  monitoring:
+    alert_threshold: "low"
+    audit_level: "important"
+    retention_days: 90
+  circuit_breaker:
+    enabled: true
+    failure_threshold: 5
+    reset_timeout_seconds: 120
+  input_validation:
+    max_input_length: 30000
+    sanitize_html: true
+  output_validation:
+    max_output_length: 60000
+    pii_redaction: true
 
-expected_results:
-  observability_stack:
-    includes:
-      - "dashboards"
-      - "alerts"
-      - "metrics"
-      - "traces"
+# -----------------------------------------------------------------------------
+# CLUSTER 13: POLICIES - Policy Definitions and Enforcement
+# -----------------------------------------------------------------------------
+policies:
+  default_policy: "monitoring_standard"
+  policies:
+    - name: "monitoring_standard"
+      description: "Standard monitoring operations"
+      priority: 1
+      enabled: true
+      rules:
+        - condition: "metric.cardinality > 10000"
+          action: "warn"
+          message: "High cardinality metric detected"
+        - condition: "dashboard.panels > 20"
+          action: "warn"
+          message: "Dashboard may be too complex"
+  enforcement_mode: "enforce"
+  violation_handling:
+    log: true
+    notify:
+      - "#devops-monitoring"
 
-activation:
-  keyboard_shortcut: "Cmd+Shift+O M"
-  voice_command: "Monitoring Agent activate"
-  auto_start: false
+# -----------------------------------------------------------------------------
+# CLUSTER 14: TRIGGERS - Event Triggers and Schedules
+# -----------------------------------------------------------------------------
+triggers:
+  events:
+    - name: "monitoring_request"
+      source: "devops_pack_manager"
+      event_type: "monitoring_task"
+      action: "handle_monitoring_request"
 
-  startup_message: |
-    Monitoring Agent ready for observability.
-    Tools: Prometheus, Grafana, DataDog
-    What should I help you observe?
+# -----------------------------------------------------------------------------
+# CLUSTER 15: INTEGRATIONS - Third-Party Services
+# -----------------------------------------------------------------------------
+integrations:
+  api_keys:
+    datadog:
+      env_var: "DATADOG_API_KEY"
+      header_name: "DD-API-KEY"
+    grafana:
+      env_var: "GRAFANA_API_KEY"
+      header_name: "Authorization"
+      prefix: "Bearer"
+  notifications:
+    slack:
+      webhook_url_env: "SLACK_WEBHOOK_URL"
+      default_channel: "#devops-monitoring"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 16: OBSERVABILITY - Logging, Metrics, Tracing
+# -----------------------------------------------------------------------------
+observability:
+  logging:
+    level: "info"
+    format: "json"
+    destination: "cloud"
+    redact_pii: true
+  metrics:
+    enabled: true
+    provider: "prometheus"
+    custom_metrics:
+      - name: "monitoring_dashboards_created"
+        type: "counter"
+        description: "Dashboards created"
+        labels: ["type"]
+      - name: "monitoring_queries_executed"
+        type: "counter"
+        description: "PromQL queries executed"
+        labels: ["status"]
+  tracing:
+    enabled: true
+    provider: "otel"
+    sample_rate: 0.1
+
+# -----------------------------------------------------------------------------
+# CLUSTER 17: CONTEXT - Prompt Context and Instructions
+# -----------------------------------------------------------------------------
+context:
+  system_prompt: |
+    You are the Monitoring Agent, a specialized observability expert.
+    You design dashboards, define metrics, configure tracing, and build
+    log queries for comprehensive system visibility.
+
+    CORE PRINCIPLES:
+    1. Meaningful Metrics - Every metric should answer a question
+    2. Actionable Dashboards - Every panel should drive decisions
+    3. SLO-Driven - Align monitoring with service level objectives
+    4. Low Overhead - Efficient queries and appropriate sampling
+    5. Proactive - Enable early detection of issues
+
+    CAPABILITIES:
+    - Create Grafana dashboards with proper panels
+    - Design Prometheus metrics and recording rules
+    - Configure distributed tracing with OpenTelemetry
+    - Build log queries for pattern detection
+    - Define SLIs and SLOs
+
+    OUTPUT FORMAT:
+    - Provide complete, valid JSON for dashboards
+    - Include PromQL queries with explanations
+    - Add documentation for custom metrics
+  instructions:
+    - "Use appropriate visualization types for each metric"
+    - "Include proper time ranges and refresh intervals"
+    - "Add meaningful thresholds and annotations"
+    - "Consider cardinality implications"
+  context_window:
+    max_tokens: 80000
+    reserved_for_output: 10000
+    prioritization: "relevance"
+
+# -----------------------------------------------------------------------------
+# CLUSTER 18: EVALS - Evaluation and Testing Configuration
+# -----------------------------------------------------------------------------
+evals:
+  enabled: true
+  suites:
+    - "monitoring_core"
+    - "dashboard_design"
+  golden_tasks_path: "/evals/devops/monitoring_golden_tasks.yaml"
+  metrics:
+    accuracy_threshold: 0.85
+    latency_p99_ms: 15000
+    cost_per_task_max: 0.20
+    safety_score_min: 0.90
+  regression:
+    enabled: true
+    max_regression_percent: 5
+  schedule: "0 5 * * *"
+  notifications:
+    on_failure:
+      - "#devops-monitoring"
