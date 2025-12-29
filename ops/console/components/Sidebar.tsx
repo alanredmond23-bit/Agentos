@@ -23,6 +23,8 @@ import {
   Users,
   Bell,
   LogOut,
+  Palette,
+  DollarSign,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useUIStore, useApprovalsStore, useAuthStore } from '@/lib/store';
@@ -73,6 +75,24 @@ const navigationSections: NavSection[] = [
         label: 'Audit Logs',
         href: '/audit',
         icon: FileText,
+      },
+      {
+        id: 'costs',
+        label: 'Costs',
+        href: '/costs',
+        icon: DollarSign,
+      },
+    ],
+  },
+  {
+    id: 'studio',
+    title: 'Studio',
+    items: [
+      {
+        id: 'studio-dashboard',
+        label: 'Agent Studio',
+        href: '/studio',
+        icon: Palette,
       },
     ],
   },
