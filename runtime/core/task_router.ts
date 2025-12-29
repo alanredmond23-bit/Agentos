@@ -137,11 +137,216 @@ export interface StepConfig {
   };
 
   /** Wait config */
-  wait?: {
-    duration_ms?: number;
-    until?: StepCondition;
-    poll_interval_ms?: number;
-  };
+  wait?: WaitConfig;
+}
+
+/**
+ * Configuration for wait steps with support for condition-based polling.
+ *
+ * Wait steps can operate in two modes:
+ * 1. **Duration-based**: Simply wait for a fixed duration before proceeding
+ * 2. **Condition-based polling**: Repeatedly evaluate a condition until it becomes true
+ *
+ * When using condition-based polling, the system will:
+ * - Poll at configurable intervals (with optional exponential backoff)
+ * - Track metrics about polling attempts, duration, and outcomes
+ * - Support early cancellation via the `cancellation_token`
+ * - Timeout if the condition is not met within `poll_timeout_ms`
+ *
+ * @example
+ * ```typescript
+ * // Simple duration wait
+ * const waitConfig: WaitConfig = { duration_ms: 5000 };
+ *
+ * // Condition-based polling with backoff
+ * const pollConfig: WaitConfig = {
+ *   until: { field: 'state.status', operator: 'eq', value: 'ready' },
+ *   poll_interval_ms: 1000,
+ *   poll_timeout_ms: 60000,
+ *   poll_backoff: {
+ *     initial_ms: 500,
+ *     max_ms: 10000,
+ *     multiplier: 1.5
+ *   }
+ * };
+ * ```
+ */
+export interface WaitConfig {
+  /**
+   * Fixed duration to wait in milliseconds.
+   * If specified alone, the step will wait for this duration then proceed.
+   * If specified with `until`, serves as an initial delay before polling begins.
+   */
+  duration_ms?: number;
+
+  /**
+   * Condition to poll for. When specified, the step will repeatedly evaluate
+   * this condition until it returns true or the timeout is reached.
+   */
+  until?: StepCondition;
+
+  /**
+   * Interval between polling attempts in milliseconds.
+   * Used when `until` condition is specified.
+   * @default 1000
+   */
+  poll_interval_ms?: number;
+
+  /**
+   * Maximum time to poll before timing out in milliseconds.
+   * If the condition is not met within this duration, a PollingTimeoutError is thrown.
+   * @default 300000 (5 minutes)
+   */
+  poll_timeout_ms?: number;
+
+  /**
+   * Exponential backoff configuration for polling.
+   * When specified, the polling interval will increase exponentially
+   * between attempts, up to the specified maximum.
+   */
+  poll_backoff?: PollingBackoffConfig;
+
+  /**
+   * Callback invoked after each poll attempt.
+   * Useful for logging, metrics, or custom side effects during polling.
+   * Receives the current poll attempt number and whether the condition was met.
+   *
+   * @param attempt - Current attempt number (1-indexed)
+   * @param conditionMet - Whether the condition evaluated to true
+   * @param context - The current step execution context
+   */
+  on_poll?: (attempt: number, conditionMet: boolean, context: StepExecutionContext) => void | Promise<void>;
+
+  /**
+   * Token for cancelling the polling operation early.
+   * When the token's `cancelled` property becomes true, polling stops immediately.
+   */
+  cancellation_token?: CancellationToken;
+}
+
+/**
+ * Configuration for exponential backoff during polling.
+ *
+ * The interval between polls is calculated as:
+ * `min(initial_ms * (multiplier ^ attempt), max_ms)`
+ *
+ * @example
+ * ```typescript
+ * // Start at 500ms, double each time, cap at 30 seconds
+ * const backoff: PollingBackoffConfig = {
+ *   initial_ms: 500,
+ *   max_ms: 30000,
+ *   multiplier: 2.0
+ * };
+ * ```
+ */
+export interface PollingBackoffConfig {
+  /**
+   * Initial polling interval in milliseconds.
+   * This is the delay after the first poll attempt.
+   */
+  initial_ms: number;
+
+  /**
+   * Maximum polling interval in milliseconds.
+   * The interval will never exceed this value regardless of backoff calculation.
+   */
+  max_ms: number;
+
+  /**
+   * Multiplier applied to the interval after each attempt.
+   * Values > 1.0 increase the interval, values < 1.0 decrease it.
+   * Typical values are 1.5 or 2.0 for exponential backoff.
+   */
+  multiplier: number;
+}
+
+/**
+ * Token used to signal cancellation of a polling operation.
+ *
+ * @example
+ * ```typescript
+ * const token: CancellationToken = { cancelled: false };
+ *
+ * // Start polling in background
+ * pollForCondition(config, context, token);
+ *
+ * // Cancel after some external event
+ * token.cancelled = true;
+ * ```
+ */
+export interface CancellationToken {
+  /**
+   * When set to true, the polling operation should stop immediately.
+   */
+  cancelled: boolean;
+}
+
+/**
+ * Metrics collected during a polling operation.
+ *
+ * These metrics provide visibility into polling behavior and can be used for:
+ * - Debugging slow or failing polling operations
+ * - Tuning polling parameters (interval, backoff, timeout)
+ * - Monitoring and alerting on polling performance
+ */
+export interface PollingMetrics {
+  /**
+   * Total number of polling attempts made.
+   */
+  attempts: number;
+
+  /**
+   * Total duration of the polling operation in milliseconds.
+   * Measured from the start of the first poll to completion or failure.
+   */
+  total_duration_ms: number;
+
+  /**
+   * Outcome of the polling operation.
+   * - `'success'`: Condition was met within timeout
+   * - `'timeout'`: Condition was not met within poll_timeout_ms
+   * - `'cancelled'`: Polling was cancelled via cancellation_token
+   * - `'error'`: An error occurred during polling
+   */
+  outcome: 'success' | 'timeout' | 'cancelled' | 'error';
+
+  /**
+   * Array of individual poll attempt durations in milliseconds.
+   * Useful for identifying slow condition evaluations.
+   */
+  attempt_durations_ms: number[];
+
+  /**
+   * Array of intervals actually used between attempts.
+   * May differ from configured interval due to backoff.
+   */
+  actual_intervals_ms: number[];
+
+  /**
+   * If outcome is 'error', contains the error message.
+   */
+  error_message?: string;
+}
+
+/**
+ * Result of a polling operation including the final outcome and collected metrics.
+ */
+export interface PollingResult {
+  /**
+   * Whether the condition was successfully met.
+   */
+  condition_met: boolean;
+
+  /**
+   * Metrics collected during the polling operation.
+   */
+  metrics: PollingMetrics;
+
+  /**
+   * The final evaluated value of the condition field, if available.
+   */
+  final_value?: unknown;
 }
 
 export interface StepCondition {
@@ -1148,6 +1353,55 @@ export class TaskRouter {
     };
   }
 
+  /**
+   * Handles wait steps with support for both fixed duration waits and condition-based polling.
+   *
+   * This handler supports two primary modes:
+   *
+   * 1. **Duration-based wait**: When only `duration_ms` is specified, the step simply
+   *    waits for that duration before proceeding.
+   *
+   * 2. **Condition-based polling**: When `until` is specified, the step polls the
+   *    condition at regular intervals until it evaluates to true or the timeout is reached.
+   *
+   * When both `duration_ms` and `until` are specified, the duration serves as an
+   * initial delay before polling begins.
+   *
+   * @param step - The execution step containing wait configuration
+   * @param context - The current step execution context
+   * @returns Step execution result including polling metrics if applicable
+   *
+   * @throws {PollingTimeoutError} When the polling timeout is exceeded
+   * @throws {PollingCancelledError} When polling is cancelled via cancellation token
+   *
+   * @example
+   * ```typescript
+   * // Simple duration wait
+   * const step: ExecutionStep = {
+   *   id: 'wait_step',
+   *   name: 'Wait 5 seconds',
+   *   type: 'wait',
+   *   config: {
+   *     wait: { duration_ms: 5000 }
+   *   }
+   * };
+   *
+   * // Condition-based polling with exponential backoff
+   * const pollingStep: ExecutionStep = {
+   *   id: 'poll_step',
+   *   name: 'Wait for ready state',
+   *   type: 'wait',
+   *   config: {
+   *     wait: {
+   *       until: { field: 'state.status', operator: 'eq', value: 'ready' },
+   *       poll_interval_ms: 500,
+   *       poll_timeout_ms: 30000,
+   *       poll_backoff: { initial_ms: 500, max_ms: 5000, multiplier: 1.5 }
+   *     }
+   *   }
+   * };
+   * ```
+   */
   private async handleWait(
     step: ExecutionStep,
     context: StepExecutionContext
@@ -1155,18 +1409,369 @@ export class TaskRouter {
     const startTime = Date.now();
     const waitConfig = step.config.wait;
 
-    if (waitConfig?.duration_ms) {
+    // If no config, just return immediately
+    if (!waitConfig) {
+      return {
+        step_id: step.id,
+        success: true,
+        duration_ms: Date.now() - startTime,
+        next_step: step.next
+      };
+    }
+
+    // Handle initial duration wait (if specified with condition, serves as pre-poll delay)
+    if (waitConfig.duration_ms) {
       await new Promise((resolve) => setTimeout(resolve, waitConfig.duration_ms));
     }
 
-    // TODO: Implement polling for condition-based waits
+    // If no condition to poll for, we're done
+    if (!waitConfig.until) {
+      return {
+        step_id: step.id,
+        success: true,
+        duration_ms: Date.now() - startTime,
+        next_step: step.next
+      };
+    }
 
-    return {
-      step_id: step.id,
-      success: true,
-      duration_ms: Date.now() - startTime,
-      next_step: step.next
+    // Perform condition-based polling
+    try {
+      const pollingResult = await this.pollForCondition(waitConfig, context);
+
+      return {
+        step_id: step.id,
+        success: pollingResult.condition_met,
+        output: {
+          polling_result: pollingResult,
+          final_value: pollingResult.final_value
+        },
+        duration_ms: Date.now() - startTime,
+        next_step: step.next,
+        state_updates: {
+          [`${step.id}_polling_metrics`]: pollingResult.metrics,
+          [`${step.id}_condition_met`]: pollingResult.condition_met
+        }
+      };
+    } catch (error) {
+      if (error instanceof PollingTimeoutError) {
+        return {
+          step_id: step.id,
+          success: false,
+          error: {
+            code: 'POLLING_TIMEOUT',
+            message: error.message
+          },
+          output: {
+            polling_metrics: error.metrics
+          },
+          duration_ms: Date.now() - startTime,
+          state_updates: {
+            [`${step.id}_polling_metrics`]: error.metrics
+          }
+        };
+      }
+
+      if (error instanceof PollingCancelledError) {
+        return {
+          step_id: step.id,
+          success: false,
+          error: {
+            code: 'POLLING_CANCELLED',
+            message: error.message
+          },
+          output: {
+            polling_metrics: error.metrics
+          },
+          duration_ms: Date.now() - startTime,
+          state_updates: {
+            [`${step.id}_polling_metrics`]: error.metrics
+          }
+        };
+      }
+
+      // Re-throw unexpected errors
+      throw error;
+    }
+  }
+
+  // ============================================================================
+  // POLLING IMPLEMENTATION
+  // ============================================================================
+
+  /**
+   * Polls for a condition to become true with configurable intervals, backoff, and timeout.
+   *
+   * This method implements a robust polling mechanism with the following features:
+   *
+   * - **Configurable polling interval**: Control how frequently the condition is checked
+   * - **Exponential backoff**: Optionally increase interval between attempts to reduce load
+   * - **Timeout handling**: Throws `PollingTimeoutError` if condition not met in time
+   * - **Cancellation support**: Early exit when `cancellation_token.cancelled` becomes true
+   * - **Metrics tracking**: Collects detailed metrics about the polling operation
+   * - **Callback support**: Optional `on_poll` callback invoked after each attempt
+   *
+   * @param config - The wait configuration containing polling parameters
+   * @param context - The step execution context used for condition evaluation
+   * @returns A `PollingResult` containing success status and detailed metrics
+   *
+   * @throws {PollingTimeoutError} When `poll_timeout_ms` is exceeded without condition being met
+   * @throws {PollingCancelledError} When `cancellation_token.cancelled` becomes true
+   *
+   * @example
+   * ```typescript
+   * const config: WaitConfig = {
+   *   until: { field: 'state.jobStatus', operator: 'eq', value: 'complete' },
+   *   poll_interval_ms: 2000,
+   *   poll_timeout_ms: 120000,
+   *   poll_backoff: { initial_ms: 1000, max_ms: 10000, multiplier: 1.5 },
+   *   on_poll: (attempt, met, ctx) => {
+   *     console.log(`Poll attempt ${attempt}: condition met = ${met}`);
+   *   }
+   * };
+   *
+   * const result = await router.pollForCondition(config, context);
+   * console.log(`Completed in ${result.metrics.attempts} attempts`);
+   * ```
+   */
+  private async pollForCondition(
+    config: WaitConfig,
+    context: StepExecutionContext
+  ): Promise<PollingResult> {
+    // Extract configuration with defaults
+    const condition = config.until!;
+    const pollIntervalMs = config.poll_interval_ms ?? 1000;
+    const pollTimeoutMs = config.poll_timeout_ms ?? 300000;
+    const backoffConfig = config.poll_backoff;
+    const onPoll = config.on_poll;
+    const cancellationToken = config.cancellation_token;
+
+    // Initialize metrics tracking
+    const metrics: PollingMetrics = {
+      attempts: 0,
+      total_duration_ms: 0,
+      outcome: 'success',
+      attempt_durations_ms: [],
+      actual_intervals_ms: []
     };
+
+    const pollingStartTime = Date.now();
+    let currentInterval = backoffConfig?.initial_ms ?? pollIntervalMs;
+    let conditionMet = false;
+    let finalValue: unknown;
+
+    // Main polling loop
+    while (true) {
+      // Check for cancellation before each poll attempt
+      if (cancellationToken?.cancelled) {
+        metrics.outcome = 'cancelled';
+        metrics.total_duration_ms = Date.now() - pollingStartTime;
+        throw new PollingCancelledError(
+          `Polling cancelled after ${metrics.attempts} attempts`,
+          metrics
+        );
+      }
+
+      // Check for timeout
+      const elapsedMs = Date.now() - pollingStartTime;
+      if (elapsedMs >= pollTimeoutMs) {
+        metrics.outcome = 'timeout';
+        metrics.total_duration_ms = elapsedMs;
+        throw new PollingTimeoutError(
+          `Polling timed out after ${metrics.attempts} attempts (${elapsedMs}ms elapsed, timeout: ${pollTimeoutMs}ms)`,
+          metrics,
+          condition,
+          pollTimeoutMs
+        );
+      }
+
+      // Perform the poll attempt
+      const attemptStartTime = Date.now();
+      metrics.attempts++;
+
+      try {
+        // Evaluate the condition
+        conditionMet = this.evaluateCondition(condition, context);
+        finalValue = this.resolveValue(condition.field, context);
+      } catch (error) {
+        // Record error in metrics but continue polling
+        metrics.attempt_durations_ms.push(Date.now() - attemptStartTime);
+        const errorMessage = error instanceof Error ? error.message : String(error);
+
+        // If this is a critical error (not just a transient evaluation failure), track it
+        if (!metrics.error_message) {
+          metrics.error_message = errorMessage;
+        }
+
+        // Continue to next poll attempt after interval
+        conditionMet = false;
+      }
+
+      const attemptDuration = Date.now() - attemptStartTime;
+      metrics.attempt_durations_ms.push(attemptDuration);
+
+      // Invoke on_poll callback if provided
+      if (onPoll) {
+        try {
+          await Promise.resolve(onPoll(metrics.attempts, conditionMet, context));
+        } catch (callbackError) {
+          // Log callback errors but don't fail the polling operation
+          // In production, this would integrate with the logging system
+          console.error('on_poll callback error:', callbackError);
+        }
+      }
+
+      // Check if condition is met
+      if (conditionMet) {
+        metrics.outcome = 'success';
+        metrics.total_duration_ms = Date.now() - pollingStartTime;
+        return {
+          condition_met: true,
+          metrics,
+          final_value: finalValue
+        };
+      }
+
+      // Calculate next interval (with backoff if configured)
+      let nextInterval = currentInterval;
+      if (backoffConfig) {
+        // Apply exponential backoff: interval = initial * (multiplier ^ (attempts - 1))
+        // But cap at max_ms
+        nextInterval = Math.min(
+          backoffConfig.initial_ms * Math.pow(backoffConfig.multiplier, metrics.attempts - 1),
+          backoffConfig.max_ms
+        );
+        currentInterval = nextInterval;
+      }
+
+      // Record the actual interval that will be used
+      metrics.actual_intervals_ms.push(nextInterval);
+
+      // Check if waiting for the full interval would exceed timeout
+      const timeRemaining = pollTimeoutMs - (Date.now() - pollingStartTime);
+      if (timeRemaining <= 0) {
+        // Already timed out, will be caught on next iteration
+        continue;
+      }
+
+      // Wait for the interval (or remaining time, whichever is smaller)
+      const waitTime = Math.min(nextInterval, timeRemaining);
+
+      // Interruptible wait that checks cancellation periodically
+      await this.interruptibleWait(waitTime, cancellationToken);
+    }
+  }
+
+  /**
+   * Performs a wait that can be interrupted by a cancellation token.
+   *
+   * Rather than using a single `setTimeout`, this method breaks the wait into
+   * smaller chunks and checks the cancellation token between each chunk.
+   * This ensures responsive cancellation even during long wait intervals.
+   *
+   * @param durationMs - Total duration to wait in milliseconds
+   * @param cancellationToken - Optional token to check for cancellation
+   * @param checkIntervalMs - How often to check the cancellation token (default: 100ms)
+   *
+   * @example
+   * ```typescript
+   * const token = { cancelled: false };
+   *
+   * // Start waiting
+   * const waitPromise = this.interruptibleWait(5000, token);
+   *
+   * // Cancel after 2 seconds
+   * setTimeout(() => { token.cancelled = true; }, 2000);
+   *
+   * await waitPromise; // Returns after ~2 seconds instead of 5
+   * ```
+   */
+  private async interruptibleWait(
+    durationMs: number,
+    cancellationToken?: CancellationToken,
+    checkIntervalMs: number = 100
+  ): Promise<void> {
+    if (!cancellationToken) {
+      // No cancellation support needed, just wait the full duration
+      await new Promise((resolve) => setTimeout(resolve, durationMs));
+      return;
+    }
+
+    const startTime = Date.now();
+    const endTime = startTime + durationMs;
+
+    while (Date.now() < endTime) {
+      // Check for cancellation
+      if (cancellationToken.cancelled) {
+        return;
+      }
+
+      // Wait for a small interval or remaining time, whichever is smaller
+      const remainingTime = endTime - Date.now();
+      const waitTime = Math.min(checkIntervalMs, remainingTime);
+
+      if (waitTime > 0) {
+        await new Promise((resolve) => setTimeout(resolve, waitTime));
+      }
+    }
+  }
+
+  /**
+   * Calculates the polling interval for a given attempt with exponential backoff.
+   *
+   * This is a utility method that can be used to preview or debug the backoff
+   * progression without actually performing polling.
+   *
+   * @param attempt - The attempt number (1-indexed)
+   * @param config - The backoff configuration
+   * @returns The interval in milliseconds for the given attempt
+   *
+   * @example
+   * ```typescript
+   * const backoff = { initial_ms: 1000, max_ms: 30000, multiplier: 2.0 };
+   *
+   * calculateBackoffInterval(1, backoff); // 1000
+   * calculateBackoffInterval(2, backoff); // 2000
+   * calculateBackoffInterval(3, backoff); // 4000
+   * calculateBackoffInterval(4, backoff); // 8000
+   * calculateBackoffInterval(5, backoff); // 16000
+   * calculateBackoffInterval(6, backoff); // 30000 (capped at max)
+   * calculateBackoffInterval(7, backoff); // 30000 (capped at max)
+   * ```
+   */
+  public calculateBackoffInterval(attempt: number, config: PollingBackoffConfig): number {
+    if (attempt < 1) {
+      return config.initial_ms;
+    }
+    return Math.min(
+      config.initial_ms * Math.pow(config.multiplier, attempt - 1),
+      config.max_ms
+    );
+  }
+
+  /**
+   * Creates a default cancellation token.
+   *
+   * This is a convenience method for creating cancellation tokens
+   * that can be passed to polling operations.
+   *
+   * @returns A new cancellation token with `cancelled` set to false
+   *
+   * @example
+   * ```typescript
+   * const token = router.createCancellationToken();
+   *
+   * // Pass to polling config
+   * const config: WaitConfig = {
+   *   until: someCondition,
+   *   cancellation_token: token
+   * };
+   *
+   * // Later, to cancel:
+   * token.cancelled = true;
+   * ```
+   */
+  public createCancellationToken(): CancellationToken {
+    return { cancelled: false };
   }
 
   // ============================================================================
@@ -1259,6 +1864,83 @@ export class TaskRouterError extends Error {
     this.name = 'TaskRouterError';
     this.code = code;
     this.details = details;
+  }
+}
+
+/**
+ * Error thrown when a polling operation exceeds its configured timeout.
+ *
+ * This error includes detailed metrics about the polling operation,
+ * which can be used for debugging and tuning polling parameters.
+ *
+ * @example
+ * ```typescript
+ * try {
+ *   await pollForCondition(config, context);
+ * } catch (error) {
+ *   if (error instanceof PollingTimeoutError) {
+ *     console.log(`Polling timed out after ${error.metrics.attempts} attempts`);
+ *     console.log(`Total duration: ${error.metrics.total_duration_ms}ms`);
+ *   }
+ * }
+ * ```
+ */
+export class PollingTimeoutError extends Error {
+  /**
+   * Error code for programmatic error handling.
+   */
+  public readonly code: string = 'POLLING_TIMEOUT';
+
+  /**
+   * Metrics collected during the polling operation before timeout.
+   */
+  public readonly metrics: PollingMetrics;
+
+  /**
+   * The condition that was being polled for.
+   */
+  public readonly condition: StepCondition;
+
+  /**
+   * The configured timeout in milliseconds.
+   */
+  public readonly timeout_ms: number;
+
+  constructor(
+    message: string,
+    metrics: PollingMetrics,
+    condition: StepCondition,
+    timeout_ms: number
+  ) {
+    super(message);
+    this.name = 'PollingTimeoutError';
+    this.metrics = metrics;
+    this.condition = condition;
+    this.timeout_ms = timeout_ms;
+  }
+}
+
+/**
+ * Error thrown when a polling operation is cancelled via cancellation token.
+ *
+ * This is a controlled termination, not a failure. The metrics included
+ * can help understand the state at the time of cancellation.
+ */
+export class PollingCancelledError extends Error {
+  /**
+   * Error code for programmatic error handling.
+   */
+  public readonly code: string = 'POLLING_CANCELLED';
+
+  /**
+   * Metrics collected during the polling operation before cancellation.
+   */
+  public readonly metrics: PollingMetrics;
+
+  constructor(message: string, metrics: PollingMetrics) {
+    super(message);
+    this.name = 'PollingCancelledError';
+    this.metrics = metrics;
   }
 }
 
